@@ -8,21 +8,21 @@ def index():
 
 @app.route('/login')
 def login():
-    return
+    return render_template('/pages/login.html', css_file_path="/static/login_style.css")
 
 @app.route('/register')
 def register():
-    return
+    return render_template('/pages/register.html', css_file_path="/static/register_style.css")
 
 @app.route('/leaderboard')
 def leaderboard():
-    return
+    return render_template('/pages/leaderboard.html')
 
 @app.route('/forum/{id}')
 def forum(id):
     return
 
 
-@app.route('/createForum/{id}')
-def createSudoku(id):
-    return
+@app.route('/createSudoku')
+def createSudoku():
+    return render_template('/pages/createSudoku.html')
