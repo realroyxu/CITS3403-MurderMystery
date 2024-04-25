@@ -6,3 +6,14 @@
 .board{
     transform : scale(0.6)
 }
+
+.forum-posts{
+    display : flex;
+    justify-content: center;
+    padding : 30px;
+}
+
+.leaderboard{
+    align-self : center;
+}
+

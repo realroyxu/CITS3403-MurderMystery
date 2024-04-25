@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="../../static/board/board.js"></script>
+    <link rel="stylesheet" href="../../static/forum/forum.css">
+</head>
+<body>
+    <div>
+        {% for post in forum_posts %}
+            <div class="post">
+                <div class="post-title">{{ post.title }}</div>
+                <div class="post-content">{{post.content}}</div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
