@@ -1,0 +1,8 @@
+.sudoku{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.board{
+    transform : scale(0.6)
+}

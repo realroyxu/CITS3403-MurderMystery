@@ -4,7 +4,7 @@ from flask import render_template
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('/pages/index.html')
+    return render_template('/pages/index.html', css_file_path='/static/index_style.css')
 
 @app.route('/login')
 def login():

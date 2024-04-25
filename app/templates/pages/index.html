@@ -4,7 +4,12 @@
 
 {% block content %}
     <div class="sudoku">
-        Hello world
+        <div class="board">
+            {% include '/board/board.html' %}
+        </div>
+        <div class="leaderboard">
+            Hello World
+        </div>
     </div>
     <div class="forum-posts">
 
