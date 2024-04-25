@@ -1,0 +1,13 @@
+/** FOOTER **/
+
+
+footer{
+    background-color: #80a5c1;
+    border : none;
+}
+
+.github-icons{
+    height : 40px;
+    width : 40px;
+    border-radius : 50%;
+}
