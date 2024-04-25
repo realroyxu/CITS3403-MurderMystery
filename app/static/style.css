@@ -9,7 +9,19 @@
     display: flex;
     justify-content: space-between;
     align-items : center;
-    width : 70%;
+    width : 60%;
+}
+
+.nav-links>a, .login>a{
+    text-decoration: none;
+    color: white;
+}
+
+.login{
+    display: flex;
+    justify-content: space-between;
+    align-items : center;
+    padding : 20px;
 }
 
 /* CONTENT CSS */
