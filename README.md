@@ -32,4 +32,4 @@
 
 ``` http://127.0.0.1:8000/ ```
 
-#### Message me if anything is not working please
+#### Message me if anything is not working please @ yet._. on discord
