@@ -1,0 +1,29 @@
+form {
+    width : 70%;
+}
+
+
+.login-form{
+    display : flex;
+    justify-content: center;
+}
+
+.button{
+    display : flex;
+    justify-content : center;
+}
+
+.register{
+    margin-top : 40px;
+    display : flex;
+    justify-content : center
+}
+
+.register-description{
+    text-decoration : none;
+    color : gray;
+}
+
+.register-text:hover{
+    color : black;
+}
