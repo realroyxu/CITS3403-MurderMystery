@@ -1,7 +1,8 @@
 from app import app
 from flask import render_template, flash, redirect
 from flask import session
-from app.login.forms import LoginForm, RegistrationForm
+import app.login.forms as Forms
+import app.login.authenticate as Auth
 
 user_scores = [
     {"username": "user1", "score": 100},
@@ -26,11 +27,15 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = Forms.LoginForm()
     if form.validate_on_submit():
-        session['username'] = form.email.data
-        flash(f"Login requested for user {form.email.data}", 'success')
-        return redirect('/index')
+        if Auth.auth_user(form.email.data, form.password.data):
+            session['username'] = form.email.data
+            flash(f"Login requested for user {form.email.data}", 'success')
+            return redirect('/index')
+        else:
+            flash(f"Login failed for user {form.email.data}", 'danger')
+            return redirect('/login')
     return render_template('/pages/login.html', css_file_path="/static/login_style.css", form=form)
 
 @app.route('/logout')
@@ -38,9 +43,14 @@ def logout():
     session.clear()
     return redirect('/index')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('/pages/register.html', css_file_path="/static/register_style.css")
+    form = Forms.RegistrationForm()
+    if form.validate_on_submit():
+        session['username'] = form.email.data
+        flash(f"Account created for {form.email.data}!", 'success')
+        return redirect('/index')
+    return render_template('/pages/register.html', css_file_path="/static/register_style.css", form=form)
 
 @app.route('/leaderboard')
 def leaderboard():
