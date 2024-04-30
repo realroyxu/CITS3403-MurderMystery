@@ -2,22 +2,22 @@
 
 {% block content %}
     <div class="login-form p-5">
-        <form>
+        <form method="POST">
+            {{ form.hidden_tag() }}
             <div class="form-group p-3">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
             </div>
             <div class="form-group p-3">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
             </div>
             <div class="button">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                {{ form.submit(class="btn btn-primary") }}
             </div>
             <div class="register">
-                <a href="/register" class="register-description">Don't have an account? <span class="register-text">Register here</span></a>
+                <a href={{ url_for('register') }} class="register-description">Don't have an account? <span class="register-text">Register here</span></a>
             </div>
         </form>
     </div>
-
 {% endblock %}
