@@ -20,4 +20,14 @@
             </div>
         </form>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <script>
+                var message = "{{ messages[-1][1] }}";
+                alert(message);
+            </script>
+        {% endif %}
+    {% endwith %}
+
 {% endblock %}
