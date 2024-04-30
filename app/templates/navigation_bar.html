@@ -18,7 +18,11 @@
             <a href="/leaderboard"> Leaderboard</a>
         </div>
         <div class="login">
-            <a href="/login"> Login</a>
+            {% if session['username'] %}
+                <a href="/logout"> Logout</a>
+            {% else %}
+                <a href="/login"> Login</a>
+            {% endif %}
         </div>
     </div>
     <div class="content">
