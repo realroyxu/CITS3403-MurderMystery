@@ -18,17 +18,20 @@ class Base(DeclarativeBase):
 
 class User(Base):
     __tablename__ = 'user'
+    # userid is managed by db, as "autoincrement=True"
     userid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[str] = mapped_column(String ,nullable=True)
+    email: Mapped[str] = mapped_column(String, nullable=True)
     avatar: Mapped[str] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return f"User({self.userid!r}, {self.username!r})"
 
+    # methods are all class methods / static methods
     @classmethod
     def get_id(cls, data):
+        # get user id by username
         if 'username' not in data:
             raise RuntimeError("Error updating user: username not provided.")
         with Session() as s:
@@ -41,6 +44,7 @@ class User(Base):
 
     @classmethod
     def get_all(cls, data):
+        # get users data by userid, without password
         if 'userid' not in data:
             raise RuntimeError("Error updating user: userid not provided.")
         with Session() as s:
@@ -55,6 +59,7 @@ class User(Base):
 
     @classmethod
     def add_user(cls, data):
+        # add new user
         if 'username' not in data:
             raise RuntimeError("Error updating user: username not provided.")
         if 'password' not in data:
@@ -72,15 +77,17 @@ class User(Base):
 
     @classmethod
     def update_user(cls, data):
+        # update user's profile
         if 'userid' not in data:
             raise RuntimeError("Error updating user: userid not provided.")
         with Session() as s:
             try:
                 stmt = select(cls).where(cls.userid == data['userid'])
-                # return a instance, update op will be done on this instance has to be scalar() instead of one(),
-                # because scalar() returns: <class '__main__.User'> and one() returns:<class
-                # 'sqlalchemy.engine.row.Row'>
+                # scalar() return a instance, update op will be done on this instance
+                # has to be scalar() instead of one(), because scalar() returns: <class '__main__.User'>
+                # and one() returns:<class 'sqlalchemy.engine.row.Row'>
                 user = s.execute(stmt).scalar_one()
+                # if no new value provided, keep the original value
                 user.username = data.get('username', user.username)
                 user.email = data.get('email', user.email)
                 user.avatar = data.get('avatar', user.avatar)
@@ -102,6 +109,21 @@ class User(Base):
             except sqlalchemy.exc.NoResultFound:
                 raise RuntimeError("Error updating user: No user found.")
         return "User deleted successfully."
+
+    @classmethod
+    def change_password(cls, data):
+        if 'userid' not in data:
+            raise RuntimeError("Error updating user: userid not provided.")
+        if 'password' not in data:
+            raise RuntimeError("Error updating user: password not provided.")
+        with Session() as s:
+            try:
+                stmt = select(cls).where(cls.userid == data['userid'])
+                user = s.execute(stmt).scalar_one()
+                user.password = data['password']
+                s.commit()
+            except sqlalchemy.exc.NoResultFound:
+                raise RuntimeError("Error updating user: No user found.")
 
 
 class Post(Base):
