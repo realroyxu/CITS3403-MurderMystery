@@ -1,219 +1,186 @@
-import sqlite3
+import sqlalchemy.exc
+from sqlalchemy import *
+from sqlalchemy.orm import *
+
+engine = create_engine('sqlite:///ormtest.db', echo=True)
+
+# test
+with engine.connect() as conn:
+    result = conn.execute(text("select 'hello world'"))
+    print(result.all())
+
+Session = sessionmaker(bind=engine)
 
 
-class Database:
-    def __init__(self, db_name='example.db'):
-        try:
-            self.conn = sqlite3.connect(db_name)
-            # use row factory to return dict instead of tuple
-            self.conn.row_factory = sqlite3.Row
-        except sqlite3.Error as e:
-            print("Error connecting to database: ", e)
-
-    def execute(self, sql, data):
-        try:
-            cur = self.conn.cursor()
-            res = cur.execute(sql, data).fetchall()
-            if res:
-                res = [dict(row) for row in res]
-                cur.close()
-                return res
-            else:
-                res = []
-                cur.close()
-                return res
-        except sqlite3.Error as e:
-            # using 'from e' to preserve the original traceback
-            raise RuntimeError(f"{e}") from e
-
-    def executescript(self, sql):
-        # only for create table
-        try:
-            cur = self.conn.cursor()
-            return cur.executescript(sql).fetchall()
-        except sqlite3.Error as e:
-            raise RuntimeError(f"{e}") from e
-
-    def commit(self):
-        try:
-            self.conn.commit()
-        except sqlite3.Error as e:
-            print("Error committing transaction: ", e)
-
-    def close(self):
-        self.conn.close()
-
-    def __del__(self):
-        self.conn.close()
+class Base(DeclarativeBase):
+    pass
 
 
-class Schema:
-    def __init__(self, db):
-        self.db = db
+class User(Base):
+    __tablename__ = 'user'
+    userid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(String, nullable=False)
+    email: Mapped[str] = mapped_column(String ,nullable=True)
+    avatar: Mapped[str] = mapped_column(String, nullable=True)
 
-    def create_table(self):
-        create_table_script = """
-           CREATE TABLE IF NOT EXISTS "attempt"
-           (
-               attemptId INTEGER PRIMARY KEY AUTOINCREMENT ,
-               puzzleId INTEGER ,
-               userID INTEGER ,
-               -- refers to seconds
-               timeElapsed INTEGER DEFAULT 0,
-               progressData TEXT,
-               FOREIGN KEY (puzzleId) REFERENCES puzzle ON DELETE CASCADE,
-               FOREIGN KEY (userID) REFERENCES user ON DELETE CASCADE
-           );
+    def __repr__(self):
+        return f"User({self.userid!r}, {self.username!r})"
 
-           CREATE TABLE IF NOT EXISTS "comment" (
-               commentId PRIMARY KEY ,
-               postId INTEGER,
-               userId INTEGER,
-               -- calculate time based on postTime
-               commentTime INTEGER NOT NULL ,
-               -- likeType INTEGER,
-               commentText TEXT DEFAULT '(No content)',
-               FOREIGN KEY (postId) REFERENCES post ON DELETE CASCADE ,
-               FOREIGN KEY (userId) REFERENCES user ON DELETE CASCADE
-           );
+    @classmethod
+    def get_id(cls, data):
+        if 'username' not in data:
+            raise RuntimeError("Error updating user: username not provided.")
+        with Session() as s:
+            try:
+                stmt = select(cls.userid).where(cls.username == data['username'])
+                return s.execute(stmt).one()
+            except sqlalchemy.exc.NoResultFound:
+                raise RuntimeError("Error fetching user: No user found.")
+        # need error hanlding
 
-           CREATE TABLE IF NOT EXISTS "post"
-           (
-               postId   INTEGER PRIMARY KEY AUTOINCREMENT,
-               userId   INTEGER,
-               title    TEXT DEFAULT 'NO TITLE',
-               postTime TEXT NOT NULL,
-               postType TEXT,
-               puzzleId INTEGER,
-               postText TEXT DEFAULT '(No content)',
-               FOREIGN KEY (userId) REFERENCES user ON DELETE CASCADE,
-               FOREIGN KEY (puzzleId) REFERENCES puzzle ON DELETE CASCADE
-           );
+    @classmethod
+    def get_all(cls, data):
+        if 'userid' not in data:
+            raise RuntimeError("Error updating user: userid not provided.")
+        with Session() as s:
+            stmt = select(cls.userid, cls.username, cls.email, cls.avatar).where(cls.userid == data['userid'])
+            try:
+                res = s.execute(stmt).one()
+                if res:
+                    # _asdict() is a dict-ize method of RowProxy
+                    return res._asdict()
+            except sqlalchemy.exc.NoResultFound:
+                raise RuntimeError("Error fetching user: No user found.")
 
-           CREATE TABLE IF NOT EXISTS "postleaderboard"(
-               recordId INTEGER PRIMARY KEY AUTOINCREMENT ,
-               userId INTEGER,
-               postId INTEGER,
-               rank INTEGER DEFAULT 0,
-               FOREIGN KEY (userId) references user ON DELETE CASCADE,
-               FOREIGN KEY (postId) references post ON DELETE CASCADE
-           );
+    @classmethod
+    def add_user(cls, data):
+        if 'username' not in data:
+            raise RuntimeError("Error updating user: username not provided.")
+        if 'password' not in data:
+            raise RuntimeError("Error updating user: password not provided.")
+        for item in data.keys():
+            if item not in ('username', 'password', 'email', 'avatar'):
+                raise RuntimeError("Error updating user: invalid field provided.")
+        with Session() as s:
+            try:
+                user = cls(**data)
+                s.add(user)
+                s.commit()
+            except sqlalchemy.exc.IntegrityError as e:
+                raise RuntimeError(f"Error adding user: integrity violated. {e}") from e
 
-           CREATE TABLE IF NOT EXISTS "puzzle"
-           (
-               puzzleId   INTEGER PRIMARY KEY AUTOINCREMENT,
-               userId     INTEGER,
-               puzzleData TEXT NOT NULL,
-               createTime TEXT NOT NULL,
-               category   TEXT DEFAULT 'undefined',
-               FOREIGN KEY (userId) REFERENCES user ON DELETE CASCADE
-           );
+    @classmethod
+    def update_user(cls, data):
+        if 'userid' not in data:
+            raise RuntimeError("Error updating user: userid not provided.")
+        with Session() as s:
+            try:
+                stmt = select(cls).where(cls.userid == data['userid'])
+                # return a instance, update op will be done on this instance has to be scalar() instead of one(),
+                # because scalar() returns: <class '__main__.User'> and one() returns:<class
+                # 'sqlalchemy.engine.row.Row'>
+                user = s.execute(stmt).scalar_one()
+                user.username = data.get('username', user.username)
+                user.email = data.get('email', user.email)
+                user.avatar = data.get('avatar', user.avatar)
+                s.commit()
+                return "User updated successfully."
+            except sqlalchemy.exc.NoResultFound:
+                raise RuntimeError("Error updating user: No user found.")
 
-           CREATE TABLE IF NOT EXISTS "siteleaderboard"(
-               userId INTEGER PRIMARY KEY ,
-               solveCount INTEGER DEFAULT 0,
-               postCount INTEGER DEFAULT 0,
-               FOREIGN KEY (userId) REFERENCES user ON DELETE CASCADE
-           );
-
-           CREATE TABLE IF NOT EXISTS "user"
-           (
-               userId       INTEGER PRIMARY KEY,
-               passwordHash TEXT NOT NULL,
-               email         TEXT,
-               userName     TEXT NOT NULL UNIQUE,
-               avatar       TEXT DEFAULT 'default.jpg'
-           );
-
-           """
-        self.db.executescript(create_table_script)
-        self.db.commit()
-
-
-class User:
-    # Data should be parsed as JSON
-    def __init__(self, db):
-        self.db = db
-
-    def create_user(self, data):
-        query = """
-        INSERT INTO user (userName, passwordHash, email, avatar) VALUES (:userName, :passwordHash, :email, :avatar);
-        """
-        data.setdefault('avatar', 'default.jpg')
-        try:
-            self.db.execute(query, data)
-            self.db.commit()
-            res = "User created successfully."
-            return res
-        except RuntimeError as e:
-            raise RuntimeError(f"Error creating user: {e}") from e
-
-    def get_user(self, data):
-        # get user by userName, should be a single record
-        query = """
-        SELECT * FROM user WHERE userId = :userId or userName = :userName;
-        """
-        # test
-        # query = """
-        # SELECT * FROM user WHERE passwordHash = :passwordHash;
-        # """
-        data.setdefault('userId', None)
-        try:
-            res = self.db.execute(query, data)[0]
-            return res
-
-        except RuntimeError as e:
-            raise RuntimeError(f"Error fetching user: {e}") from e
-        # need inspecting this handler
-        except IndexError:
-            raise RuntimeError("Error fetching user: user not found")
-
-    def update_user(self, data):
-        query = """
-        UPDATE user SET email = :email, userName = :userName, passwordHash = :passwordHash, avatar = :avatar
-        WHERE userId = :userId;
-        """
-        # set default for partial update
-        if 'userId' not in data:
-            raise RuntimeError("Error updating user: user Not found")
-        original_data = self.get_user(data)
-        data.setdefault('userName', original_data['userName'])
-        data.setdefault('passwordHash', original_data['passwordHash'])
-        data.setdefault('email', original_data['email'])
-        data.setdefault('avatar', original_data['avatar'])
-
-        try:
-            self.db.execute(query, data)
-            self.db.commit()
-            res = "User updated successfully."
-            return res
-        except sqlite3.Error as e:
-            raise RuntimeError(f"Error updating user: {e}") from e
-
-    def delete_user(self, data):
-        query = """
-        DELETE FROM user WHERE userName = :userName;
-        """
-        self.db.execute(query, data)
-        self.db.commit()
+    @classmethod
+    def delete_user(cls, data):
+        if 'userid' not in data:
+            raise RuntimeError("Error updating user: userid not provided.")
+        with Session() as s:
+            try:
+                stmt = select(cls).where(cls.userid == data['userid'])
+                user = s.execute(stmt).scalar_one()
+                s.delete(user)
+                s.commit()
+            except sqlalchemy.exc.NoResultFound:
+                raise RuntimeError("Error updating user: No user found.")
+        return "User deleted successfully."
 
 
-def main():
-    db = Database()
-    schema = Schema(db)
-    schema.create_table()
+class Post(Base):
+    __tablename__ = 'post'
+    postid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'))
+    title: Mapped[str] = mapped_column(String, nullable=False, default='(NO TITLE)')
+    content: Mapped[str] = mapped_column(String, nullable=False, default='(NO CONTENT)')
+    posttime: Mapped[str] = mapped_column(String, nullable=False)
+    posttype: Mapped[str] = mapped_column(String)
+    puzzleid: Mapped[int] = mapped_column(Integer, ForeignKey('puzzle.puzzleid', ondelete='CASCADE'))
 
-    # test
-    user = User(db)
-    try:
-        # print(user.get_user({'passwordHash': 'foo'}))
-        # print(user.get_user({'userName': 'foobar'}))
-        # print(user.create_user({'userName': 'foobar3', 'passwordHash': 'foo', 'email': ''}))
-        print(user.update_user({'userId': 1, 'userName': 'test123'}))
-    except RuntimeError as e:
-        print(e)
-    db.close()
+    def __repr__(self):
+        return f"Post({self.postid!r}, {self.title!r})"
 
 
-if __name__ == '__main__':
-    main()
+class Puzzle(Base):
+    __tablename__ = 'puzzle'
+    puzzleid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'))
+    puzzledata: Mapped[str] = mapped_column(String, nullable=False)
+    createtime: Mapped[str] = mapped_column(String, nullable=False)
+    category: Mapped[str] = mapped_column(String, default='undefined')
+
+    def __repr__(self):
+        return f"Puzzle({self.puzzleid!r}, {self.category!r})"
+
+
+class PostLeaderboard(Base):
+    __tablename__ = 'postleaderboard'
+    recordid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'))
+    postid: Mapped[int] = mapped_column(Integer, ForeignKey('post.postid', ondelete='CASCADE'))
+    rank: Mapped[int] = mapped_column(Integer, default=0)
+
+    def __repr__(self):
+        return f"PostLeaderboard({self.recordid!r}, {self.rank!r})"
+
+
+class SiteLeaderboard(Base):
+    __tablename__ = 'siteleaderboard'
+    userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'), primary_key=True)
+    solvecount: Mapped[int] = mapped_column(Integer, default=0)
+    postcount: Mapped[int] = mapped_column(Integer, default=0)
+
+    def __repr__(self):
+        return f"SiteLeaderboard({self.userid!r}, {self.solvecount!r})"
+
+
+class Attempt(Base):
+    __tablename__ = 'attempt'
+    attemptid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'))
+    puzzleid: Mapped[int] = mapped_column(Integer, ForeignKey('puzzle.puzzleid', ondelete='CASCADE'))
+    progressdata: Mapped[str] = mapped_column(String)
+    timeelapsed: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    def __repr__(self):
+        return f"Attempt({self.attemptid!r}, {self.timeelapsed!r})"
+
+
+class Comment(Base):
+    __tablename__ = 'comment'
+    commentid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'))
+    postid: Mapped[int] = mapped_column(Integer, ForeignKey('post.postid', ondelete='CASCADE'))
+    commenttext: Mapped[str] = mapped_column(String, default='(NO CONTENT)')
+    commenttime: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    def __repr__(self):
+        return f"Comment({self.commentid!r}, {self.commenttext!r})"
+
+
+Base.metadata.create_all(engine)
+try:
+    print(User.add_user({'username': 'newname12', 'password': '123456'}))
+    # print(User.get_all(11))
+    # print(User.update_user({'username': 'newnameA', 'userid': 1}))
+    # print(User.delete_user({'userid': 1}))
+except Exception as e:
+    print(e)
+# print(User.update_user({'username': 'newname', 'userid': 11}))
