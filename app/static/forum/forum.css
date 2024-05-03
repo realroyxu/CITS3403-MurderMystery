@@ -1,5 +1,7 @@
-.post-title, .post-content{
-    width : 1000px;
+.post{
     padding : 10px;
 }
 
+.post-title, .post-content{
+    max-width : 1000px;
+}
