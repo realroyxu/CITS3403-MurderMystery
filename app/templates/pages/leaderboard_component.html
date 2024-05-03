@@ -1,0 +1,22 @@
+<div class="leaderboard-container">
+    <table class="leaderboard">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in sample_data %}
+            <tr class="leaderboard-item">
+                <td class="leaderboard-username">
+                    {{ item.username }}
+                </td>
+                <td class="leaderboard-score">
+                    {{ item.score }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
