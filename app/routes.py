@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect
 from flask import session
 import app.login.forms as Forms
 import app.login.authenticate as Auth
+import app.leaderboard.leaderboard as Leaderboard
 
 user_scores = [
     {"username": "user1", "score": 100},
@@ -54,7 +55,8 @@ def register():
 
 @app.route('/leaderboard')
 def leaderboard():
-    return render_template('/pages/leaderboard.html')
+    data = Leaderboard.sort_data(user_scores)
+    return render_template('/pages/leaderboard.html', css_file_path="/static/leaderboard_style.css", sample_data=data)
 
 @app.route('/forum/{id}')
 def forum(id):
