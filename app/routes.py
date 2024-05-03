@@ -24,7 +24,7 @@ forum_posts = [
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('/pages/index.html', css_file_path='/static/index_style.css', sample_data=user_scores, forum_posts=forum_posts)
+    return render_template('/pages/index.html', css_file_path='/static/index_style.css', sample_data=Leaderboard.sort_data(user_scores), forum_posts=forum_posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
