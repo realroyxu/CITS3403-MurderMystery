@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect
 from flask import session
 import app.login.forms as Forms
 import app.login.authenticate as Auth
+import app.leaderboard.leaderboard as Leaderboard
 
 user_scores = [
     {"username": "user1", "score": 100},
@@ -13,7 +14,7 @@ user_scores = [
 ]
 
 forum_posts = [
-    {"id": 1, "title": "Post 1", "content": "This is the content of post 1."},
+    {"id": 1, "title": "Post 1", "content": "This is the content of post 1. This is the content of post 1.This is the content of post 1. This is the content of post 1. This is the content of post 1. v v v This is the content of post 1. This is the content of post 1. v "},
     {"id": 2, "title": "Post 2", "content": "This is the content of post 2."},
     {"id": 3, "title": "Post 3", "content": "This is the content of post 3."},
     {"id": 4, "title": "Post 4", "content": "This is the content of post 4."},
@@ -23,7 +24,7 @@ forum_posts = [
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('/pages/index.html', css_file_path='/static/index_style.css', sample_data=user_scores, forum_posts=forum_posts)
+    return render_template('/pages/index.html', css_file_path='/static/index_style.css', sample_data=Leaderboard.sort_data(user_scores), forum_posts=forum_posts)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,7 +55,8 @@ def register():
 
 @app.route('/leaderboard')
 def leaderboard():
-    return render_template('/pages/leaderboard.html')
+    data = Leaderboard.sort_data(user_scores)
+    return render_template('/pages/leaderboard.html', css_file_path="/static/leaderboard_style.css", sample_data=data)
 
 @app.route('/forum/{id}')
 def forum(id):
