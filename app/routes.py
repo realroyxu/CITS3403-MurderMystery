@@ -1,8 +1,8 @@
 from app import app
 from flask import render_template, flash, redirect
 from flask import session
-import app.login.forms as Forms
-import app.login.authenticate as Auth
+import app.user.user_helper as User
+import app.user.forms as Forms
 import app.leaderboard.leaderboard as Leaderboard
 
 user_scores = [
@@ -30,12 +30,12 @@ def index():
 def login():
     form = Forms.LoginForm()
     if form.validate_on_submit():
-        if Auth.auth_user(form.email.data, form.password.data):
-            session['username'] = form.email.data
-            flash(f"Login requested for user {form.email.data}", 'success')
+        if User.authenticate_user(form.username.data, form.password.data):
+            session['username'] = form.username.data
+            flash(f"Login requested for user {form.username.data}", 'success')
             return redirect('/index')
         else:
-            flash(f"Login failed for user {form.email.data}", 'danger')
+            flash(f"Login failed for user {form.username.data}", 'danger')
             return redirect('/login')
     return render_template('/pages/login.html', css_file_path="/static/login_style.css", form=form)
 
@@ -48,8 +48,9 @@ def logout():
 def register():
     form = Forms.RegistrationForm()
     if form.validate_on_submit():
-        session['username'] = form.email.data
-        flash(f"Account created for {form.email.data}!", 'success')
+        User.register_user(form.username.data, form.password.data)
+        session['username'] = form.username.data
+        flash(f"Account created for {form.username.data}!", 'success')
         return redirect('/index')
     return render_template('/pages/register.html', css_file_path="/static/register_style.css", form=form)
 
