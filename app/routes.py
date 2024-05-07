@@ -1,9 +1,9 @@
 from app import app
-from flask import render_template, flash, redirect
-from flask import session
+from flask import render_template, flash, redirect, session, jsonify
 import app.user.user_helper as User
 import app.user.forms as Forms
 import app.leaderboard.leaderboard as Leaderboard
+import db.db_error_helper as ERROR
 
 user_scores = [
     {"username": "user1", "score": 100},
@@ -30,13 +30,12 @@ def index():
 def login():
     form = Forms.LoginForm()
     if form.validate_on_submit():
-        if User.authenticate_user(form.username.data, form.password.data):
-            session['username'] = form.username.data
-            flash(f"Login requested for user {form.username.data}", 'success')
-            return redirect('/index')
-        else:
-            flash(f"Login failed for user {form.username.data}", 'danger')
-            return redirect('/login')
+        try:
+            if User.authenticate_user(form.username.data, form.password.data):
+                session['username'] = form.username.data
+                return redirect('/index')
+        except ERROR.DB_Error as e:
+            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
     return render_template('/pages/login.html', css_file_path="/static/login_style.css", form=form)
 
 @app.route('/logout')
@@ -48,11 +47,18 @@ def logout():
 def register():
     form = Forms.RegistrationForm()
     if form.validate_on_submit():
-        User.register_user(form.username.data, form.password.data)
-        session['username'] = form.username.data
-        flash(f"Account created for {form.username.data}!", 'success')
-        return redirect('/index')
+        try:
+            User.register_user(form.username.data, form.password.data)
+            session['username'] = form.username.data
+            flash(f"Account created for {form.username.data}!", 'success')
+            return redirect('/index')
+        except ERROR.DB_Error as e:
+            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
     return render_template('/pages/register.html', css_file_path="/static/register_style.css", form=form)
+
+@app.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    return None
 
 @app.route('/leaderboard')
 def leaderboard():
