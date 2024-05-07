@@ -2,6 +2,14 @@ import sqlalchemy.exc
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from db.database import Session
+from app.models.siteleaderboard import SiteLeaderboard
+
+
+def user_fieldcheck(data):
+    valid_field = ['username', 'password', 'email', 'avatar']
+    if not all(field in valid_field for field in data.keys()):
+        raise RuntimeError("Error adding user: invalid field provided.")
+    return
 
 
 def get_user(User, data):
@@ -31,15 +39,15 @@ def get_all(User, data):
         except sqlalchemy.exc.NoResultFound:
             raise RuntimeError("Error fetching user: No user found.")
 
+
 def add_user(User, data):
     # add new user
+    # also need to add entry to siteleaderboards
     if 'username' not in data:
         raise RuntimeError("Error updating user: username not provided.")
     if 'password' not in data:
         raise RuntimeError("Error updating user: password not provided.")
-    for item in data.keys():
-        if item not in ('username', 'password', 'email', 'avatar'):
-            raise RuntimeError("Error updating user: invalid field provided.")
+    user_fieldcheck(data)
     with Session() as s:
         try:
             user = User(**data)
@@ -47,6 +55,13 @@ def add_user(User, data):
             s.commit()
         except sqlalchemy.exc.IntegrityError as e:
             raise RuntimeError(f"Error adding user: integrity violated. {e}") from e
+        try:
+            slbrecord = SiteLeaderboard(userid=user.userid)
+            s.add(slbrecord)
+            s.commit()
+        except Exception as e:
+            raise RuntimeError(f"Error encountered: {e}") from e
+    return "User added successfully."
 
 
 def update_user(User, data):
@@ -59,15 +74,15 @@ def update_user(User, data):
             # scalar() return a instance, update op will be done on this instance
             # has to be scalar() instead of one(), because scalar() returns: <class '__main__.User'>
             # and one() returns:<class 'sqlalchemy.engine.row.Row'>
-            user = s.execute(stmt).scalar_one()
+            origin = s.execute(stmt).scalar_one()
             # if no new value provided, keep the original value
-            user.username = data.get('username', user.username)
-            user.email = data.get('email', user.email)
-            user.avatar = data.get('avatar', user.avatar)
+            origin.username = data.get('username', origin.username)
+            origin.email = data.get('email', origin.email)
+            origin.avatar = data.get('avatar', origin.avatar)
             s.commit()
-            return "User updated successfully."
         except sqlalchemy.exc.NoResultFound:
             raise RuntimeError("Error updating user: No user found.")
+        return "User updated successfully."
 
 
 def delete_user(User, data):
@@ -97,3 +112,4 @@ def change_password(User, data):
             s.commit()
         except sqlalchemy.exc.NoResultFound:
             raise RuntimeError("Error updating user: No user found.")
+        return "Password changed successfully."
