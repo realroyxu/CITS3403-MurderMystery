@@ -11,7 +11,7 @@ def get_user(User, data):
         try:
             stmt = select(User).where(User.username == data['username'])
             return s.execute(stmt).one()[0]
-        except sqlalchemy.exc.NoResultFound:
+        except Exception:
             raise ERROR.DB_Error("User not found")
 
 
@@ -23,7 +23,7 @@ def get_all(User, data):
             res = s.execute(stmt).one()
             if res:
                 return res._asdict()
-        except sqlalchemy.exc.NoResultFound:
+        except Exception:
             raise ERROR.DB_Error("Users not found")
 
 
@@ -34,7 +34,7 @@ def add_user(User, data):
             user = User(**data)
             s.add(user)
             s.commit()
-        except sqlalchemy.exc.IntegrityError:
+        except Exception:
             raise ERROR.DB_Error("Failed to register User")
 
 
@@ -49,7 +49,7 @@ def update_user(User, data):
             user.avatar = data.get('avatar', user.avatar)
             s.commit()
             return "User updated successfully."
-        except sqlalchemy.exc.NoResultFound:
+        except Exception:
             raise ERROR.DB_Error("Failed to update user")
 
 
@@ -61,7 +61,7 @@ def delete_user(User, data):
             user = s.execute(stmt).scalar_one()
             s.delete(user)
             s.commit()
-        except sqlalchemy.exc.NoResultFound:
+        except Exception:
             raise ERROR.DB_Error("Failed to delete user")
     return "User deleted successfully."
 
@@ -74,5 +74,5 @@ def change_password(User, data):
             user = s.execute(stmt).scalar_one()
             user.password = data['password']
             s.commit()
-        except sqlalchemy.exc.NoResultFound:
+        except Exception:
             raise ERROR.DB_Error("Failed to change password")
