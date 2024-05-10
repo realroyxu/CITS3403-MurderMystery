@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Sudoku Game</title>
+<script src="css+js/javascript/menu.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block body %}
+<body id="body" class="" onload="changeTheme()">
+    <h1>Welcome to Sudoku</h1>
+    <div id="content">
+        <div id="outsideplay" class="inline">
+            <div style="justify-content: right;">
+                <div id="playimage" onclick="playOption()"></div>
+
+                <div id="menuinstructionsdisplay">
+                    <div class="header">How To Play Sudoku</div>
+                    <p>The grid is divided into nine blocks, each containing nine squares. Each of the nine blocks has
+                        to contain all the numbers 1-9 within its squares. Each number can only appear once in a row,
+                        column, or block.</p>
+
+                    <div class="header">Features</div>
+
+                    <ul>
+                        <li>Click on "Play a Sudoku" to either play a Sudoku of a certain difficulty (easy, medium, hard, or expert) or input your own Sudoku</li>
+                        <li>Click on "Solve a Sudoku" to enter the Sudoku Solver, which allows you to input any Sudoku and see the finished solution</li>
+                        <li>Change Theme: Choose between different themes</li>
+                    </ul>
+                </div>
+                
+                <div id="playcontainer">
+                    <button id="menuplay" class="menubutton" onclick="playOption()">Play a Sudoku</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="outsidemenuoption" class="inline">
+            <div id="optioncontainer">
+                <div id="changetheme" class="optiondivs">
+                    <div onclick="themeOption()">Change Theme</div>
+                </div>
+
+                <div onclick="messagesDisplay()" id="messages" class="optiondivs">
+                    Instructions<br>and About Us
+                </div>
+            </div>
+        </div>
+        
+        <div id="outsidesolve" class="inline">
+                <div id="solveimage" onclick="location.href='/input_solve'"></div>
+               <div id="aboutdisplay">
+                    <div class="header">About Us</div>
+                    <p>Hello! This website is the semester project in the summer of 2024.</p>
+
+                    
+
+                    <p>
+                    
+                    </p>
+                    <div style="height: 6px;"></div>
+                    
+                    <p>
+                        We encourage you to input a Sudoku and try some of the features that will hopefully improve your
+                        Sudoku experience as it
+                        has for us!
+                    </p>
+                    
+                    <p>
+                        For any questions, reporting of bugs, or requests for additional features, email us.
+                    </p>
+                </div>
+
+                <button id="menusolve" class="menubutton" onclick="location.href='/input_solve'">Solve a Sudoku</button>
+        </div>
+    </div>
+</body>
+{% endblock %}
