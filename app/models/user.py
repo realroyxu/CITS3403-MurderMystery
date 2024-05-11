@@ -3,6 +3,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from app.models.base import Base
 
+
 class User(Base):
     __tablename__ = 'user'
     # userid is managed by db, as "autoincrement=True"

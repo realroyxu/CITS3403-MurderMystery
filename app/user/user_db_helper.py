@@ -7,6 +7,7 @@ from app.models.siteleaderboard import SiteLeaderboard
 
 def user_fieldcheck(data):
     valid_field = ['username', 'password', 'email', 'avatar']
+    # userid shouldn't be provided, bcs functions will convert data to query params
     if not all(field in valid_field for field in data.keys()):
         raise RuntimeError("Error adding user: invalid field provided.")
     return
@@ -19,7 +20,7 @@ def get_user(User, data):
     with Session() as s:
         try:
             stmt = select(User).where(User.username == data['username'])
-            return s.execute(stmt).one()[0]
+            return s.execute(stmt).one()[0].userid
         except sqlalchemy.exc.NoResultFound:
             raise RuntimeError("Error fetching user: No user found.")
     # need error hanlding

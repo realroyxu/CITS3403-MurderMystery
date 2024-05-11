@@ -16,7 +16,8 @@ def get_comment(Comment, data):
         raise RuntimeError("Error fetching comment: commentid not provided.")
     with Session() as s:
         try:
-            stmt = select(Comment).where(Comment.commentid == data['commentid'])
+            stmt = select(Comment.userid, Comment.postid, Comment.commenttext, Comment.commenttime).where(
+                Comment.commentid == data['commentid'])
             res = s.execute(stmt).one()
             if res:
                 return res._asdict()
