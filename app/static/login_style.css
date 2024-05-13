@@ -13,6 +13,18 @@ form {
     justify-content : center;
 }
 
+.change_password{
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    padding-top : 30px;
+}
+
+.change{
+    text-decoration : none;
+    color : gray;
+}
+
 .register{
     margin-top : 40px;
     display : flex;
@@ -27,3 +39,4 @@ form {
 .register-text:hover{
     color : black;
 }
+
