@@ -3,13 +3,14 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from db.database import Session
 from app.models.siteleaderboard import SiteLeaderboard
+import db.db_error_helper as ERROR
 
 
 def postleaderboard_fieldcheck(data):
     valid_field = ['userid', 'postid']
     # rank not needed, will be calculated here
     if not all(field in valid_field for field in data.keys()):
-        raise RuntimeError("Error adding postleaderboard: invalid field provided.")
+        raise ERROR.DB_Error("Error adding postleaderboard: invalid field provided.")
     return
 
 
@@ -22,9 +23,9 @@ def postleaderboard_fieldcheck(data):
 # Should we keep it?
 def add_plbrecord(PostLeaderboard, data):
     if 'userid' not in data:
-        raise RuntimeError("Error adding postleaderboard: userid not provided.")
+        raise ERROR.DB_Error("Error adding postleaderboard: userid not provided.")
     if 'postid' not in data:
-        raise RuntimeError("Error adding postleaderboard: postid not provided.")
+        raise ERROR.DB_Error("Error adding postleaderboard: postid not provided.")
     # rank will be calculated here, and need testing
     with Session() as s:
         try:
@@ -39,7 +40,7 @@ def add_plbrecord(PostLeaderboard, data):
             # should wait for slb's commit
             # s.commit()
         except Exception as e:
-            raise RuntimeError(f"Error adding postleaderboard: {e}") from e
+            raise ERROR.DB_Error(f"Error adding postleaderboard: {e}") from e
         try:
             # update siteleaderboard
             stmt = select(SiteLeaderboard).where(SiteLeaderboard.userid == data['userid'])
@@ -47,14 +48,14 @@ def add_plbrecord(PostLeaderboard, data):
             origin.solvecount = origin.solvecount + 1
             s.commit()
         except Exception as e:
-            raise RuntimeError(f"Error updating siteleaderboard: {e}") from e
+            raise ERROR.DB_Error(f"Error updating siteleaderboard: {e}") from e
     return "PostLeaderboard added successfully."
 
 
 # get plbrecord by postid
 def get_plbrecord(PostLeaderboard, data):
     if 'postid' not in data:
-        raise RuntimeError("Error fetching postleaderboard: postid not provided.")
+        raise ERROR.DB_Error("Error fetching postleaderboard: postid not provided.")
     with Session() as s:
         try:
             stmt = select(PostLeaderboard.userid, PostLeaderboard.rank).where(
@@ -66,4 +67,4 @@ def get_plbrecord(PostLeaderboard, data):
                     res.append(item._asdict())
                 return res
         except sqlalchemy.exc.NoResultFound:
-            raise RuntimeError("Error fetching postleaderboard: No record found.")
+            raise ERROR.DB_Error("Error fetching postleaderboard: No record found.")
