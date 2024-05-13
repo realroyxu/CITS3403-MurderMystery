@@ -4,6 +4,7 @@ from sqlalchemy.orm import *
 from db.database import Session
 from app.models.siteleaderboard import SiteLeaderboard
 
+
 def post_fieldcheck(data):
     valid_field = ['userid', 'title', 'content', 'posttime', 'posttype', 'puzzleid']
     if not all(field in valid_field for field in data.keys()):
@@ -17,7 +18,8 @@ def get_post(Post, data):
         raise RuntimeError("Error fetching post: postid not provided.")
     with Session() as s:
         try:
-            stmt = select(Post).where(Post.postid == data['postid'])
+            stmt = select(Post.userid, Post.title, Post.content, Post.posttime, Post.posttype, Post.puzzleid).where(
+                Post.postid == data['postid'])
             res = s.execute(stmt).one()
             if res:
                 return res._asdict()
@@ -26,6 +28,7 @@ def get_post(Post, data):
 
 
 def add_post(Post, data):
+    # this function need to be called after add_puzzle, since puzzleid in post table is a FK
     if 'userid' not in data:
         raise RuntimeError("Error adding post: userid not provided.")
     if 'posttime' not in data:
@@ -41,12 +44,13 @@ def add_post(Post, data):
             raise RuntimeError(f"Error adding post: {e}") from e
         try:
             # update siteleaderboard
-            # not sure whether to use slb.postcount or just slb, need to test
-            stmt = select(SiteLeaderboard.postcount).where(SiteLeaderboard.userid == data['userid'])
+            # ~~not sure whether to use slb.postcount or just slb, need to test~~
+            # slb is the answer: need to use the object itself, not the attribute
+            stmt = select(SiteLeaderboard).where(SiteLeaderboard.userid == data['userid'])
             origin = s.execute(stmt).scalar_one()
             origin.postcount = origin.postcount + 1
             s.commit()
-        except  Exception as e:
+        except Exception as e:
             raise RuntimeError(f"Error updating siteleaderboard: {e}") from e
     return "Post added successfully."
 
@@ -66,12 +70,10 @@ def edit_post(Post, data):
             origin.content = data.get('content', origin.content)
             origin.posttime = data.get('posttime', origin.posttime)
             origin.puzzleid = data.get('puzzleid', origin.puzzleid)
-            origin.puzzletype = data.get('puzzletype', origin.puzzletype)
             s.commit()
         except sqlalchemy.exc.NoResultFound:
             raise RuntimeError("Error updating post: No post found.")
         return "Post updated successfully."
-
 
 
 def delete_post(Post, data):
@@ -85,4 +87,3 @@ def delete_post(Post, data):
         except sqlalchemy.exc.NoResultFound:
             raise RuntimeError("Error deleting post: No post found.")
         return "Post deleted successfully."
-

@@ -1,15 +1,19 @@
 import app.user.user_db_helper as User_DB
+import db.db_error_helper as ERROR
 from app.models.user import User
+
 
 def check_password(db_user_password, provided_password):
     """Check password hash"""
     return db_user_password == provided_password
 
+
 def authenticate_user(username, password):
     """Authenticate user on login"""
-    user = User_DB.get_user(User, {'username': username})
-    if user is None:
-        return False
+    try:
+        user = User_DB.get_user(User, {'username': username})
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))
     return check_password(user.password, password)
 
 

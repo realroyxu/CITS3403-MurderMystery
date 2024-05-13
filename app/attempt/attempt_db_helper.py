@@ -5,7 +5,7 @@ from db.database import Session
 
 
 def attempt_fieldcheck(data):
-    valid_field = ['userid', 'puzzleid', 'progressdata', 'timeelapsed']
+    valid_field = ['userid', 'postid', 'progressdata', 'timeelapsed']
     if not all(field in valid_field for field in data.keys()):
         raise RuntimeError("Error adding attempt: invalid field provided.")
     return
@@ -17,7 +17,8 @@ def get_attempt(Attempt, data):
         raise RuntimeError("Error fetching attempt: attemptid not provided.")
     with Session() as s:
         try:
-            stmt = select(Attempt).where(Attempt.attemptid == data['attemptid'])
+            stmt = select(Attempt.userid, Attempt.postid, Attempt.progressdata, Attempt.timeelapsed).where(
+                Attempt.attemptid == data['attemptid'])
             res = s.execute(stmt).one()
             if res:
                 return res._asdict()
@@ -25,11 +26,13 @@ def get_attempt(Attempt, data):
             raise RuntimeError("Error fetching attempt: No attempt found.")
 
 
+# in current pattern same user can keep multiple attempts on same post, leaving the rest to backend
+# should we keep it or change the logic to update the attempt instead?
 def add_attempt(Attempt, data):
     if 'userid' not in data:
         raise RuntimeError("Error adding attempt: userid not provided.")
-    if 'puzzleid' not in data:
-        raise RuntimeError("Error adding attempt: puzzleid not provided.")
+    if 'postid' not in data:
+        raise RuntimeError("Error adding attempt: postid not provided.")
     if 'timeelapsed' not in data:
         raise RuntimeError("Error adding attempt: timeelapsed not provided.")
     with Session() as s:
@@ -59,7 +62,4 @@ def update_attempt(Attempt, data):
             raise RuntimeError("Error updating attempt: No attempt found.")
         return "Attempt updated successfully."
 
-
 # no delete method here, starting new attempt will just create a new record
-
-
