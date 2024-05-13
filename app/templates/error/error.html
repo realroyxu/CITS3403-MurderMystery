@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="error">
+        <div class="content">
+            <h2>404</h2>
+            <h2>Page not found</h2>
+            <p>The page you are looking for might have been removed, had its name changed or is temporarily unavailable.</p>
+            <p>Error : {{ error }}</p>
+        </div>
+        <a href={{ url_for('login') }} class="btn btn-primary">Try Again</a>
+    </div>
+
+
+{% endblock %}
