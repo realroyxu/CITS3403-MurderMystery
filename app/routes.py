@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, session, jsonify
-import app.user.user_helper as User
+from app.user.user_helper import user_service
 import app.user.forms as Forms
 import app.leaderboard.leaderboard as Leaderboard
 import db.db_error_helper as ERROR
@@ -31,7 +31,7 @@ def login():
     form = Forms.LoginForm()
     if form.validate_on_submit():
         try:
-            if User.authenticate_user(form.username.data, form.password.data):
+            if user_service.authenticate_user(form.username.data, form.password.data):
                 session['username'] = form.username.data
                 return redirect('/index')
         except ERROR.DB_Error as e:
@@ -48,7 +48,7 @@ def register():
     form = Forms.RegistrationForm()
     if form.validate_on_submit():
         try:
-            User.register_user(form.username.data, form.password.data)
+            user_service.register_user(form.username.data, form.password.data)
             session['username'] = form.username.data
             flash(f"Account created for {form.username.data}!", 'success')
             return redirect('/index')
@@ -58,7 +58,15 @@ def register():
 
 @app.route('/change_password', methods=['GET', 'POST'])
 def change_password():
-    return None
+    form = Forms.ChangePasswordForm()
+    if form.validate_on_submit():
+        try:
+            if user_service.change_password(form.username.data, form.oldpassword.data, form.password.data):
+                flash(f"Password changed for {session['username']}!", 'success')
+                return redirect('/index')
+        except ERROR.DB_Error as e:
+            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
+    return render_template('/pages/change_password.html', css_file_path="/static/change_password_style.css", form=form)
 
 @app.route('/leaderboard')
 def leaderboard():
