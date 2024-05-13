@@ -78,7 +78,7 @@ def plbtest():
 
 
 try:
-    # usertest()
+    usertest()
     # posttest()
     # puzzletest()
     # attempttest()

@@ -6,7 +6,7 @@ from app.models.base import Base
 from app.models import User, Attempt, Comment, Post, Puzzle, SiteLeaderboard, PostLeaderboard
 
 
-engine = create_engine('sqlite:///ormtest.db', echo=True)
+engine = create_engine('sqlite:///db/ormtest.db', echo=True)
 
 
 # enforce foreign key enabled, sqlite default is off

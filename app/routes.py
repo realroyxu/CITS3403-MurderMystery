@@ -48,7 +48,7 @@ def register():
     form = Forms.RegistrationForm()
     if form.validate_on_submit():
         try:
-            User.register_user(form.username.data, form.password.data)
+            User.register_user(form.username.data, form.password.data, form.email.data)
             session['username'] = form.username.data
             flash(f"Account created for {form.username.data}!", 'success')
             return redirect('/index')
@@ -56,9 +56,19 @@ def register():
             return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
     return render_template('/pages/register.html', css_file_path="/static/register_style.css", form=form)
 
-@app.route('/change_password', methods=['GET', 'POST'])
+@app.route('/changepassword', methods=['GET', 'POST'])
 def change_password():
-    return None
+    form = Forms.ChangePasswordForm()
+    if form.validate_on_submit():
+        try:
+            User.change_password(session['username'], form.old_password.data, form.new_password.data)
+            flash(f"Password changed for {session['username']}!", 'success')
+            # logout and redirect to login
+            logout()
+            return redirect('/login')
+        except ERROR.DB_Error as e:
+            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
+    return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css", form=form)
 
 @app.route('/leaderboard')
 def leaderboard():

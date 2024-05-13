@@ -6,28 +6,42 @@ import db.db_error_helper as ERROR
 
 from app.models.siteleaderboard import SiteLeaderboard
 
+
 def user_fieldcheck(data):
     valid_field = ['username', 'password', 'email', 'avatar']
     # userid shouldn't be provided, bcs functions will convert data to query params
     if not all(field in valid_field for field in data.keys()):
-        raise RuntimeError("Error adding user: invalid field provided.")
+        raise ERROR.DB_Error("Error adding user: invalid field provided.")
     return
 
-  
+
 def get_user(User, data):
-    """Get one user"""
+    # get userid by username
     with Session() as s:
         try:
+            # it has to select(User) in order to retrieve a indexable row object after one()
             stmt = select(User).where(User.username == data['username'])
             return s.execute(stmt).one()[0].userid
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("User not found")
 
 
+def validate_user(User, data):
+    # login validation
+    with Session() as s:
+        try:
+            stmt = select(User).where(User.userid == data['userid'])
+            res = s.execute(stmt).one()[0].password
+        except sqlalchemy.exc.NoResultFound:
+            raise ERROR.DB_Error("User not found")
+        if res == data['password']:
+            return True
+        else:
+            return False
 
 
 def get_all(User, data):
-    """Get all users"""
+    # get all user data by userid, except password
     with Session() as s:
         stmt = select(User.userid, User.username, User.email, User.avatar).where(User.userid == data['userid'])
         try:
@@ -38,14 +52,13 @@ def get_all(User, data):
             raise ERROR.DB_Error("Users not found")
 
 
-
 def add_user(User, data):
     # add new user
     # also need to add entry to siteleaderboards
     if 'username' not in data:
-        raise RuntimeError("Error updating user: username not provided.")
+        raise ERROR.DB_Error("Error updating user: username not provided.")
     if 'password' not in data:
-        raise RuntimeError("Error updating user: password not provided.")
+        raise ERROR.DB_Error("Error updating user: password not provided.")
     user_fieldcheck(data)
     with Session() as s:
         try:
@@ -53,7 +66,7 @@ def add_user(User, data):
             s.add(user)
             s.commit()
         except sqlalchemy.exc.IntegrityError as e:
-            raise RuntimeError(f"Error adding user: integrity violated. {e}") from e
+            raise ERROR.DB_Error(f"Error adding user: integrity violated. {e}") from e
         try:
             slbrecord = SiteLeaderboard(userid=user.userid)
             s.add(slbrecord)
@@ -80,7 +93,6 @@ def update_user(User, data):
         except sqlalchemy.exc.NoResultFound:
             raiseERROR.DB_Error("Error updating user: No user found.")
         return "User updated successfully."
-
 
 
 def delete_user(User, data):
