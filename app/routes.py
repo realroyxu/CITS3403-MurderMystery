@@ -7,7 +7,6 @@ import db.db_error_helper as ERROR
 from werkzeug.utils import secure_filename
 import os
 
-
 user_scores = [
     {"username": "user1", "score": 100},
     {"username": "user2", "score": 200},
@@ -108,12 +107,15 @@ def change_password():
     if form.validate_on_submit():
         try:
             User.change_password(session['userid'], form.old_password.data, form.new_password.data)
-            flash(f"Password changed for {session['userid']}!", 'success')
-            # logout and redirect to login
-            logout()
-            return redirect('/login')
+            flash(f"Password changed for {session['username']}!", 'success')
+            # redirect will be done by javascript, however, session will still be cleared by backend
+            # session.clear()
+            # this won't work since clearing session will interrupt the function, considering using AJAX
+            # but leave it here and use client-side redirect for now
+            return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css", form=form)
         except ERROR.DB_Error as e:
-            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
+            flash(f"Error changing password: {e}", 'error')
+            return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css", form=form)
     return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css", form=form)
 
 
