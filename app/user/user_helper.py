@@ -40,3 +40,10 @@ def change_password(username, old_password, new_password):
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
 
+def change_avatar(username, avatar):
+    """Change user avatar"""
+    try:
+        userid = User_DB.get_user(User, {"username": username})
+        return User_DB.update_user(User, {"userid": userid, "avatar": avatar})
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))
