@@ -3,7 +3,7 @@ import db.db_error_helper as ERROR
 from app.models.user import User
 
 
-# done on database level
+# password check done on database level
 
 # def check_password(db_user_password, provided_password):
 #     """Check password hash"""
@@ -29,10 +29,9 @@ def register_user(username, password, email, avatar="default.jpg"):
     return User_DB.add_user(User, data)
 
 
-def change_password(username, old_password, new_password):
+def change_password(userid, old_password, new_password):
     """Change user password"""
     try:
-        userid = User_DB.get_user(User, {"username": username})
         if User_DB.validate_user(User, {"userid": userid, "password": old_password}):
             return User_DB.change_password(User, {"userid": userid, "password": new_password})
         else:
@@ -40,10 +39,18 @@ def change_password(username, old_password, new_password):
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
 
-def change_avatar(username, avatar):
+
+def change_avatar(userid, avatar):
     """Change user avatar"""
     try:
-        userid = User_DB.get_user(User, {"username": username})
         return User_DB.update_user(User, {"userid": userid, "avatar": avatar})
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))
+
+
+def get_userid(username):
+    """Get user id by username"""
+    try:
+        return User_DB.get_user(User, {"username": username})
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))

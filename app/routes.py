@@ -40,6 +40,7 @@ def login():
         try:
             if User.authenticate_user(form.username.data, form.password.data):
                 session['username'] = form.username.data
+                session['userid'] = User.get_userid(form.username.data)
                 return redirect('/index')
         except ERROR.DB_Error as e:
             return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
@@ -76,10 +77,10 @@ def upload_avator():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = session['username'] + os.path.splitext(secure_filename(file.filename))[1]
+            filename = session['userid'] + os.path.splitext(secure_filename(file.filename))[1]
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             try:
-                User.change_avatar(session['username'], filename)
+                User.change_avatar(session['userid'], filename)
             except ERROR.DB_Error as e:
                 return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
             render_template('/pages/changeavatar.html', css_file_path="/static/changeavatar_style.css")
@@ -93,6 +94,7 @@ def register():
         try:
             User.register_user(form.username.data, form.password.data, form.email.data)
             session['username'] = form.username.data
+            session['userid'] = User.get_userid(form.username.data)
             flash(f"Account created for {form.username.data}!", 'success')
             return redirect('/index')
         except ERROR.DB_Error as e:
@@ -105,8 +107,8 @@ def change_password():
     form = Forms.ChangePasswordForm()
     if form.validate_on_submit():
         try:
-            User.change_password(session['username'], form.old_password.data, form.new_password.data)
-            flash(f"Password changed for {session['username']}!", 'success')
+            User.change_password(session['userid'], form.old_password.data, form.new_password.data)
+            flash(f"Password changed for {session['userid']}!", 'success')
             # logout and redirect to login
             logout()
             return redirect('/login')
