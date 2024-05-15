@@ -21,7 +21,7 @@ def postleaderboard_fieldcheck(data):
 
 # Currently this function allows user to insert multiple records for the same post
 # Should we keep it?
-def add_plbrecord(PostLeaderboard, data):
+def add_record(PostLeaderboard, data):
     if 'userid' not in data:
         raise ERROR.DB_Error("Error adding postleaderboard: userid not provided.")
     if 'postid' not in data:
@@ -53,18 +53,15 @@ def add_plbrecord(PostLeaderboard, data):
 
 
 # get plbrecord by postid
-def get_plbrecord(PostLeaderboard, data):
+def get_plb(PostLeaderboard, data):
     if 'postid' not in data:
         raise ERROR.DB_Error("Error fetching postleaderboard: postid not provided.")
     with Session() as s:
         try:
             stmt = select(PostLeaderboard.userid, PostLeaderboard.rank).where(
                 PostLeaderboard.postid == data['postid'])
-            allres = s.execute(stmt).all()
-            res = []
-            if allres:
-                for item in allres:
-                    res.append(item._asdict())
-                return res
+            res = s.execute(stmt).all()
+            if res:
+                return [dict(row._mapping) for row in res]
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("Error fetching postleaderboard: No record found.")
