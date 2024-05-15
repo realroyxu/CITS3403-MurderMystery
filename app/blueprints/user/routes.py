@@ -1,8 +1,10 @@
+# this is the routes file after shifting to Restful API
+
 from . import user_bp
 from . import user_helper
 from . import forms
 from db import db_error_helper as ERROR
-from flask import render_template, flash, redirect, session, request, current_app
+from flask import render_template, flash, redirect, session, request, current_app, jsonify
 from werkzeug.utils import secure_filename
 import os
 
@@ -12,92 +14,74 @@ def allowed_file(filename, ALLOWED_EXTENSIONS=['jpg', 'jpeg', 'png', 'gif']):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@user_bp.route('/login', methods=['GET', 'POST'])
+@user_bp.route('/api/login', methods=['POST'])
 def login():
-    form = forms.LoginForm()
-    if form.validate_on_submit():
-        try:
-            if user_helper.authenticate_user(form.username.data, form.password.data):
-                session['username'] = form.username.data
-                session['userid'] = user_helper.get_userid(form.username.data)
-                return redirect('/index')
-            else:
-                flash("Login Unsuccessful. Please check username and password", 'error')
-                return redirect('/login')
-        except ERROR.DB_Error as e:
-            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
-    return render_template('/pages/login.html', css_file_path="/static/login_style.css", form=form)
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+    try:
+        if user_helper.authenticate_user(username, password):
+            session['username'] = username
+            session['userid'] = user_helper.get_userid(username)
+            return jsonify({"message": "Login successful"}), 200
+        else:
+            return jsonify({"message": "Login Unsuccessful. Please check username and password"}), 401
+    except ERROR.DB_Error as e:
+        return jsonify({"message": "Login Unsuccessful.", "DB_Error": f"{e}"}), 401
 
 
-@user_bp.route('/logout')
+@user_bp.route('/api/logout', methods=['GET'])
 def logout():
     session.clear()
     return redirect('/index')
 
 
-@user_bp.route('/userhome')
-def user_home():
-    return render_template('/pages/userhome.html', css_file_path="/static/userhome_style.css")
-
-
-@user_bp.route('/register', methods=['GET', 'POST'])
+@user_bp.route('/api/register', methods=['POST'])
 def register():
-    form = forms.RegistrationForm()
-    if form.validate_on_submit():
-        try:
-            user_helper.register_user(form.username.data, form.password.data, form.email.data)
-            session['username'] = form.username.data
-            session['userid'] = user_helper.get_userid(form.username.data)
-            flash(f"Account created for {form.username.data}!", 'success')
-            return redirect('/index')
-        except ERROR.DB_Error as e:
-            return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
-    return render_template('/pages/register.html', css_file_path="/static/register_style.css", form=form)
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+    email = data['email']
+    try:
+        user_helper.register_user(username, password, email)
+        session['username'] = username
+        session['userid'] = user_helper.get_userid(username)
+        return jsonify({"message": f"Account created for {username}!"}), 200
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error creating account: {e}"}), 401
 
 
-@user_bp.route('/changepassword', methods=['GET', 'POST'])
+@user_bp.route('/api/changepassword', methods=['POST'])
 def change_password():
-    form = forms.ChangePasswordForm()
-    if form.validate_on_submit():
-        try:
-            user_helper.change_password(session['userid'], form.old_password.data, form.new_password.data)
-            flash(f"Password changed for {session['username']}!", 'success')
-            # redirect will be done by javascript, however, session will still be cleared by backend
-            # session.clear()
-            # this won't work since clearing session will interrupt the function, considering using AJAX
-            # but leave it here and use client-side redirect for now
-            return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css",
-                                   form=form)
-        except ERROR.DB_Error as e:
-            flash(f"Error changing password: {e}", 'error')
-            return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css",
-                                   form=form)
-    return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css", form=form)
+    data = request.get_json()
+    old_password = data['old_password']
+    new_password = data['new_password']
+    try:
+        user_helper.change_password(session['userid'], old_password, new_password)
+        return jsonify({"message": "Password changed successfully"}), 200
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error changing password: {e}"}), 401
 
 
-@user_bp.route('/changeavatar', methods=['GET', 'POST'])
+# redirect will be done by javascript, however, session will still be cleared by backend
+# session.clear() won't work since clearing session will interrupt the function, considering using AJAX
+# but leave it here and use client-side redirect for now
+
+@user_bp.route('/changeavatar', methods=['POST'])
 def upload_avator():
     # similar to official sample
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = str(session['username']) + os.path.splitext(secure_filename(file.filename))[1]
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            try:
-                user_helper.change_avatar(session['userid'], filename)
-            except ERROR.DB_Error as e:
-                return render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
-            flash("Avatar changed successfully", 'success')
-            render_template('/pages/changeavatar.html', css_file_path="/static/changeavatar_style.css")
-        else:
-            flash('Invalid file type')
-            return redirect(request.url)
-    return render_template('/pages/changeavatar.html', css_file_path="/static/changeavatar_style.css")
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        return jsonify({"message": "No file part"}), 401
+    file = request.files['file']
+    # If the user does not select a file, the browser submits an empty file without a filename.
+    if file.filename == '':
+        return jsonify({"message": "No selected file"}), 401
+    if file and allowed_file(file.filename):
+        filename = str(session['userid']) + os.path.splitext(secure_filename(file.filename))[1]
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        try:
+            user_helper.change_avatar(session['userid'], filename)
+        except ERROR.DB_Error as e:
+            return jsonify({"message": f"Error changing avatar: {e}"}), 401
+        return jsonify({"message": "Avatar changed successfully"}), 200

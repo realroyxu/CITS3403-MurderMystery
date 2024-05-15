@@ -65,8 +65,8 @@ def add_user(User, data):
             user = User(**data)
             s.add(user)
             s.commit()
-        except sqlalchemy.exc.IntegrityError as e:
-            raise ERROR.DB_Error(f"Error adding user: integrity violated. {e}") from e
+        except sqlalchemy.exc.IntegrityError:
+            raise ERROR.DB_Error(f"Username already existed. ")
         try:
             slbrecord = SiteLeaderboard(userid=user.userid)
             s.add(slbrecord)
