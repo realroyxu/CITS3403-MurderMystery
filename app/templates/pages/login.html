@@ -16,11 +16,24 @@
                 {{ form.submit(class="btn btn-primary") }}
             </div>
             <div class="change_password">
-                <a href={{ url_for('change_password') }} class="change">Forgot Password</a>
+                <a href={{ url_for('user.change_password') }} class="change">Forgot Password</a>
             </div>
             <div class="register">
-                <a href={{ url_for('register') }} class="register-description">Don't have an account? <span class="register-text">Register here</span></a>
+                <a href={{ url_for('user.register') }} class="register-description">Don't have an account? <span class="register-text">Register here</span></a>
             </div>
         </form>
     </div>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'error' %}
+              <script>
+                  window.alert("{{ message }}");
+              </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 {% endblock %}

@@ -1,4 +1,4 @@
-import app.post.post_db_helper as Post_DB
+import app.blueprints.post.post_db_helper as Post_DB
 import db.db_error_helper as ERROR
 from app.models.post import Post
 from datetime import datetime

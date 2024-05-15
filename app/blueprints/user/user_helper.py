@@ -1,4 +1,4 @@
-import app.user.user_db_helper as User_DB
+import app.blueprints.user.user_db_helper as User_DB
 import db.db_error_helper as ERROR
 from app.models.user import User
 

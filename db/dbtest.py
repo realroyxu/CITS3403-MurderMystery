@@ -4,12 +4,12 @@ from app.models.comment import Comment
 from app.models.puzzle import Puzzle
 from app.models.attempt import Attempt
 from app.models.postleaderboard import PostLeaderboard
-import app.user.user_db_helper as udb
-import app.post.post_db_helper as pdb
-import app.puzzle.puzzle_db_helper as pzdb
-import app.attempt.attempt_db_helper as atdb
-import app.comment.comment_db_helper as cdb
-import app.leaderboard.postleaderboard_db_helper as pldb
+import app.blueprints.user.user_db_helper as udb
+import app.blueprints.post.post_db_helper as pdb
+import app.blueprints.puzzle.puzzle_db_helper as pzdb
+import app.blueprints.attempt.attempt_db_helper as atdb
+import app.blueprints.comment.comment_db_helper as cdb
+import app.blueprints.leaderboard.postleaderboard_db_helper as pldb
 
 
 def usertest():
