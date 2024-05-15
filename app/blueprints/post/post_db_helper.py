@@ -1,6 +1,5 @@
 import sqlalchemy.exc
 from sqlalchemy import *
-from sqlalchemy.orm import *
 from db.database import Session
 from app.models.siteleaderboard import SiteLeaderboard
 import db.db_error_helper as ERROR
