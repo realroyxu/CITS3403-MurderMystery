@@ -2,9 +2,8 @@
 
 from . import user_bp
 from . import user_helper
-from . import forms
 from db import db_error_helper as ERROR
-from flask import render_template, flash, redirect, session, request, current_app, jsonify
+from flask import redirect, session, request, current_app, jsonify
 from werkzeug.utils import secure_filename
 import os
 
@@ -67,7 +66,7 @@ def change_password():
 # session.clear() won't work since clearing session will interrupt the function, considering using AJAX
 # but leave it here and use client-side redirect for now
 
-@user_bp.route('/changeavatar', methods=['POST'])
+@user_bp.route('/api/changeavatar', methods=['POST'])
 def upload_avator():
     # similar to official sample
     # check if the post request has the file part
@@ -78,7 +77,7 @@ def upload_avator():
     if file.filename == '':
         return jsonify({"message": "No selected file"}), 401
     if file and allowed_file(file.filename):
-        filename = str(session['userid']) + os.path.splitext(secure_filename(file.filename))[1]
+        filename = str(session['username']) + os.path.splitext(secure_filename(file.filename))[1]
         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         try:
             user_helper.change_avatar(session['userid'], filename)

@@ -73,7 +73,6 @@ def add_user(User, data):
             s.commit()
         except Exception as e:
             raise ERROR.DB_Error(f"Error encountered: {e}") from e
-    return "User added successfully."
 
 
 def update_user(User, data):
@@ -91,8 +90,7 @@ def update_user(User, data):
             origin.avatar = data.get('avatar', origin.avatar)
             s.commit()
         except sqlalchemy.exc.NoResultFound:
-            raiseERROR.DB_Error("Error updating user: No user found.")
-        return "User updated successfully."
+            raise ERROR.DB_Error("Error updating user: No user found.")
 
 
 def delete_user(User, data):
@@ -105,7 +103,6 @@ def delete_user(User, data):
             s.commit()
         except Exception:
             raise ERROR.DB_Error("Failed to delete user")
-    return "User deleted successfully."
 
 
 def change_password(User, data):
@@ -120,4 +117,3 @@ def change_password(User, data):
             raise ERROR.DB_Error("Error updating user: No user found.")
         except Exception:
             raise ERROR.DB_Error("Failed to change password")
-        return "Password changed successfully."

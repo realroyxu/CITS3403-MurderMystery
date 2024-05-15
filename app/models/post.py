@@ -11,7 +11,7 @@ class Post(Base):
     title: Mapped[str] = mapped_column(String, nullable=False, default='(NO TITLE)')
     content: Mapped[str] = mapped_column(String, nullable=False, default='(NO CONTENT)')
     posttime: Mapped[str] = mapped_column(String, nullable=False)
-    posttype: Mapped[str] = mapped_column(String)
+    posttype: Mapped[str] = mapped_column(String, nullable=False, default='(Unknown)')
     puzzleid: Mapped[int] = mapped_column(Integer, ForeignKey('puzzle.puzzleid', ondelete='CASCADE'))
 
     def __repr__(self):

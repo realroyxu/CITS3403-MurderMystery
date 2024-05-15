@@ -1,6 +1,7 @@
 from flask import Flask
 from app.blueprints.user import user_bp
 from app.blueprints.index import index_bp
+from app.blueprints.post import post_bp
 
 
 def create_app():
@@ -11,5 +12,5 @@ def create_app():
 
     app.register_blueprint(user_bp)
     app.register_blueprint(index_bp)
-
+    app.register_blueprint(post_bp)
     return app

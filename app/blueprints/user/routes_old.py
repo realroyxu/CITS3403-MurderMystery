@@ -1,7 +1,7 @@
 # this is the old version of routes.py, depending heavily on Jinja
 from . import user_bp
 from . import user_helper
-from . import forms
+from . import forms_old
 from db import db_error_helper as ERROR
 from flask import render_template, flash, redirect, session, request, current_app
 from werkzeug.utils import secure_filename
