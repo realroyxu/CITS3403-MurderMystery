@@ -11,6 +11,7 @@ def comment_fieldcheck(data):
     return
 
 
+# this function is not called in comment helper, but from post helper
 def get_comments(Comment, data):
     if 'postid' not in data:
         raise ERROR.DB_Error("postid not provided.")
