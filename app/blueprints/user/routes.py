@@ -1,4 +1,4 @@
-from . import user_bp, forms_old as forms
+from . import forms, user_bp
 from flask import render_template, url_for, flash, session
 
 @user_bp.route('/user/login', methods=['GET'])
