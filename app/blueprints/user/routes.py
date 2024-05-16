@@ -1,7 +1,7 @@
 from . import forms, user_bp
 from flask import render_template, url_for, flash, session
 
-@user_bp.route('/user/login', methods=['GET'])
+@user_bp.route('/user/login')
 def login_page():
     css_file_path = url_for('static', filename='login_style.css')
     form = forms.LoginForm()
@@ -22,8 +22,9 @@ def register_page():
 
 @user_bp.route('/user/changepassword', methods=['GET'])
 def change_password_page():
+    css_file_path = url_for('static', filename='change_password_style.css')
     form = forms.ChangePasswordForm()
-    return render_template('changepassword.html', form=form)
+    return render_template('change_password.html', form=form, css_file_path=css_file_path)
 
 
 @user_bp.route('/user/changeavatar', methods=['GET'])
