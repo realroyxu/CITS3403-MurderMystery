@@ -4,7 +4,7 @@ from . import post_helper
 import db.db_error_helper as ERROR
 from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
-from app.blueprints.user import user_helper
+from app.blueprints.user.user_helper import user_service
 
 # very temporate solution, not using api so need duplicate function here
 @post_bp.route('/forum/<int:postid>')
@@ -14,8 +14,9 @@ def forum(postid):
         puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})
         comment = comment_helper.get_comments({"postid": postid})
         for item in comment:
-            item['author'] = user_helper.get_username(item['userid'])
+            item['author'] = user_service.get_username(item['userid'])
             item.pop('userid')
+        print(post)
         postdata = {"postid": post['postid'], "title": post['title'], "content": post['content'],
                     "puzzledata": puzzledata, "comments": comment}
         if postid == post['postid']:

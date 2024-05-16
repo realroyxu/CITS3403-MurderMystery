@@ -1,4 +1,5 @@
 import app.user.user_db_helper as User_DB
+import db.db_error_helper as ERROR
 from app.models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -38,6 +39,13 @@ class UserService:
             "avatar": avatar
         }
         return User_DB.add_user(User, data)
+
+    def get_username(userid):
+        """Get username by user id"""
+        try:
+            return User_DB.get_username(User, {"userid": userid})
+        except ERROR.DB_Error as e:
+            raise ERROR.DB_Error(str(e))
 
 
 user_service = UserService()

@@ -18,7 +18,8 @@ def get_post(Post, data):
         raise ERROR.DB_Error("postid not provided.")
     with Session() as s:
         try:
-            stmt = select(Post.userid, Post.title, Post.content, Post.posttime, Post.posttype, Post.puzzleid).where(
+            stmt = select(Post.postid, Post.userid, Post.title, Post.content, Post.posttime, Post.posttype,
+                          Post.puzzleid).where(
                 Post.postid == data['postid'])
             res = s.execute(stmt).one()
             if res:
