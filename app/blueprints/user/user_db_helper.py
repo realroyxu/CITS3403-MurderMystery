@@ -32,8 +32,8 @@ def get_userid(User, data):
     with Session() as s:
         try:
             stmt = select(User.userid).where(User.username == data['username'])
-            result = s.execute(stmt).one()
-            return result.userid
+            result = s.execute(stmt).one()[0]
+            return result
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("User not found")
 

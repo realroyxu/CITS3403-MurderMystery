@@ -10,7 +10,8 @@ def login_page():
 
 @user_bp.route('/user/home')
 def user_home():
-    return render_template('userhome.html', css_file_path="/static/userhome_style.css")
+    css_file_path = url_for('static', filename='userhome_style.css')
+    return render_template('userhome.html', css_file_path=css_file_path)
 
 
 @user_bp.route('/user/register', methods=['GET'])

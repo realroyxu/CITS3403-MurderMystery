@@ -76,7 +76,7 @@ $(document).ready(function () {
             data: JSON.stringify({username: username, password: password, email: email}),
             success: function (response) {
                 alert(response.message);
-                window.location.href = '/login';
+                window.location.href = '/index';
             },
             error: function (xhr) {
                 var response = JSON.parse(xhr.responseText);

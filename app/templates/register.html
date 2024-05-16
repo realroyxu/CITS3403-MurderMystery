@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
     <div class="register-form p-5">
-        <form method="POST">
+        <form method="POST" action="/api/register">
             {{ form.hidden_tag() }}
             <div class="form-group p-3">
                 <label for="username">Username</label>

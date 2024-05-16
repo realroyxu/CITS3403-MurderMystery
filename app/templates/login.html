@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="login-form p-5">
-        <form method="POST">
+        <form method="POST" action="/api/login">
             {{ form.hidden_tag() }}
             <div class="form-group p-3">
                 {{ form.username.label(class="form-label") }}

@@ -1,7 +1,7 @@
 # this is the routes file after shifting to Restful API
 
 from . import user_api_bp
-from . import user_helper
+from .user_helper import user_service
 from db import db_error_helper as ERROR
 from flask import redirect, session, request, current_app, jsonify
 from werkzeug.utils import secure_filename
@@ -19,9 +19,9 @@ def login():
     username = data['username']
     password = data['password']
     try:
-        if user_helper.authenticate_user(username, password):
+        if user_service.authenticate_user(username, password):
             session['username'] = username
-            session['userid'] = user_helper.get_userid(username)
+            session['userid'] = user_service.get_userid(username)
             return jsonify({"message": "Login successful"}), 200
         else:
             return jsonify({"message": "Login Unsuccessful. Please check username and password"}), 401
@@ -41,11 +41,10 @@ def register():
     data = request.get_json()
     username = data['username']
     password = data['password']
-    email = data['email']
     try:
-        user_helper.register_user(username, password, email)
+        user_service.register_user(username, password)
         session['username'] = username
-        session['userid'] = user_helper.get_userid(username)
+        print(user_service.get_userid(username))
         return jsonify({"message": f"Account created for {username}!"}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error creating account: {e}"}), 401
@@ -58,7 +57,7 @@ def change_password():
     old_password = data['old_password']
     new_password = data['new_password']
     try:
-        user_helper.change_password(session['userid'], old_password, new_password)
+        user_service.change_password(session['userid'], old_password, new_password)
         return jsonify({"message": "Password changed successfully"}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error changing password: {e}"}), 401
@@ -82,7 +81,7 @@ def upload_avator():
         filename = str(session['username']) + os.path.splitext(secure_filename(file.filename))[1]
         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         try:
-            user_helper.change_avatar(session['userid'], filename)
+            user_service.change_avatar(session['userid'], filename)
         except ERROR.DB_Error as e:
             return jsonify({"message": f"Error changing avatar: {e}"}), 401
         return jsonify({"message": "Avatar changed successfully"}), 200
