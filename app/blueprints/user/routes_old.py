@@ -1,5 +1,5 @@
-# this is the old version of routes.py, depending heavily on Jinja
-from . import user_bp
+# this is the old version of api.py, depending heavily on Jinja
+from . import user_api_bp
 from . import user_helper
 from . import forms_old
 from db import db_error_helper as ERROR
@@ -13,7 +13,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS=['jpg', 'jpeg', 'png', 'gif']):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@user_bp.route('/login', methods=['GET', 'POST'])
+@user_api_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm()
     if form.validate_on_submit():
@@ -30,18 +30,18 @@ def login():
     return render_template('/pages/login.html', css_file_path="/static/login_style.css", form=form)
 
 
-@user_bp.route('/logout')
+@user_api_bp.route('/logout')
 def logout():
     session.clear()
     return redirect('/index')
 
 
-@user_bp.route('/userhome')
+@user_api_bp.route('/userhome')
 def user_home():
     return render_template('/pages/userhome.html', css_file_path="/static/userhome_style.css")
 
 
-@user_bp.route('/register', methods=['GET', 'POST'])
+@user_api_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = forms.RegistrationForm()
     if form.validate_on_submit():
@@ -56,7 +56,7 @@ def register():
     return render_template('/pages/register.html', css_file_path="/static/register_style.css", form=form)
 
 
-@user_bp.route('/changepassword', methods=['GET', 'POST'])
+@user_api_bp.route('/changepassword', methods=['GET', 'POST'])
 def change_password():
     form = forms.ChangePasswordForm()
     if form.validate_on_submit():
@@ -76,7 +76,7 @@ def change_password():
     return render_template('/pages/changepassword.html', css_file_path="/static/changepassword_style.css", form=form)
 
 
-@user_bp.route('/changeavatar', methods=['GET', 'POST'])
+@user_api_bp.route('/changeavatar', methods=['GET', 'POST'])
 def upload_avator():
     # similar to official sample
     if request.method == 'POST':

@@ -1,3 +1,4 @@
+# it's not _old file anymore don't delete it
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo

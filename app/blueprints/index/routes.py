@@ -18,7 +18,7 @@ forum_posts = [
     {"id": 5, "title": "Post 5", "content": "This is the content of post 5."},
 ]
 
-@index_bp.route('/')
-@index_bp.route('/index')
+@index_bp.route('/', methods=['GET'])
+@index_bp.route('/index', methods=['GET'])
 def index():
-    return render_template('/pages/index.html', css_file_path='/static/index_style.css')
+    return render_template('index.html', css_file_path='/static/index_style.css')

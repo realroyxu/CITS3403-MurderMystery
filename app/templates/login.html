@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='user/user.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+    <div class="login-form p-5">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group p-3">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control") }}
+            </div>
+            <div class="form-group p-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+            <div class="button">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+            <div class="change_password">
+                <a href={{ url_for('user_api.change_password') }} class="change">Forgot Password</a>
+            </div>
+            <div class="register">
+                <a href={{ url_for('user_api.register') }} class="register-description">Don't have an account? <span
+                        class="register-text">Register here</span></a>
+            </div>
+        </form>
+    </div>
+
+{#    <div id="message"></div>#}
+{% endblock %}
+
+{#{% with messages = get_flashed_messages(with_categories=true) %}#}
+{#    {% if messages %}#}
+{#        {% for category, message in messages %}#}
+{#            {% if category == 'error' %}#}
+{#              <script>#}
+{#                  window.alert("{{ message }}");#}
+{#              </script>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+{#{% endwith %}#}
+{#{% endblock %}#}
+
