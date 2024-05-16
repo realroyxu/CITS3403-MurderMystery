@@ -94,7 +94,6 @@ def forum(id):
         ]
     }
 
-    # You might want to fetch the actual post based on `id`, but for now, we'll just use the defined post
     if id == post['id']:
         return render_template('pages/forum_post.html', css_file_path='/static/forum/forum_post_style.css', post=post)
     else:
