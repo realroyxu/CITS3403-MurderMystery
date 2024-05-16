@@ -3,7 +3,7 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<div class="post" id="post-{{ post.id }}">
+<div class="post" id="post-{{ post.postid }}">
     <div class="post-header">
         <h2 class="post-title">{{ post.title }}</a></h2>
     </div>
@@ -14,7 +14,7 @@
         </div>
         <div class="solve-button">
             <h3>
-                <a class="solve" href="/solve/{{ post.id }}">Solve it yourself!</a>
+                <a class="solve" href="/solve/{{ post.postid }}">Solve it yourself!</a>
             </h3>
         </div>
         <div class="post-text">
@@ -23,7 +23,7 @@
         <div class="post-comments">
             <h4>Comments</h4>
                 {% for comment in post.comments%}
-                    <p class="comments"><img class="user-icon" src="../../static/images/github_icons/yet.jpeg"/>{{ comment.author }}: {{ comment.text }}</p>
+                    <p class="comments"><img class="user-icon" src="../../static/images/github_icons/yet.jpeg"/>{{ comment.author }}: {{ comment.commenttext }}</p>
                 {% endfor %}
         </div>
     </div>

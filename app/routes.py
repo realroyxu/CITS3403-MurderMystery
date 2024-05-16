@@ -1,6 +1,6 @@
 from app import app
-from flask import render_template, flash, redirect, session, jsonify
-from app.user.user_helper import user_service
+from flask import render_template, flash, redirect, session, request
+import app.user.user_helper as User
 import app.user.forms as Forms
 import app.leaderboard.leaderboard as Leaderboard
 import db.db_error_helper as ERROR
