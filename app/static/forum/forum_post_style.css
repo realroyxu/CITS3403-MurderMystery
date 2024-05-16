@@ -1,0 +1,36 @@
+.post-title{
+    display : flex;
+    justify-content : center;
+    padding : 30px;
+}
+
+.post-text{
+    padding : 30px;
+}
+
+.sudoku-board{
+    transform : scale(0.7)
+}
+
+.user-icon{
+    height : 100px;
+    width : 100px;
+}
+
+.post-comments{
+    padding : 50px;
+}
+
+.comments{
+    border-bottom : 2px solid black;
+}
+
+.solve-button{
+    display : flex;
+    justify-content : center;
+    padding : 30px;
+}
+
+.solve{
+    text-decoration : none;
+}
