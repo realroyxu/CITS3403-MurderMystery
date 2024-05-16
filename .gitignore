@@ -8,5 +8,5 @@ dist/
 htmlcov/
 .tox/
 docs/_build/
-db/example.db
-db/ormtest.db
+db/*.db
+*.db
