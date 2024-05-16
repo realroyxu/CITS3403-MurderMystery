@@ -1,5 +1,6 @@
 from flask import render_template, flash, redirect, session, request, url_for
 from . import index_bp
+from app.blueprints.post import post_helper
 
 user_scores = [
     {"username": "user1", "score": 100},
@@ -9,29 +10,34 @@ user_scores = [
     {"username": "user5", "score": 120},
 ]
 
-forum_posts = [
-        {
-            'id': 1,
-            'title': 'I solved it in 0.001s!',
-            'content': 'This was a very challenging sudoku but I solved it....',
-            'image_url': '../../static/images/sudoku.png',
-            'comments': [
-                {'author': 'User1', 'text': 'Great post!'},
-                {'author': 'User2', 'text': 'Thanks for sharing!'},
-                {'author': 'User3', 'text': 'Interesting read.'}
-            ]
-        },
-        {
-            'id': 2,
-            'title': 'CITS3403 is uh',
-            'content': 'CITS3403 is so fun!!!!! just kidding....',
-            'image_url': '../../static/images/sudoku.png',
-            'comments': [
-                {'author': 'User4', 'text': 'I love Sudoku!'},
-                {'author': 'User5', 'text': 'Can you share more tips?'}
-            ]
-        }
-    ]
+# forum_posts = [
+#         {
+#             'id': 1,
+#             'title': 'I solved it in 0.001s!',
+#             'content': 'This was a very challenging sudoku but I solved it....',
+#             'image_url': '../../static/images/sudoku.png',
+#             'comments': [
+#                 {'author': 'User1', 'text': 'Great post!'},
+#                 {'author': 'User2', 'text': 'Thanks for sharing!'},
+#                 {'author': 'User3', 'text': 'Interesting read.'}
+#             ]
+#         },
+#         {
+#             'id': 2,
+#             'title': 'CITS3403 is uh',
+#             'content': 'CITS3403 is so fun!!!!! just kidding....',
+#             'image_url': '../../static/images/sudoku.png',
+#             'comments': [
+#                 {'author': 'User4', 'text': 'I love Sudoku!'},
+#                 {'author': 'User5', 'text': 'Can you share more tips?'}
+#             ]
+#         }
+#     ]
+
+forum_posts = []
+for i in range(1, 4):
+    forum_posts.append(post_helper.get_post_full(i))
+
 
 @index_bp.route('/', methods=['GET'])
 @index_bp.route('/index', methods=['GET'])
@@ -43,6 +49,7 @@ def index():
 @index_bp.route('/createSudoku', methods=['GET'])
 def createSudoku():
     return render_template('createSudoku.html')
+
 
 @index_bp.route('/leaderboard', methods=['GET'])
 def leaderboard():
