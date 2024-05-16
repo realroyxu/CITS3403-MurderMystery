@@ -21,7 +21,19 @@ def get_user(User, data):
         try:
             # it has to select(User) in order to retrieve a indexable row object after one()
             stmt = select(User).where(User.username == data['username'])
-            return s.execute(stmt).one()[0].userid
+            result = s.execute(stmt).one()
+            return result.User
+        except sqlalchemy.exc.NoResultFound:
+            raise ERROR.DB_Error("User not found")
+
+
+def get_userid(User, data):
+    """Get user id"""
+    with Session() as s:
+        try:
+            stmt = select(User.userid).where(User.username == data['username'])
+            result = s.execute(stmt).one()
+            return result.userid
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("User not found")
 
@@ -65,8 +77,9 @@ def add_user(User, data):
             user = User(**data)
             s.add(user)
             s.commit()
-        except sqlalchemy.exc.IntegrityError:
-            raise ERROR.DB_Error(f"Username already existed. ")
+        except sqlalchemy.exc.IntegrityError as e:
+            # raise RuntimeError(f"Error adding user: integrity violated. {e}") from e
+            raise ERROR.DB_Error(f"Error adding user: integrity violated. {e}")
         try:
             slbrecord = SiteLeaderboard(userid=user.userid)
             s.add(slbrecord)
