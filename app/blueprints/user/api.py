@@ -44,7 +44,7 @@ def register():
     try:
         user_service.register_user(username, password)
         session['username'] = username
-        print(user_service.get_userid(username))
+        session['userid'] = user_service.get_userid(username)
         return jsonify({"message": f"Account created for {username}!"}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error creating account: {e}"}), 401

@@ -4,12 +4,14 @@ from db.db_error_helper import DB_Error
 from flask import request, jsonify, session
 
 
-@comment_bp.route('/api/addcomment', methods=['POST'])
+@comment_bp.route('/api/comment/<int:id>', methods=['POST'])
 # need [postid, commenttext]
 # [userid] will be taken from session
-def add_comment():
+def add_comment(id):
     data = request.get_json()
+    del data['csrf_token']
     data['userid'] = session['userid']
+    data['postid'] = id
     try:
         comment_helper.add_comment(data)
         return jsonify({"message": "Comment added successfully"}), 200

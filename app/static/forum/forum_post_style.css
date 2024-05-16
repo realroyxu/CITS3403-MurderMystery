@@ -34,3 +34,17 @@
 .solve{
     text-decoration : none;
 }
+
+.comment-form{
+    width : 70%;
+}
+
+.comment-container{
+    display : flex;
+    justify-content : center
+}
+
+.button{
+    display : flex;
+    justify-content : center
+}
