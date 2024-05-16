@@ -1,56 +1,29 @@
 from . import post_bp
 from . import post_helper
 from db import db_error_helper as ERROR
-from flask import request, jsonify, session
-from app.blueprints.puzzle import puzzle_helper
-from app.blueprints.comment import comment_helper
+from flask import request, jsonify, session, render_template, url_for
 
+@post_bp.route('/forum/<int:id>')
+def forum(id):
+    post = {
+        'id': 1,
+        'title': 'I solved it in 0.001s!',
+        'content': 'This was a very challenging sudoku but I solved it....',
+        'comments': [
+            {'author': 'User1', 'text': 'Great post!'},
+            {'author': 'User2', 'text': 'Thanks for sharing!'},
+            {'author': 'User3', 'text': 'Interesting read.'}
+        ]
+    }
 
-@post_bp.route('/api/getpost', methods=['POST'])
-# need [postid]
-def get_post():
-    data = request.get_json()
-    try:
-        post = post_helper.get_post(data)
-        puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})
-        comment = comment_helper.get_comments({"postid": data['postid']})
-        return jsonify({"post": post, "puzzledata": puzzledata, "comment": comment}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error getting post: {e}"}), 401
+    if id == post['id']:
+        css_file_path = url_for('static', filename='forum/forum_post_style.css')
+        return render_template('forum_post.html', css_file_path=css_file_path, post=post)
+    else:
+        last_url = request.referrer
+        css_file_path = url_for('static', filename='error/error_style.css')
+        return render_template('/error/error.html', css_file_path=css_file_path, error="Post not found", last_url=last_url)
 
-
-@post_bp.route('/api/addpost', methods=['POST'])
-# optional [title, content, posttype]
-# need [puzzleid]
-# [userid] will be taken from session, non-authorized reading is still an issue
-def add_post():
-    data = request.get_json()
-    data['userid'] = session['userid']
-    try:
-        post_helper.add_post(data)
-        return jsonify({"message": "Post added successfully"}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error adding post: {e}"}), 401
-
-
-@post_bp.route('/api/editpost', methods=['POST'])
-# need [postid]
-# optional [title, content, posttype]
-def edit_post():
-    data = request.get_json()
-    try:
-        post_helper.edit_post(data)
-        return jsonify({"message": "Post edited successfully"}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error editing post: {e}"}), 401
-
-
-@post_bp.route('/api/deletepost', methods=['POST'])
-# need [postid]
-def delete_post():
-    data = request.get_json()
-    try:
-        post_helper.delete_post(data)
-        return jsonify({"message": "Post deleted successfully"}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error deleting post: {e}"}), 401
+@post_bp.route('/solve/<int:id>', methods=['GET', 'POST'])
+def solve(id):
+    return "Hello world"

@@ -15,7 +15,7 @@
                 {% for comment in post.comments[:3] %}
                     <p class="post-comments"><img class="user-icon" src="../../static/images/github_icons/yet.jpeg"/>{{ comment.author }}: {{ comment.text }}</p>
                 {% endfor %}
-                <a class="post-comments-link" href="/forum/{{ post.id }}#comments">View more comments</a>
+                <a class="post-comments-link" href="/forum/{{ post.id }}">View more comments</a>
             </div>
         </div>
     {% endfor %}
