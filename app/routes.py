@@ -17,6 +17,7 @@ forum_posts = [
             'id': 1,
             'title': 'I solved it in 0.001s!',
             'content': 'This was a very challenging sudoku but I solved it....',
+            'image_url': '../../static/images/sudoku.png',
             'comments': [
                 {'author': 'User1', 'text': 'Great post!'},
                 {'author': 'User2', 'text': 'Thanks for sharing!'},
@@ -27,6 +28,7 @@ forum_posts = [
             'id': 2,
             'title': 'CITS3403 is uh',
             'content': 'CITS3403 is so fun!!!!! just kidding....',
+            'image_url': '../../static/images/sudoku.png',
             'comments': [
                 {'author': 'User4', 'text': 'I love Sudoku!'},
                 {'author': 'User5', 'text': 'Can you share more tips?'}
