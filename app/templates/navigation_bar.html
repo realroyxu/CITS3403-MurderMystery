@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/navbar_style.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='navbar_style.css')}}">
 </head>
 
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="static/images/logo.svg" width="75" height="75" alt="Site Logo">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" width="75" height="75" alt="Site Logo">
         </div>
         <div class="nav-links">
             <a href="/index"> Home </a>
@@ -20,9 +20,9 @@
         <div class="login">
             {% if session['username'] %}
 <!--                <a href="/logout"> Logout</a>-->
-                    <a href="/userhome"> user Home</a>
+                    <a href="/user/home">Profile</a>
             {% else %}
-                <a href="/login"> Login</a>
+                <a href="/user/login"> Login</a>
             {% endif %}
         </div>
     </div>

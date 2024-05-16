@@ -6,11 +6,11 @@
 <div>
     {% if session['username'] %}
     <h1>Welcome, Dear {{ session['username'] }}</h1>
-    <a href="/logout"> Logout </a>
+    <a href="/user/logout"> Logout </a>
     <br>
-    <a href="/changepassword"> Change Password </a>
+    <a href="/user/changepassword"> Change Password </a>
     <br>
-    <a href="/changeavatar"> Change Avator </a>
+    <a href="/user/changeavatar"> Change Avator </a>
     {% endif %}
 </div>
 {% endblock %}

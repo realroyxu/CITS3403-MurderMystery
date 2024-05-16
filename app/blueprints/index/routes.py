@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, request
+from flask import render_template, flash, redirect, session, request, url_for
 from . import index_bp
 
 user_scores = [
@@ -21,4 +21,14 @@ forum_posts = [
 @index_bp.route('/', methods=['GET'])
 @index_bp.route('/index', methods=['GET'])
 def index():
-    return render_template('index.html', css_file_path='/static/index_style.css')
+    css_file_path = url_for('static', filename='index_style.css')
+    return render_template('index.html', css_file_path=css_file_path)
+
+
+@index_bp.route('/createSudoku', methods=['GET'])
+def createSudoku():
+    return render_template('createSudoku.html')
+
+@index_bp.route('/leaderboard', methods=['GET'])
+def leaderboard():
+    return render_template('leaderboard.html')
