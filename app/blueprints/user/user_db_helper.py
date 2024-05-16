@@ -38,16 +38,6 @@ def get_userid(User, data):
             raise ERROR.DB_Error("User not found")
 
 
-def get_username(User, data):
-    # get username by userid
-    with Session() as s:
-        try:
-            stmt = select(User).where(User.userid == data['userid'])
-            return s.execute(stmt).one()[0].username
-        except sqlalchemy.exc.NoResultFound:
-            raise ERROR.DB_Error("User not found")
-
-
 def validate_user(User, data):
     # login validation
     with Session() as s:

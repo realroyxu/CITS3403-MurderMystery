@@ -4,8 +4,6 @@ from db import db_error_helper as ERROR
 from flask import request, jsonify, session, render_template, url_for
 from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
-from app.blueprints.user import user_helper
-
 
 @post_api_bp.route('/api/getpost', methods=['POST'])
 # need [postid]
@@ -15,11 +13,7 @@ def get_post():
         post = post_helper.get_post(data)
         puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})
         comment = comment_helper.get_comments({"postid": data['postid']})
-        for item in comment:
-            item['author'] = user_helper.get_username(item['userid'])
-            item.pop('userid')
-        return jsonify({"postid": post['postid'], "title": post['title'], "content": post['content'],
-                        "puzzledata": puzzledata, "comments": comment}), 200
+        return jsonify({"post": post, "puzzledata": puzzledata, "comment": comment}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error getting post: {e}"}), 401
 

@@ -58,11 +58,3 @@ class UserService:
 user_service = UserService()
 
 
-
-
-def get_username(userid):
-    """Get username by user id"""
-    try:
-        return User_DB.get_username(User, {"userid": userid})
-    except ERROR.DB_Error as e:
-        raise ERROR.DB_Error(str(e))

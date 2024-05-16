@@ -12,7 +12,6 @@ def get_post(data):
         raise ERROR.DB_Error(str(e))
 
 
-
 def add_post(data):
     """Add new post"""
     data['posttime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
