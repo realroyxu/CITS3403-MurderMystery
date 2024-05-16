@@ -36,6 +36,7 @@ def login():
 
 
 @user_api_bp.route('/api/register', methods=['POST'])
+# need [username, password, email]
 def register():
     data = request.get_json()
     username = data['username']

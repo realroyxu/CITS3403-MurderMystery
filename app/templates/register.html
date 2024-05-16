@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
-
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='user/user.js') }}" defer></script>
+{% endblock %}
 {% block content %}
-    <div class="login-form p-5">
+    <div class="register-form p-5">
         <form method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group p-3">
