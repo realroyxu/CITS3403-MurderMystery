@@ -1,17 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <script type="text/javascript" src="../../static/board/board.js"></script>
-    <link rel="stylesheet" href="../../static/forum/forum.css">
-</head>
-<body>
-    <div>
-        {% for post in forum_posts %}
-            <div class="post">
-                <div class="post-title">{{ post.title }}</div>
-                <div class="post-content">{{post.content}}</div>
+<div class="forum">
+    {% for post in forum_posts %}
+        <div class="post" id="post-{{ post.id }}">
+            <div class="post-header-section">
+                <div class="post-title">
+                    <h2 class="title"><a href="/forum/{{ post.id }}" class="title">{{ post.title }}</a></h2>
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="post-content">
+                    <img class="post-image" src="{{post.image_url}}"/>
+                </div>
             </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+            <div class="post-comments-section">
+                <h4>Comments</h4>
+                {% for comment in post.comments[:3] %}
+                    <p class="post-comments"><img class="user-icon" src="../../static/images/github_icons/yet.jpeg"/>{{ comment.author }}: {{ comment.text }}</p>
+                {% endfor %}
+                <a class="post-comments-link" href="/forum/{{ post.id }}#comments">View more comments</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
