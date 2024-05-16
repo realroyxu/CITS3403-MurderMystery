@@ -62,6 +62,7 @@ def change_password():
     if form.validate_on_submit():
         try:
             if user_service.change_password(form.username.data, form.oldpassword.data, form.password.data):
+                session['username'] = form.username.data
                 flash(f"Password changed for {session['username']}!", 'success')
                 return redirect('/index')
         except ERROR.DB_Error as e:

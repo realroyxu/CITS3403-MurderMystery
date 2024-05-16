@@ -21,8 +21,12 @@ class UserService:
         """Change password for user"""
         user = User_DB.get_user(User, {'username': username})
         if self.check_password(user.password, old_password):
-            user.password = self.hash_password(new_password)
-            User_DB.add_user(User, user)
+            user_id = User_DB.get_userid(User, {'username': username})
+            data = {
+                "userid": user_id,
+                "password": self.hash_password(new_password)
+            }
+            User_DB.change_password(User, data)
             return True
         return False
 
