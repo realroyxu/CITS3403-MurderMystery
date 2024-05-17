@@ -122,7 +122,7 @@ class Schema:
                passwordHash TEXT NOT NULL,
                email         TEXT,
                userName     TEXT NOT NULL UNIQUE,
-               avatar       TEXT DEFAULT 'default.jpg'
+               avatarid       INTEGER
            );
 
            """
@@ -137,9 +137,9 @@ class User:
 
     def create_user(self, data):
         query = """
-        INSERT INTO user (userName, passwordHash, email, avatar) VALUES (:userName, :passwordHash, :email, :avatar);
+        INSERT INTO user (userName, passwordHash, email, avatarid) VALUES (:userName, :passwordHash, :email, :avatarid);
         """
-        data.setdefault('avatar', 'default.jpg')
+        data.setdefault('avatarid', 'default.jpg')
         try:
             self.db.execute(query, data)
             self.db.commit()
@@ -170,7 +170,7 @@ class User:
 
     def update_user(self, data):
         query = """
-        UPDATE user SET email = :email, userName = :userName, passwordHash = :passwordHash, avatar = :avatar
+        UPDATE user SET email = :email, userName = :userName, passwordHash = :passwordHash, avatarid = :avatarid
         WHERE userId = :userId;
         """
         # set default for partial update
@@ -180,7 +180,7 @@ class User:
         data.setdefault('userName', original_data['userName'])
         data.setdefault('passwordHash', original_data['passwordHash'])
         data.setdefault('email', original_data['email'])
-        data.setdefault('avatar', original_data['avatar'])
+        data.setdefault('avatarid', original_data['avatarid'])
 
         try:
             self.db.execute(query, data)
