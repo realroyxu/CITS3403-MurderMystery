@@ -24,6 +24,7 @@ except Exception as e:
 @index_bp.route('/index', methods=['GET'])
 def index():
     css_file_path = url_for('static', filename='index_style.css')
+    # raise RuntimeError("This is a test")
     return render_template('index.html', css_file_path=css_file_path, forum_posts=forum_posts)
 
 

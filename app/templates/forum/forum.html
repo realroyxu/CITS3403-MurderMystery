@@ -1,27 +1,32 @@
+{#This file is never rendered ?!#}
 <div class="forum">
     {% if forum_posts %}
-    {% for post in forum_posts %}
-        <div class="post" id="post-{{ post.postid }}">
-            <div class="post-header-section">
-                <div class="post-title">
-                    <h2 class="title"><a href="/forum/{{ post.postid }}" class="title">{{ post.title }}</a></h2>
-                    <p>{{ post.content }}</p>
+        {% for post in forum_posts %}
+            <div class="post" id="post-{{ post.postid }}">
+                <div class="post-header-section">
+                    <div class="post-title">
+                        <h2 class="title"><a href="/forum/{{ post.postid }}" class="title">{{ post.title }}</a></h2>
+                        <p>{{ post.content }}</p>
+                    </div>
+                    <div class="post-content">
+                        {#                    <!-- <img class="post-image" src="{{post.image_url}}"/> -->#}
+                    </div>
                 </div>
-                <div class="post-content">
-{#                    <!-- <img class="post-image" src="{{post.image_url}}"/> -->#}
+                <div class="post-comments-section">
+                    {#                this section is not the one being rendered!#}
+                    {#                it's forum_posts get rendered'#}
+                    <h4>Comments</h4>
+                    {% if post.comments and post.comments|length > 0 %}
+                        {% for comment in post.comments[:3] %}
+                            <p class="post-comments"><img class="user-icon" src="
+
+                                    {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                    <a class="post-comments-link" href="/forum/{{ post.postid }}">View more comments</a>
                 </div>
             </div>
-            <div class="post-comments-section">
-                <h4>Comments</h4>
-                {% if post.comments and post.comments|length > 0 %}
-                    {% for comment in post.comments[:3] %}
-                        <p class="post-comments"><img class="user-icon" src="
-                                {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}</p>
-                    {% endfor %}
-                {% endif %}
-                <a class="post-comments-link" href="/forum/{{ post.postid }}">View more comments</a>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     {% endif %}
 </div>

@@ -14,7 +14,7 @@
             </div>
             <div class="solve-button">
                 <h3>
-                    <a class="solve" href="/solve/{{ post.postid }}">Solve it yourself!</a>
+                    <a class="solve" href="#guesstext">Solve it yourself!</a>
                 </h3>
             </div>
             <div class="post-text">
@@ -23,15 +23,7 @@
             <div class="post-comments">
                 <h4>Comments</h4>
                 {% for comment in post.comments %}
-                    <p class="comments"><img class="user-icon" src="
-
-
-
-
-
-
-
-
+                    <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon" src="
 
                             {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
                     </p>
@@ -152,6 +144,39 @@
                     })
                 });
             });
+
+            $(document).ready(function () {
+                $('.comment-user-icon').each(function () {
+                        const userIcon = $(this);
+                        const userid = userIcon.data('userid');
+                        $.ajax({
+                            url: '/api/isfailure',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                postid: parseInt(sharedData.postid),
+                                userid: userid,
+                                csrf_token: $('#guessForm input[name=csrf_token]').val()
+                            }),
+                            success: function (response) {
+                                if (response.hasOwnProperty('result')) {
+                                    if (response.result === true) {
+                                        userIcon.attr('src', '/static/images/avatars/failed.png');
+                                        console.log("Dead player looks noice :)")
+                                    }
+                                }
+                            },
+                            error: function (xhr) {
+                                const response = JSON.parse(xhr.responseText);
+                                alert(response.message);
+                            }
+                        })
+                    }
+                )
+
+            });
+
+
         </script>
     {% endif %}
 {% endblock %}
