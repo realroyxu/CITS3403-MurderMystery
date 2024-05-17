@@ -18,9 +18,17 @@ def get_post(data):
 
 def add_post(data):
     """Add new post"""
-    data['posttime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    new_post = {
+        'userid': data['userid'],
+        'title': data.get('title', '(NO TITLE)'),
+        'content': data.get('content', '(NO CONTENT)'),
+        'posttime': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'posttype': data.get('posttype', '(Unknown)'),
+        'puzzleid': data.get('puzzleid', 1)
+    }
+
     try:
-        return Post_DB.add_post(Post, data)
+        return Post_DB.add_post(Post, new_post)
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
 

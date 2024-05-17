@@ -43,16 +43,16 @@ def add_post(Post, data):
         # Need to test which exception will be raised in this method, for now use generic Expection
         except Exception as e:
             raise ERROR.DB_Error(f"{e}") from e
-        try:
-            # update siteleaderboard
-            # ~~not sure whether to use slb.postcount or just slb, need to test~~
-            # slb is the answer: need to use the object itself, not the attribute
-            stmt = select(SiteLeaderboard).where(SiteLeaderboard.userid == data['userid'])
-            origin = s.execute(stmt).scalar_one()
-            origin.postcount = origin.postcount + 1
-            s.commit()
-        except Exception as e:
-            raise ERROR.DB_Error(f"error updating siteleaderboard: {e}") from e
+        # try:
+        #     # update siteleaderboard
+        #     # ~~not sure whether to use slb.postcount or just slb, need to test~~
+        #     # slb is the answer: need to use the object itself, not the attribute
+        #     stmt = select(SiteLeaderboard).where(SiteLeaderboard.userid == data['userid'])
+        #     origin = s.execute(stmt).scalar_one()
+        #     origin.postcount = origin.postcount + 1
+        #     s.commit()
+        # except Exception as e:
+        #     raise ERROR.DB_Error(f"error updating siteleaderboard: {e}") from e
 
 
 def edit_post(Post, data):
