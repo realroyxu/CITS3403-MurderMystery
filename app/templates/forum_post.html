@@ -8,9 +8,9 @@
             <h2 class="post-title">{{ post.title }}</a></h2>
         </div>
         <div class="post-content">
-            <div class="sudoku-board">
-                <!-- Include the Sudoku board here -->
-                {% include '/board/board.html' %}
+            {#            <div class="sudoku-board">#}
+            <div class="puzzledata card-body code-block">
+                <div>{{ post.puzzledata }}</div>
             </div>
             <div class="solve-button">
                 <h3>

@@ -29,3 +29,15 @@ def edit_puzzle(data):
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
 
+
+def verify_answer(data) -> bool:
+    """Verify answer"""
+    if 'puzzleanswer' not in data:
+        raise ERROR.DB_Error("puzzleanswer not provided.")
+    try:
+        puzzle = Puzzle_DB.get_puzzle(Puzzle, data)
+        if puzzle['puzzleanswer'] == data['puzzleanswer']:
+            return True
+        return False
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))

@@ -17,7 +17,8 @@ def get_puzzle(Puzzle, data):
         raise ERROR.DB_Error("Error fetching puzzle: puzzleid not provided.")
     with Session() as s:
         try:
-            stmt = select(Puzzle.userid, Puzzle.puzzledata, Puzzle.updatetime, Puzzle.category).where(
+            stmt = select(Puzzle.userid, Puzzle.puzzledata, Puzzle.updatetime, Puzzle.category,
+                          Puzzle.puzzleanswer).where(
                 Puzzle.puzzleid == data['puzzleid'])
             res = s.execute(stmt).one()
             if res:

@@ -37,3 +37,15 @@ def edit_puzzle():
         return jsonify({"message": "Puzzle edited successfully"}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error editing puzzle: {e}"}), 401
+
+
+@puzzle_bp.route('/api/verifyanswer', methods=['POST'])
+# another api exposure problem, leave it here for now
+# need [puzzleid, puzzleanswer]
+def verify_answer():
+    data = request.get_json()
+    try:
+        result = puzzle_helper.verify_answer(data)
+        return jsonify({"result": result}), 200
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error verifying answer: {e}"}), 401

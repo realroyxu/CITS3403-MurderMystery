@@ -15,7 +15,7 @@ def forum(postid):
     try:
         comment_form = CommentForm()
         postdata = post_helper.get_post_full(postid)
-        print(postdata)
+        # print(postdata)
         css_file_path = url_for('static', filename='forum/forum_post_style.css')
         return render_template('forum_post.html', css_file_path=css_file_path, post=postdata, form=comment_form)
     except ERROR.DB_Error:
