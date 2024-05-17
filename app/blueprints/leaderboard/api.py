@@ -6,6 +6,7 @@ from db import db_error_helper as ERROR
 from flask import request, jsonify, session
 from app.blueprints.user.user_helper import user_service
 
+
 @siteleaderboard_bp.route('/api/getslbbypost', methods=['GET'])
 def get_siteleaderboard_postcount_order():
     try:
@@ -22,7 +23,12 @@ def get_siteleaderboard_postcount_order():
 @siteleaderboard_bp.route('/api/getslbbysolve', methods=['GET'])
 def get_siteleaderboard_solvecount_order():
     try:
-        return jsonify(slb_helper.get_slb_by_solve()), 200
+        # return jsonify(slb_helper.get_slb_by_solve()), 200
+        data = slb_helper.get_slb_by_solve()
+        for item in data:
+            item['username'] = user_service.get_username((item['userid']))
+            item.pop('userid')
+        return jsonify(data), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error getting siteleaderboard: {e}"}), 401
 
