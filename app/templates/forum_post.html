@@ -24,6 +24,8 @@
                 <h4>Comments</h4>
                 {% for comment in post.comments %}
                     <p class="comments"><img class="user-icon" src="
+
+
                             {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
                     </p>
                 {% endfor %}
@@ -34,13 +36,25 @@
         <div class="comment-container">
             <div class="comment-form">
                 <form method="POST" id="commentForm">
-                    {{ form.hidden_tag() }}
+                    {{ commentform.hidden_tag() }}
                     <div class="form-group p-3">
-                        {{ form.commenttext.label(class="form-label") }}
-                        {{ form.commenttext(class="form-control") }}
+                        {{ commentform.commenttext.label(class="form-label") }}
+                        {{ commentform.commenttext(class="form-control") }}
                     </div>
                     <div class="button">
-                        {{ form.submit(class="btn btn-primary") }}
+                        {{ commentform.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+            <div class="guess-form">
+                <form method="POST" id="guessForm">
+                    {{ guessform.hidden_tag() }}
+                    <div class="form-group p-3">
+                        {{ guessform.guesstext.label(class="form-label") }}
+                        {{ guessform.guesstext(class="form-control") }}
+                    </div>
+                    <div class="button">
+                        {{ guessform.submit(class="btn btn-primary") }}
                     </div>
                 </form>
             </div>
