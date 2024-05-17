@@ -13,10 +13,14 @@ user_scores = [
 forum_posts = []
 try:
     for i in range(1, 4):
-        forum_posts.append(post_helper.get_post_full(i))
-except Exception:
-    pass
+        post = post_helper.get_post_full(i)
+        if post:
+            forum_posts.append(post)
+        print(f"Fetched post {i}: {post}")
+except Exception as e:
+    print(f"Error fetching posts: {e}")
 
+print(forum_posts)
 
 @index_bp.route('/', methods=['GET'])
 @index_bp.route('/index', methods=['GET'])

@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="main">
     <div class="login-form p-5">
         <form method="POST" action="/api/login">
             {{ form.hidden_tag() }}
@@ -28,5 +29,7 @@
             </div>
         </form>
     </div>
+</div>
+
 {% endblock %}
 

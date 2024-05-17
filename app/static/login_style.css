@@ -2,6 +2,10 @@ form {
     width : 70%;
 }
 
+.main{
+    height : 100vh;
+}
+
 
 .login-form{
     display : flex;
