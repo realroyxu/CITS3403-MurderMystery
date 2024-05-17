@@ -15,6 +15,7 @@ try:
     for i in range(1, 4):
         forum_posts.append(post_helper.get_post_full(i))
 except Exception:
+    render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
     pass
 
 
