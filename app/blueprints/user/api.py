@@ -68,22 +68,39 @@ def change_password():
 # but leave it here and use client-side redirect for now
 
 @user_api_bp.route('/api/changeavatar', methods=['POST'])
-def upload_avator():
-    # similar to official sample
-    # check if the post request has the file part
-    if 'file' not in request.files:
-        return jsonify({"message": "No file part"}), 401
-    file = request.files['file']
-    # If the user does not select a file, the browser submits an empty file without a filename.
-    if file.filename == '':
-        return jsonify({"message": "No selected file"}), 401
-    if file and allowed_file(file.filename):
-        filename = str(session['username']) + os.path.splitext(secure_filename(file.filename))[1]
-        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        try:
-            user_service.change_avatar(session['userid'], filename)
-        except ERROR.DB_Error as e:
-            return jsonify({"message": f"Error changing avatar: {e}"}), 401
+def change_avatar():
+    data = request.get_json()
+    avatar_id = data['avatar_id']
+    user_id = session['userid']
+    print(avatar_id)
+
+    if not avatar_id or not user_id:
+        return jsonify({"message": "Invalid request"}), 400
+
+    try:
+        user_service.change_avatar(user_id, avatar_id)
         return jsonify({"message": "Avatar changed successfully"}), 200
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error changing avatar: {e}"}), 500
+
+
+# @user_api_bp.route('/api/changeavatar', methods=['POST'])
+# def upload_avator():
+#     # similar to official sample
+#     # check if the post request has the file part
+#     if 'file' not in request.files:
+#         return jsonify({"message": "No file part"}), 401
+#     file = request.files['file']
+#     # If the user does not select a file, the browser submits an empty file without a filename.
+#     if file.filename == '':
+#         return jsonify({"message": "No selected file"}), 401
+#     if file and allowed_file(file.filename):
+#         filename = str(session['username']) + os.path.splitext(secure_filename(file.filename))[1]
+#         file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+#         try:
+#             user_service.change_avatar(session['userid'], filename)
+#         except ERROR.DB_Error as e:
+#             return jsonify({"message": f"Error changing avatar: {e}"}), 401
+#         return jsonify({"message": "Avatar changed successfully"}), 200
 
 
