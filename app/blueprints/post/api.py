@@ -23,13 +23,26 @@ def get_post():
         return jsonify({"message": f"Error getting post: {e}"}), 401
 
 
+# @post_api_bp.route('/api/addpost', methods=['POST'])
+# # optional [title, content, posttype]
+# # need [puzzleid]
+# # [userid] will be taken from session, non-authorized reading is still an issue
+# def add_post():
+#     data = request.get_json()
+#     data['userid'] = session['userid']
+#     try:
+#         post_helper.add_post(data)
+#         return jsonify({"message": "Post added successfully"}), 200
+#     except ERROR.DB_Error as e:
+#         return jsonify({"message": f"Error adding post: {e}"}), 401
+
 @post_api_bp.route('/api/addpost', methods=['POST'])
-# optional [title, content, posttype]
-# need [puzzleid]
-# [userid] will be taken from session, non-authorized reading is still an issue
 def add_post():
-    data = request.get_json()
-    data['userid'] = session['userid']
+    data = request.form.to_dict()
+    data['userid'] = session.get('userid')
+    if not data['userid']:
+        return jsonify({"message": "User not authorized"}), 401
+
     try:
         post_helper.add_post(data)
         return jsonify({"message": "Post added successfully"}), 200
