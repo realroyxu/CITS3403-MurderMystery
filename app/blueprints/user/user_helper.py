@@ -31,19 +31,19 @@ class UserService:
             return True
         return False
 
-    def register_user(self, username, password, email="hello_world@gmail.com", avatar="hello"):
+    def register_user(self, username, password, email="hello_world@gmail.com", avatarid=0):
         data = {
             "username": username,
             "password": self.hash_password(password),
             "email": email,
-            "avatar": avatar
+            "avatarid": avatarid
         }
         return User_DB.add_user(User, data)
 
-    def change_avatar(self, userid, avatar):
+    def change_avatar(self, userid, avatarid):
         """Change user avatar"""
         try:
-            return User_DB.update_user(User, {"userid": userid, "avatar": avatar})
+            return User_DB.update_user(User, {"userid": userid, "avatarid": avatarid})
         except ERROR.DB_Error as e:
             raise ERROR.DB_Error(str(e))
 
