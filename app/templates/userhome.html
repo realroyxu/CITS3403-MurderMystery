@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}userHome{% endblock %}
+
+{% block content %}
+<div>
+    {% if session['username'] %}
+    <div class="header">
+        <h1>Welcome, Dear {{ session['username'] }}</h1>
+        <img src=""/>
+    </div>
+    <a href="/user/logout"> Logout </a>
+    <br>
+    <a href="/user/changepassword"> Change Password </a>
+    <br>
+    <a href="/user/changeavatar"> Change Avator </a>
+    {% endif %}
+</div>
+{% endblock %}
+<!--temperate placeholder for userhome page just for backend dev-->

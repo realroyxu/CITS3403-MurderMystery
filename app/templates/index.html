@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="sudoku">
+        <div class="board">
+            {% include '/board/board.html' %}
+        </div>
+        <div class="leaderboard">
+            {% set sample_data=sample_data %}
+            {% include "leaderboard_component.html" %}
+        </div>
+    </div>
+    <div class="forum-posts">
+        {% set forum_posts=forum_posts %}
+        {% include "forum/forum.html" %}
+    </div>
+{% endblock %}
+
+
+

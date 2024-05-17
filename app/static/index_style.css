@@ -7,6 +7,15 @@
     transform : scale(0.6)
 }
 
+.forum{
+    width : 70%;
+}
+
+.post{
+    padding : 30px;
+    border-bottom : 2px solid black;
+}
+
 .forum-posts{
     display : flex;
     justify-content: center;
@@ -17,3 +26,36 @@
     align-self : center;
 }
 
+.title, .post-comments-link{
+    text-decoration: none;
+    color : black;
+    margin-bottom : 30px;
+}
+
+.title:hover, .post-comments-link:hover{
+    color: blue;
+}
+
+.post-header-section{
+    display : flex;
+    justify-content : space-between;
+    flex-direction : row;;
+}
+
+.post-title{
+    align-items : center;
+}
+
+.post-image{
+    height : 200px;
+    width : 200px;
+}
+
+.post-comments{
+    margin : 20px;
+}
+
+.user-icon{
+    height : 50px;
+    width : 50px;
+}

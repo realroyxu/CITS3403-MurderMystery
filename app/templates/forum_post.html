@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="post" id="post-{{ post.postid }}">
+    <div class="post-header">
+        <h2 class="post-title">{{ post.title }}</a></h2>
+    </div>
+    <div class="post-content">
+        <div class="sudoku-board">
+            <!-- Include the Sudoku board here -->
+            {% include '/board/board.html' %}
+        </div>
+        <div class="solve-button">
+            <h3>
+                <a class="solve" href="/solve/{{ post.postid }}">Solve it yourself!</a>
+            </h3>
+        </div>
+        <div class="post-text">
+            <h4>{{ post.content }}</h4>
+        </div>
+        <div class="post-comments">
+            <h4>Comments</h4>
+                {% for comment in post.comments%}
+                    <p class="comments"><img class="user-icon" src="../../static/images/github_icons/yet.jpeg"/>{{ comment.author }}: {{ comment.commenttext }}</p>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+        {% if session['username'] %}
+            <div class="comment-container">
+                <div class="comment-form">
+                    <form method="POST" id="commentForm">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group p-3">
+                            {{ form.commenttext.label(class="form-label") }}
+                            {{ form.commenttext(class="form-control") }}
+                        </div>
+                        <div class="button">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.querySelector('#commentForm');
+                    form.addEventListener('submit', async function(event) {
+                        event.preventDefault();
+                        const formData = new FormData(form);
+                        const jsonData = {};
+                        formData.forEach((value, key) => {
+                            jsonData[key] = value;
+                        });
+
+                        try {
+                            const response = await fetch(`/api/comment/{{ post.id }}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(jsonData)
+                            });
+                            const result = await response.json();
+                            if (response.ok) {
+                                alert(result.message);
+                                window.location.reload();  // Reload the page to show the new comment
+                            } else {
+                                alert(result.message);
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again.');
+                        }
+                    });
+                });
+            </script>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -9,7 +9,7 @@ class Puzzle(Base):
     puzzleid: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     userid: Mapped[int] = mapped_column(Integer, ForeignKey('user.userid', ondelete='CASCADE'))
     puzzledata: Mapped[str] = mapped_column(String, nullable=False)
-    createtime: Mapped[str] = mapped_column(String, nullable=False)
+    updatetime: Mapped[str] = mapped_column(String, nullable=False)
     category: Mapped[str] = mapped_column(String, default='undefined')
 
     def __repr__(self):

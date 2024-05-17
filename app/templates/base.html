@@ -6,6 +6,8 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ css_file_path }}">
     <link rel="icon" type="image/svg+xml" href="static/images/logo.svg">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block scripts %}{% endblock %}
 </head>
 <body>
     <header>
