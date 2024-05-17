@@ -13,8 +13,8 @@ def is_failure(Failure, data):
     with Session() as s:
         try:
             stmt = select(Failure).where(Failure.userid == data['userid'], Failure.postid == data['postid'])
-            res = s.execute(stmt).scalar_one()
-            return True
+            res = s.execute(stmt).fetchone()
+            return res is not None
         except sqlalchemy.exc.NoResultFound:
             return False
         except Exception as e:
