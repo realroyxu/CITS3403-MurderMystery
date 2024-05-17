@@ -11,8 +11,11 @@ user_scores = [
 ]
 
 forum_posts = []
-for i in range(1, 4):
-    forum_posts.append(post_helper.get_post_full(i))
+try:
+    for i in range(1, 4):
+        forum_posts.append(post_helper.get_post_full(i))
+except Exception:
+    pass
 
 
 @index_bp.route('/', methods=['GET'])
