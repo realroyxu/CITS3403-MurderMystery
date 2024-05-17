@@ -10,30 +10,6 @@ user_scores = [
     {"username": "user5", "score": 120},
 ]
 
-# forum_posts = [
-#         {
-#             'id': 1,
-#             'title': 'I solved it in 0.001s!',
-#             'content': 'This was a very challenging sudoku but I solved it....',
-#             'image_url': '../../static/images/sudoku.png',
-#             'comments': [
-#                 {'author': 'User1', 'text': 'Great post!'},
-#                 {'author': 'User2', 'text': 'Thanks for sharing!'},
-#                 {'author': 'User3', 'text': 'Interesting read.'}
-#             ]
-#         },
-#         {
-#             'id': 2,
-#             'title': 'CITS3403 is uh',
-#             'content': 'CITS3403 is so fun!!!!! just kidding....',
-#             'image_url': '../../static/images/sudoku.png',
-#             'comments': [
-#                 {'author': 'User4', 'text': 'I love Sudoku!'},
-#                 {'author': 'User5', 'text': 'Can you share more tips?'}
-#             ]
-#         }
-#     ]
-
 forum_posts = []
 for i in range(1, 4):
     forum_posts.append(post_helper.get_post_full(i))
@@ -46,9 +22,10 @@ def index():
     return render_template('index.html', css_file_path=css_file_path, forum_posts=forum_posts)
 
 
-@index_bp.route('/createSudoku', methods=['GET'])
-def createSudoku():
-    return render_template('createSudoku.html')
+@index_bp.route('/createPost', methods=['GET'])
+def createPost():
+    css_file_path = url_for('static', filename='createPost_style.css')
+    return render_template('createPost.html', css_file_path=css_file_path)
 
 
 @index_bp.route('/leaderboard', methods=['GET'])
