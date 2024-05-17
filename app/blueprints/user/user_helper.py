@@ -3,6 +3,7 @@ import db.db_error_helper as ERROR
 from app.models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class UserService:
     def hash_password(self, password):
         """Hash a password for storing."""
@@ -61,7 +62,12 @@ class UserService:
         except ERROR.DB_Error as e:
             raise ERROR.DB_Error(str(e))
 
+    def get_avatarid(self, userid):
+        """Get avatar id by user id"""
+        try:
+            return User_DB.get_avatarid(User, {"userid": userid})
+        except ERROR.DB_Error as e:
+            raise ERROR.DB_Error(str(e))
+
 
 user_service = UserService()
-
-

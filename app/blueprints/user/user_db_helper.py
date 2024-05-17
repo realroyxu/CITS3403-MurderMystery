@@ -48,6 +48,16 @@ def get_username(User, data):
             raise ERROR.DB_Error("User not found")
 
 
+def get_avatarid(User, data):
+    # get avatarid by userid
+    with Session() as s:
+        try:
+            stmt = select(User).where(User.userid == data['userid'])
+            return s.execute(stmt).one()[0].avatarid
+        except sqlalchemy.exc.NoResultFound:
+            raise ERROR.DB_Error("User not found")
+
+
 def validate_user(User, data):
     # login validation
     with Session() as s:
@@ -64,6 +74,7 @@ def validate_user(User, data):
 
 def get_all(User, data):
     # get all user data by userid, except password
+    # not being used
     with Session() as s:
         stmt = select(User.userid, User.username, User.email, User.avatarid).where(User.userid == data['userid'])
         try:

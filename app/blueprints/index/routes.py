@@ -13,14 +13,12 @@ user_scores = [
 forum_posts = []
 try:
     for i in range(1, 4):
-        post = post_helper.get_post_full(i)
-        if post:
-            forum_posts.append(post)
-        print(f"Fetched post {i}: {post}")
-except Exception as e:
-    print(f"Error fetching posts: {e}")
+        forum_posts.append(post_helper.get_post_full(i))
+except Exception:
+    render_template('/error/error.html', css_file_path="/static/error/error_style.css", error=e)
+    pass
 
-print(forum_posts)
+
 
 @index_bp.route('/', methods=['GET'])
 @index_bp.route('/index', methods=['GET'])
@@ -35,6 +33,3 @@ def createPost():
     return render_template('createPost.html', css_file_path=css_file_path)
 
 
-@index_bp.route('/leaderboard', methods=['GET'])
-def leaderboard():
-    return render_template('leaderboard.html')
