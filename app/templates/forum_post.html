@@ -26,6 +26,9 @@
                     <p class="comments"><img class="user-icon" src="
 
 
+
+
+
                             {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
                     </p>
                 {% endfor %}
@@ -60,7 +63,7 @@
             </div>
         </div>
         <script>
-            var sharedData = {
+            let sharedData = {
                 postid: {{ post.postid }}
             };
             document.addEventListener('DOMContentLoaded', function () {
@@ -83,12 +86,41 @@
                             window.location.reload();
                         },
                         error: function (xhr) {
-                            var response = JSON.parse(xhr.responseText);
+                            const response = JSON.parse(xhr.responseText);
                             $('#message').text(response.message);
                             alert(response.message);
                         }
                     })
-                })
+                });
+                $('.guess-form').on('submit', function (event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: '/api/verifyanswer',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            guesstext: $('#guesstext').val(),
+                            postid: parseInt(sharedData.postid),
+                            userid: {{ session['userid'] }},
+                            csrf_token: $('#guessForm input[name=csrf_token]').val()
+                        }),
+                        success: function (response) {
+                            if (response.hasOwnProperty('result')) {
+                                if (response.result === true) {
+                                    alert("You got them XD");
+                                } else {
+                                    alert("You are dead now :P");
+                                }
+                            }
+                            $('#guessForm').find('textarea[name="guesstext"]').val('');
+                            window.location.reload();
+                        },
+                        error: function (xhr) {
+                            const response = JSON.parse(xhr.responseText);
+                            alert(response.message);
+                        }
+                    })
+                });
             });
         </script>
     {% endif %}

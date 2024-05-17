@@ -43,6 +43,8 @@ def add_post(Post, data):
         # Need to test which exception will be raised in this method, for now use generic Expection
         except Exception as e:
             raise ERROR.DB_Error(f"{e}") from e
+
+        # UPDATE: MOVING TO SLB_HELPER NOW, PLEASE KEEP IT FOR NOW
         # try:
         #     # update siteleaderboard
         #     # ~~not sure whether to use slb.postcount or just slb, need to test~~

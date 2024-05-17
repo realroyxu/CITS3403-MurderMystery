@@ -17,3 +17,19 @@ def get_slb_by_solve():
         return Slb_DB.get_slb_by_solve(Slb)
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
+
+
+def new_solve(userid):
+    """Add solve count"""
+    try:
+        return Slb_DB.new_solve(Slb, userid)
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))
+
+
+def new_post(userid):
+    """Add post count"""
+    try:
+        return Slb_DB.new_post(Slb, userid)
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))

@@ -12,6 +12,13 @@ def puzzle_fieldcheck(data):
     return
 
 
+def failure_fieldcheck(data):
+    valid_field = ['userid', 'postid']
+    if not all(field in valid_field for field in data.keys()):
+        raise ERROR.DB_Error("Error adding failure: invalid field provided.")
+    return
+
+
 def get_puzzle(Puzzle, data):
     if 'puzzleid' not in data:
         raise ERROR.DB_Error("Error fetching puzzle: puzzleid not provided.")
@@ -56,4 +63,28 @@ def edit_puzzle(Puzzle, data):
         except Exception as e:
             raise ERROR.DB_Error(f"{e}") from e
 
+
 # same as attempt, no need to delete puzzle record
+
+def puzzle_solved(Puzzle, data):
+    pass
+
+
+def puzzle_failed(Failure, data):
+    if 'userid' not in data:
+        raise ERROR.DB_Error("userid not provided.")
+    if 'postid' not in data:
+        raise ERROR.DB_Error("puzzleid not provided.")
+    if 'puzzleid' in data:
+        del data['puzzleid']
+    if 'guesstext' in data:
+        del data['guesstext']
+    print(data)
+    failure_fieldcheck(data)
+    with Session() as s:
+        try:
+            failure = Failure(**data)
+            s.add(failure)
+            s.commit()
+        except Exception as e:
+            raise ERROR.DB_Error(f"{e}") from e

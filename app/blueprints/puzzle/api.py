@@ -44,6 +44,8 @@ def edit_puzzle():
 # need [puzzleid, puzzleanswer]
 def verify_answer():
     data = request.get_json()
+    if 'csrf_token' in data:
+        del data['csrf_token']
     try:
         result = puzzle_helper.verify_answer(data)
         return jsonify({"result": result}), 200
