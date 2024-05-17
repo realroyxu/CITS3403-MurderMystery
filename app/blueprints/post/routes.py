@@ -1,3 +1,4 @@
+# this file need to be renames as api.py
 from . import post_bp
 from flask import request, jsonify, session, render_template, url_for
 from . import post_helper
