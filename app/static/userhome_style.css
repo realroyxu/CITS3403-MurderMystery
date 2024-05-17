@@ -1,8 +1,38 @@
-.header{
-    display: flex;
-    justify-content: space-between;
+.userhome{
+    height : 100vh;
 }
 
-a{
-    text-decoration : none;
+.header{
+    display : flex;
+    justify-content : center;
+    margin: 30px;
+}
+
+.avatar-container{
+    display : flex;
+    justify-content : center;
+}
+
+.avatar{
+    width : 70%;
+    display : flex;
+    flex-direction : row;
+    justify-content : space-between;
+}
+
+.icons{
+    height : 100px;
+    width : 100px;
+    border-radius : 50%;
+    cursor : pointer;
+}
+
+.icons.highlighted {
+    border: 3px solid blue;
+}
+
+.bottom{
+    margin : 50px;
+    display : flex;
+    justify-content : center;
 }
