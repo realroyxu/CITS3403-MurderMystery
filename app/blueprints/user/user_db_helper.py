@@ -8,7 +8,7 @@ from app.models.siteleaderboard import SiteLeaderboard
 
 
 def user_fieldcheck(data):
-    valid_field = ['username', 'password', 'email', 'avatar']
+    valid_field = ['username', 'password', 'email', 'avatarid']
     # userid shouldn't be provided, bcs functions will convert data to query params
     if not all(field in valid_field for field in data.keys()):
         raise ERROR.DB_Error("Error adding user: invalid field provided.")
@@ -65,7 +65,7 @@ def validate_user(User, data):
 def get_all(User, data):
     # get all user data by userid, except password
     with Session() as s:
-        stmt = select(User.userid, User.username, User.email, User.avatar).where(User.userid == data['userid'])
+        stmt = select(User.userid, User.username, User.email, User.avatarid).where(User.userid == data['userid'])
         try:
             res = s.execute(stmt).one()
             if res:
@@ -110,7 +110,7 @@ def update_user(User, data):
             # if no new value provided, keep the original value
             origin.username = data.get('username', origin.username)
             origin.email = data.get('email', origin.email)
-            origin.avatar = data.get('avatar', origin.avatar)
+            origin.avatarid = data.get('avatarid', origin.avatarid)
             s.commit()
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("Error updating user: No user found.")

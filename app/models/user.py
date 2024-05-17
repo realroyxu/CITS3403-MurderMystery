@@ -11,4 +11,4 @@ class User(Base):
     username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String, nullable=False)
     email: Mapped[str] = mapped_column(String, nullable=True)
-    avatar: Mapped[str] = mapped_column(String, nullable=True)
+    avatarid: Mapped[int] = mapped_column(Integer, nullable=True)
