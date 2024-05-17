@@ -4,6 +4,7 @@ from app.models.puzzle import Puzzle
 from app.models.failure import Failure
 from datetime import datetime
 from app.blueprints.post import post_helper
+from app.blueprints.failure import failure_helper
 from app.blueprints.leaderboard import siteleaderboard_helper as slb_helper
 
 def get_puzzle(data):
@@ -34,6 +35,7 @@ def edit_puzzle(data):
 
 def verify_answer(data) -> bool:
     """Verify answer"""
+    # this probably should be inside a db_helper instead a helper, hmmmm
     if 'guesstext' not in data:
         raise ERROR.DB_Error("guesstext not provided.")
     if "postid" not in data:
@@ -41,6 +43,9 @@ def verify_answer(data) -> bool:
     if "userid" not in data:
         raise ERROR.DB_Error("userid not provided.")
     try:
+        # need to do a serverside check on failure record
+        if failure_helper.is_failure(data):
+            return False
         puzzleid = post_helper.get_post({"postid": data["postid"]})["puzzleid"]
         data["puzzleid"] = puzzleid
         puzzle = Puzzle_DB.get_puzzle(Puzzle, data)
