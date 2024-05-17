@@ -1,22 +1,60 @@
+{#whoever embeds this page must extends base.html or have JQ loaded#}
 <div class="leaderboard-container">
     <table class="leaderboard">
         <thead>
-            <tr>
-                <th>Username</th>
-                <th>Score</th>
-            </tr>
+        <tr>
+            <th>Username</th>
+            <th>Postcount</th>
+            <th>Solvecount</th>
+        </tr>
         </thead>
-        <tbody>
-            {% for item in sample_data %}
+        <tbody class="slb-body">
+        {% for item in data %}
             <tr class="leaderboard-item">
                 <td class="leaderboard-username">
                     {{ item.username }}
                 </td>
-                <td class="leaderboard-score">
-                    {{ item.score }}
+                <td class="leaderboard-postcount">
+                    {{ item.postcount }}
+                </td>
+                <td class="leaderboard-solvecount">
+                    {{ item.solvecount }}
                 </td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        const slbBody = $('.slb-body');
+        $.ajax({
+            url: 'api/getslbbypost',
+            method: 'GET',
+            success: function (response) {
+                slbBody.empty();
+                response.forEach(function (item) {
+                    slbBody.append(`
+                        <tr class="leaderboard-item">
+                            <td class="leaderboard-username">
+                                ${item.username}
+                            </td>
+                            <td class="leaderboard-postcount">
+                                ${item.postcount}
+                            </td>
+                            <td class="leaderboard-solvecount">
+                                ${item.solvecount}
+                            </td>
+                        </tr>
+                    `);
+                });
+            },
+            error: function (xhr) {
+                const response = JSON.parse(xhr.responseText);
+                $('#message').text(response.message);
+                alert(response.message);
+            }
+        })
+    });
+</script>

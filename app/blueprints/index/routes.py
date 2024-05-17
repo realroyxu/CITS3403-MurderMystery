@@ -31,6 +31,3 @@ def createPost():
     return render_template('createPost.html', css_file_path=css_file_path)
 
 
-@index_bp.route('/leaderboard', methods=['GET'])
-def leaderboard():
-    return render_template('leaderboard.html')
