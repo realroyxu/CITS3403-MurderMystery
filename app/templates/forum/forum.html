@@ -1,4 +1,5 @@
 <div class="forum">
+    {% if forums_posts %}
     {% for post in forum_posts %}
         <div class="post" id="post-{{ post.postid }}">
             <div class="post-header-section">
@@ -19,4 +20,5 @@
             </div>
         </div>
     {% endfor %}
+    {% endif %}
 </div>

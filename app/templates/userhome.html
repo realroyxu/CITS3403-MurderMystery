@@ -3,18 +3,55 @@
 {% block title %}userHome{% endblock %}
 
 {% block content %}
-<div>
+<div class="userhome">
     {% if session['username'] %}
     <div class="header">
-        <h1>Welcome, Dear {{ session['username'] }}</h1>
-        <img src=""/>
+        <h1>Hi, {{ session['username'] }}</h1>
     </div>
-    <a href="/user/logout"> Logout </a>
-    <br>
-    <a href="/user/changepassword"> Change Password </a>
-    <br>
-    <a href="/user/changeavatar"> Change Avator </a>
+    <div class="avatar-container">
+        <div class="avatar">
+            <img class="icons" src="{{ url_for('static', filename='images/avatars/0.png')}}" data-avatar-id="0"/>
+            <img class="icons" src="{{ url_for('static', filename='images/avatars/1.png')}}" data-avatar-id="1"/>
+            <img class="icons" src="{{ url_for('static', filename='images/avatars/2.png')}}" data-avatar-id="2"/>
+            <img class="icons" src="{{ url_for('static', filename='images/avatars/3.png')}}" data-avatar-id="3"/>
+            <img class="icons" src="{{ url_for('static', filename='images/avatars/4.png')}}" data-avatar-id="4"/>
+        </div>
+    </div>
+    <div class="bottom">
+        <a href="/user/logout" class="btn btn-primary">Logout</a>
+    </div>
     {% endif %}
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatars = document.querySelectorAll('.icons');
+        avatars.forEach(avatar => {
+            avatar.addEventListener('click', function() {
+                avatars.forEach(av => av.classList.remove('highlighted'));
+
+                this.classList.add('highlighted');
+
+                const avatarId = this.getAttribute('data-avatar-id');
+                fetch('/api/changeavatar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ avatar_id: avatarId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                        window.location.href = '/index';
+                    } else {
+                        alert('Avatar change unsuccessful.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
 {% endblock %}
 <!--temperate placeholder for userhome page just for backend dev-->
