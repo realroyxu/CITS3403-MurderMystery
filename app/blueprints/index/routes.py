@@ -19,6 +19,7 @@ except Exception:
     pass
 
 
+
 @index_bp.route('/', methods=['GET'])
 @index_bp.route('/index', methods=['GET'])
 def index():
