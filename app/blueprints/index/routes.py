@@ -12,7 +12,7 @@ user_scores = [
 
 forum_posts = []
 try:
-    for i in range(1, 6):
+    for i in range(1, 4):
         post = post_helper.get_post_full(i)
         if post:
             forum_posts.append(post)
