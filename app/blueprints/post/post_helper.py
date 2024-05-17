@@ -8,6 +8,7 @@ from app.blueprints.user.user_helper import UserService
 
 user_helper = UserService()
 
+
 def get_post(data):
     """Get post data by postid"""
     try:
@@ -56,6 +57,7 @@ def get_post_full(postid):
     comment = comment_helper.get_comments({"postid": postid})
     for item in comment:
         item['author'] = user_helper.get_username(item['userid'])
+        item['avatarid'] = user_helper.get_avatarid(item['userid'])
         item.pop('userid')
     return {"postid": post['postid'], "title": post['title'], "content": post['content'],
-                "puzzledata": puzzledata, "comments": comment}
+            "puzzledata": puzzledata, "comments": comment}

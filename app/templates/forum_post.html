@@ -23,8 +23,8 @@
             <div class="post-comments">
                 <h4>Comments</h4>
                 {% for comment in post.comments %}
-                    <p class="comments"><img class="user-icon"
-                                             src="../../static/images/github_icons/yet.jpeg"/>{{ comment.author }}: {{ comment.commenttext }}
+                    <p class="comments"><img class="user-icon" src="
+                            {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
                     </p>
                 {% endfor %}
             </div>
@@ -51,7 +51,7 @@
             };
             document.addEventListener('DOMContentLoaded', function () {
                 var sharedData = {
-                    postid : {{ post.postid }}
+                    postid: {{ post.postid }}
                 };
                 $('.comment-form').on('submit', function (event) {
                     event.preventDefault();
