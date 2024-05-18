@@ -2,14 +2,14 @@
     height : 100vh;
 }
 
-.sudoku-container {
+.post-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
 }
 
-.createSudoku,
+.select-image,
 .form-section {
     width: 60%;
     background-color: #f9f9f9;
@@ -19,7 +19,12 @@
     margin: 50px;
 }
 
-.createSudoku h2,
+.select-image-placeholder{
+    height : 200px;
+    background-color : white;
+}
+
+.select-image h2,
 .form-section h2 {
     margin-bottom: 20px;
 }
