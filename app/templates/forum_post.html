@@ -10,18 +10,16 @@
         <div class="post-content">
             {#            <div class="sudoku-board">#}
             <div class="puzzledata card-body code-block">
-                <div>{{ post.puzzledata }}</div>
+                <div class="puzzle-data">{{ post.puzzledata }}</div>
+                <div class="puzzle-image"></div>
             </div>
             <div class="solve-button">
                 <h3>
                     <a class="solve" href="#guesstext">Solve it yourself!</a>
                 </h3>
             </div>
-            <div class="post-text">
-                <h4>{{ post.content }}</h4>
-            </div>
             <div class="post-comments">
-                <h4>Comments</h4>
+                <h4 class="comments-header">Comments</h4>
                 {% for comment in post.comments %}
                     <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon" src="
 
