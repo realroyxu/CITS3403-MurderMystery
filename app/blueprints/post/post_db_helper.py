@@ -27,6 +27,18 @@ def get_post(Post, data):
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("No post found.")
 
+def get_all_posts(Post):
+    """Get all posts in database"""
+    with Session() as s:
+        try:
+            stmt = select(Post.postid, Post.userid, Post.title, Post.content, Post.posttime, Post.posttype,
+                          Post.puzzleid, Post.postimage).order_by(Post.posttime.desc())
+            res = s.execute(stmt).all()
+            if res:
+                return [row._asdict() for row in res]
+        except sqlalchemy.exc.NoResultFound:
+            raise ERROR.DB_Error("No post found.")
+
 
 def add_post(Post, data):
     # this function need to be called after add_puzzle, since puzzleid in post table is a FK
@@ -40,6 +52,7 @@ def add_post(Post, data):
             post = Post(**data)
             s.add(post)
             s.commit()
+            s.refresh(post)
             # get this new post's id
             # sqlalchemy will just assign new postid directly to this post object
             return post.postid

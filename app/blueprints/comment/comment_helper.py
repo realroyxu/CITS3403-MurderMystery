@@ -28,11 +28,3 @@ def edit_comment(data):
         return Comment_DB.edit_comment(Comment, data)
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
-
-
-def delete_comment(data):
-    """Delete comment"""
-    try:
-        return Comment_DB.delete_comment(Comment, data)
-    except ERROR.DB_Error as e:
-        raise ERROR.DB_Error(str(e))

@@ -2,14 +2,13 @@
     height : 100vh;
 }
 
-.sudoku-container {
+.post-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
 }
 
-.createSudoku,
 .form-section {
     width: 60%;
     background-color: #f9f9f9;
@@ -19,7 +18,6 @@
     margin: 50px;
 }
 
-.createSudoku h2,
 .form-section h2 {
     margin-bottom: 20px;
 }
@@ -47,7 +45,7 @@
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #5e0f0f;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -56,5 +54,22 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #7c1414;
 }
+
+.viewpost{
+    display : flex;
+    justify-content : center;
+    margin-top : 20px;
+}
+
+.form-section{
+    background-color : rgb(128, 127, 127);
+    color : white;
+}
+
+.story-section{
+    padding : 80px;
+    color : white;
+}
+

@@ -127,18 +127,6 @@ def update_user(User, data):
             raise ERROR.DB_Error("Error updating user: No user found.")
 
 
-def delete_user(User, data):
-    """Delete user"""
-    with Session() as s:
-        try:
-            stmt = select(User).where(User.userid == data['userid'])
-            user = s.execute(stmt).scalar_one()
-            s.delete(user)
-            s.commit()
-        except Exception:
-            raise ERROR.DB_Error("Failed to delete user")
-
-
 def change_password(User, data):
     """Change user password"""
     with Session() as s:

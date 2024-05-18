@@ -1,5 +1,6 @@
 .userhome{
     height : 100vh;
+    color : white;
 }
 
 .header{
@@ -35,4 +36,9 @@
     margin : 50px;
     display : flex;
     justify-content : center;
+}
+
+.btn-primary{
+    background-color : #5e0f0f !important;
+    border : #5e0f0f !important
 }

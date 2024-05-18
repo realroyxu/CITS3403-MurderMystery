@@ -1,17 +1,17 @@
-from . import post_api_bp
-from . import post_helper
+from flask import request, jsonify, session, current_app
+import os
+from werkzeug.utils import secure_filename
+from . import post_api_bp, post_helper
 from db import db_error_helper as ERROR
-from flask import request, jsonify, session, render_template, url_for, current_app
 from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
 from app.blueprints.user.user_helper import user_service
 
-import os
-from werkzeug.utils import secure_filename
-
+def allowed_file(filename, ALLOWED_EXT=['jpg', 'jpeg', 'png', 'gif']):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
 
 @post_api_bp.route('/api/getpost', methods=['POST'])
-# need [postid]
 def get_post():
     data = request.get_json()
     try:
@@ -26,67 +26,50 @@ def get_post():
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error getting post: {e}"}), 401
 
-
-# @post_api_bp.route('/api/addpost', methods=['POST'])
-# # optional [title, content, posttype]
-# # need [puzzleid]
-# # [userid] will be taken from session, non-authorized reading is still an issue
-# def add_post():
-#     data = request.get_json()
-#     data['userid'] = session['userid']
-#     try:
-#         post_helper.add_post(data)
-#         return jsonify({"message": "Post added successfully"}), 200
-#     except ERROR.DB_Error as e:
-#         return jsonify({"message": f"Error adding post: {e}"}), 401
-
-def allowed_file(filename, ALLOWED_EXT=['jpg', 'jpeg', 'png', 'gif']):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
-
-
 @post_api_bp.route('/api/addpost', methods=['POST'])
 def add_post():
-    isupload = False
     data = request.form.to_dict()
     data['userid'] = session.get('userid')
     if not data['userid']:
         return jsonify({"message": "User not authorized"}), 401
+
     try:
+        generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'])
+        puzzle_data = {
+            'userid': data['userid'],
+            'puzzledata': generated_story['story'],
+            'category': generated_story['explanation'],
+            'puzzleanswer': generated_story['killer']
+        }
+        puzzle_id = puzzle_helper.add_puzzle(puzzle_data)
+        data['puzzleid'] = puzzle_id
         postid = post_helper.add_post(data)
-        # image upload block
+
+        isupload = False
         if 'file' in request.files:
-            try:
-                file = request.files['file']
-                if file.filename == '':
-                    return jsonify({"message": "Filename is Blank or corrupted."}), 401
-                if file and allowed_file(file.filename):
-                    # if there's one file with the same name (ignoring ext name), it will be overwritten
-                    for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
-                        existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
-                        if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
-                            os.remove(existing_file_path)
-                    # save file
-                    filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
-                    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-                    post_helper.add_image({"postid": postid, "postimage": filename})
-                    isupload = True
-                    # return jsonify({"message": "Image uploaded successfully"}), 200
-                else:
-                    return jsonify({"message": "Invalid file type"}), 401
-            except ERROR.DB_Error as e:
-                return jsonify({"message": f"Error uploading image: {e}"}), 401
+            file = request.files['file']
+            if file.filename == '':
+                return jsonify({"message": "Filename is blank or corrupted."}), 401
+            if file and allowed_file(file.filename):
+                for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
+                    existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
+                    if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
+                        os.remove(existing_file_path)
+                filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
+                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                post_helper.add_image({"postid": postid, "postimage": filename})
+                isupload = True
+            else:
+                return jsonify({"message": "Invalid file type"}), 401
+
         if isupload:
-            return jsonify({"message": "Post added successfully with image", "newpostid": postid}), 200
+            return jsonify({"message": "Post added successfully with image", "newpostid": postid, "story": generated_story['story'], "postid": postid}), 200
         else:
-            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid}), 200
+            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid, "story": generated_story['story'], "postid": postid}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
 
-
 @post_api_bp.route('/api/editpost', methods=['POST'])
-# need [postid]
-# optional [title, content, posttype]
 def edit_post():
     data = request.get_json()
     try:
@@ -96,18 +79,6 @@ def edit_post():
         return jsonify({"message": f"Error editing post: {e}"}), 401
 
 
-@post_api_bp.route('/api/deletepost', methods=['POST'])
-# need [postid]
-def delete_post():
-    data = request.get_json()
-    try:
-        post_helper.delete_post(data)
-        return jsonify({"message": "Post deleted successfully"}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error deleting post: {e}"}), 401
-
-
-# using param in link is not very safe, well but it's easier to implement without introducing overhead & bugs
 @post_api_bp.route('/api/uploadimage/<int:postid>', methods=['POST'])
 def upload_image(postid):
     try:
@@ -117,12 +88,10 @@ def upload_image(postid):
         if file.filename == '':
             return jsonify({"message": "No selected file"}), 401
         if file and allowed_file(file.filename):
-            # if there's one file with the same name (ignoring ext name), it will be overwritten
             for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
                 existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
                 if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
                     os.remove(existing_file_path)
-            # save file
             filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
             file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
             post_helper.add_image({"postid": postid, "postimage": filename})
@@ -131,3 +100,17 @@ def upload_image(postid):
             return jsonify({"message": "Invalid file type"}), 401
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error uploading image: {e}"}), 401
+
+@post_api_bp.route('/api/delete_post/<int:postid>', methods=['POST'])
+def delete_post(postid):
+    data = {"postid": postid}
+    post = post_helper.get_post(data)
+    userid = user_service.get_userid(session['username'])
+    if int(post['userid']) == int(userid):
+        try:
+            post_helper.delete_post(data)
+            return jsonify({"message": "Post deleted successfully"}), 200
+        except ERROR.DB_Error as e:
+            return jsonify({"message": f"Error deleting post: {e}"}), 401
+    else:
+        return jsonify({"message": f"Error deleting post: {e}"}), 401

@@ -1,15 +1,17 @@
+.post {
+    min-height: 100vh;
+    height: auto;
+}
+
 .post-title {
     display: flex;
     justify-content: center;
     padding: 30px;
 }
 
-.post-text {
-    padding: 30px;
-}
 
 .sudoku-board {
-    transform: scale(0.7)
+    transform: scale(0.7);
 }
 
 .user-icon {
@@ -23,7 +25,7 @@
 }
 
 .comments {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
 }
 
 .solve-button {
@@ -42,10 +44,67 @@
 
 .comment-container {
     display: flex;
-    justify-content: center
+    justify-content: center;
 }
 
 .button {
     display: flex;
-    justify-content: center
+    justify-content: center;
+}
+
+.puzzle-data {
+    padding: 40px;
+    width : 70%;
+}
+
+.content-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.puzzledata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.postimage-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.postimage {
+    max-width: 500px;
+    height: auto;
+    padding: 30px;
+}
+
+.content-container.full-width .puzzledata {
+    flex: 0 0 100%;
+}
+
+.main{
+    color : white;
+}
+
+.solve{
+    color : white;
+}
+
+.solve:hover{
+    color : rgba(128, 128, 128);
+}
+
+.btn-primary{
+    background-color : #5e0f0f !important;
+    border : #5e0f0f !important
+}
+
+.delete-post-container{
+    margin : 20px;
 }

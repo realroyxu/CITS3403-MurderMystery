@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 from app.models.base import Base
-
+from datetime import datetime
 
 class Post(Base):
     __tablename__ = 'post'

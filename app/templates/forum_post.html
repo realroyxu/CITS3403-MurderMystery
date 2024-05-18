@@ -1,98 +1,195 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
+<div class="main">
+    <div class="delete-post-container">
+        <form id="deletePostForm" method="POST">
+            <button type="button" class="btn btn-danger delete-post" onclick="deletePost()">Delete Post</button>
+        </form>
+    </div>
     <div class="post" id="post-{{ post.postid }}">
         <div class="post-header">
-            <h2 class="post-title">{{ post.title }}</a></h2>
+            <h2 class="post-title">{{ post.title }}</h2>
         </div>
         <div class="post-content">
-            {#            <div class="sudoku-board">#}
-            <div class="puzzledata card-body code-block">
-                <div>{{ post.puzzledata }}</div>
+            <div class="content-container {% if not post.postimage %} full-width {% endif %}">
+                <div class="puzzledata card-body code-block">
+                    <div class="puzzle-data">{{ post.puzzledata }}</div>
+                </div>
+                {% if post.postimage %}
+                <div class="postimage-container">
+                    <img class="postimage" src="{{ url_for('static', filename='uploads/') }}{{ post.postimage }}"/>
+                </div>
+                {% endif %}
             </div>
             <div class="solve-button">
                 <h3>
                     <a class="solve" href="#guesstext">Solve it yourself!</a>
                 </h3>
             </div>
-            {#            <div class="post-image"></div>#}
-            <div class="postimage-container">
-                {% if post.postimage %}
-                    <img class="postimage" src="{{ url_for('static', filename='uploads/') }}{{ post.postimage }}"/>
-                {% endif %}
-            </div>
-            <div class="post-text">
-                <h4>{{ post.content }}</h4>
-            </div>
             <div class="post-comments">
                 <h4>Comments</h4>
-                {% if post.comments %}
-                    {% for comment in post.comments %}
-                        <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon"
-                                                 src="
-
-
-                                                         {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
-                        </p>
-                    {% endfor %}
-                {% endif %}
+                {% for comment in post.comments %}
+                <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon" src="{{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}</p>
+                {% endfor %}
             </div>
         </div>
     </div>
     {% if session['username'] %}
-        <div class="comment-container">
-            <div class="comment-form">
-                <form method="POST" id="commentForm">
-                    {{ commentform.hidden_tag() }}
-                    <div class="form-group p-3">
-                        {{ commentform.commenttext.label(class="form-label") }}
-                        {{ commentform.commenttext(class="form-control") }}
-                    </div>
-                    <div class="button">
-                        {{ commentform.submit(class="btn btn-primary") }}
-                    </div>
-                </form>
-            </div>
-            <div class="guess-form">
-                <form method="POST" id="guessForm">
-                    {{ guessform.hidden_tag() }}
-                    <div class="form-group p-3">
-                        {{ guessform.guesstext.label(class="form-label") }}
-                        {{ guessform.guesstext(class="form-control") }}
-                    </div>
-                    <div class="guess-buttom-container">
-                        <div class="button guess-buttom">
-                            {{ guessform.submit(class="btn btn-primary") }}
-                        </div>
-                    </div>
-                </form>
-            </div>
+    <div class="comment-container">
+        <div class="comment-form">
+            <form method="POST" id="commentForm">
+                {{ commentform.hidden_tag() }}
+                <div class="form-group p-3">
+                    {{ commentform.commenttext.label(class="form-label") }}
+                    {{ commentform.commenttext(class="form-control") }}
+                </div>
+                <div class="button">
+                    {{ commentform.submit(class="btn btn-primary") }}
+                </div>
+            </form>
         </div>
-        <script>
-            let sharedData = {
+        <div class="guess-form">
+            <form method="POST" id="guessForm">
+                {{ guessform.hidden_tag() }}
+                <div class="form-group p-3">
+                    {{ guessform.guesstext.label(class="form-label") }}
+                    {{ guessform.guesstext(class="form-control") }}
+                </div>
+                <div class="guess-buttom-container">
+                    <div class="button guess-buttom">
+                        {{ guessform.submit(class="btn btn-primary") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function deletePost() {
+            if (confirm("Are you sure you want to delete this post?")) {
+                $.ajax({
+                    url: '/api/delete_post/' + {{ post.postid }},
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        postid: {{ post.postid }},
+                        csrf_token: $('#deletePostForm input[name=csrf_token]').val()
+                    }),
+                    success: function (response) {
+                        alert(response.message);
+                        window.location.href = '/forums'; // Redirect to forums after deletion
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    }
+                });
+            }
+        }
+        let sharedData = {
+            postid: {{ post.postid }}
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            var sharedData = {
                 postid: {{ post.postid }}
             };
-            document.addEventListener('DOMContentLoaded', function () {
-                var sharedData = {
-                    postid: {{ post.postid }}
-                };
-                $(window.onload = function () {
+            $(window.onload = function () {
+                $.ajax({
+                    url: '/api/isfailure',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        postid: parseInt(sharedData.postid),
+                        userid: {{ session['userid'] }},
+                        csrf_token: $('#guessForm input[name=csrf_token]').val()
+                    }),
+                    success: function (response) {
+                        if (response.hasOwnProperty('result')) {
+                            if (response.result === true) {
+                                $('.guess-buttom-container').html('<span>You are already dead :(</span>');
+                                console.log("You are already dead :(")
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    }
+                })
+            });
+            $('.comment-form').on('submit', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '/api/comment/' + parseInt(sharedData.postid),
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        commenttext: $('#commenttext').val(),
+                        csrf_token: $('#commentForm input[name=csrf_token]').val()
+                    }),
+                    success: function (response) {
+                        alert(response.message);
+                        $('#commentForm').find('textarea[name="commenttext"]').val('');
+                        window.location.reload();
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        $('#message').text(response.message);
+                        alert(response.message);
+                    }
+                })
+            });
+            $('.guess-form').on('submit', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '/api/verifyanswer',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        guesstext: $('#guesstext').val(),
+                        postid: parseInt(sharedData.postid),
+                        userid: {{ session['userid'] }},
+                        csrf_token: $('#guessForm input[name=csrf_token]').val()
+                    }),
+                    success: function (response) {
+                        if (response.hasOwnProperty('result')) {
+                            if (response.result === true) {
+                                alert("You got them XD");
+                            } else {
+                                alert("You are dead now :P");
+                            }
+                        }
+                        $('#guessForm').find('textarea[name="guesstext"]').val('');
+                        window.location.reload();
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    }
+                })
+            });
+        });
+
+        $(document).ready(function () {
+            $('.comment-user-icon').each(function () {
+                    const userIcon = $(this);
+                    const userid = userIcon.data('userid');
                     $.ajax({
                         url: '/api/isfailure',
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({
                             postid: parseInt(sharedData.postid),
-                            userid: {{ session['userid'] }},
+                            userid: userid,
                             csrf_token: $('#guessForm input[name=csrf_token]').val()
                         }),
                         success: function (response) {
                             if (response.hasOwnProperty('result')) {
                                 if (response.result === true) {
-                                    $('.guess-buttom-container').html('<span>You are already dead :(</span>');
-                                    console.log("You are already dead :(")
+                                    userIcon.attr('src', '/static/images/avatars/failed.png');
+                                    console.log("Dead player looks noice :)")
                                 }
                             }
                         },
@@ -101,92 +198,10 @@
                             alert(response.message);
                         }
                     })
-                });
-                $('.comment-form').on('submit', function (event) {
-                    event.preventDefault();
-                    $.ajax({
-                        url: '/api/comment/' + parseInt(sharedData.postid),
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            commenttext: $('#commenttext').val(),
-                            csrf_token: $('#commentForm input[name=csrf_token]').val()
-                        }),
-                        success: function (response) {
-                            alert(response.message);
-                            $('#commentForm').find('textarea[name="commenttext"]').val('');
-                            window.location.reload();
-                        },
-                        error: function (xhr) {
-                            const response = JSON.parse(xhr.responseText);
-                            $('#message').text(response.message);
-                            alert(response.message);
-                        }
-                    })
-                });
-                $('.guess-form').on('submit', function (event) {
-                    event.preventDefault();
-                    $.ajax({
-                        url: '/api/verifyanswer',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            guesstext: $('#guesstext').val(),
-                            postid: parseInt(sharedData.postid),
-                            userid: {{ session['userid'] }},
-                            csrf_token: $('#guessForm input[name=csrf_token]').val()
-                        }),
-                        success: function (response) {
-                            if (response.hasOwnProperty('result')) {
-                                if (response.result === true) {
-                                    alert("You got them XD");
-                                } else {
-                                    alert("You are dead now :P");
-                                }
-                            }
-                            $('#guessForm').find('textarea[name="guesstext"]').val('');
-                            window.location.reload();
-                        },
-                        error: function (xhr) {
-                            const response = JSON.parse(xhr.responseText);
-                            alert(response.message);
-                        }
-                    })
-                });
-            });
-
-            $(document).ready(function () {
-                $('.comment-user-icon').each(function () {
-                        const userIcon = $(this);
-                        const userid = userIcon.data('userid');
-                        $.ajax({
-                            url: '/api/isfailure',
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                postid: parseInt(sharedData.postid),
-                                userid: userid,
-                                csrf_token: $('#guessForm input[name=csrf_token]').val()
-                            }),
-                            success: function (response) {
-                                if (response.hasOwnProperty('result')) {
-                                    if (response.result === true) {
-                                        userIcon.attr('src', '/static/images/avatars/failed.png');
-                                        console.log("Dead player looks noice :)")
-                                    }
-                                }
-                            },
-                            error: function (xhr) {
-                                const response = JSON.parse(xhr.responseText);
-                                alert(response.message);
-                            }
-                        })
-                    }
-                )
-
-            });
-
-
-        </script>
+                }
+            )
+        });
+    </script>
     {% endif %}
+</div>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Forum{% endblock %}
+
+{% block content %}
+<div class="pagination-buttons" style="text-align: center; margin-bottom: 20px;">
+    <a class="btn btn-primary" href="/forums?start={{ previous_start }}" {% if previous_start == 0 and next_start== 5 %} disabled {% endif %}>Prev 5</a>
+    <a class="btn btn-primary" href="/forums?start={{ next_start }}" {% if overlimit %} disabled {% endif %}>Next 5</a>
+</div>
+<div class="forums-container">
+    <div class="forums-post-container">
+        <div class="forums">
+            {% set forum_posts = postdata %}
+            {% include "/forum/forum.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
