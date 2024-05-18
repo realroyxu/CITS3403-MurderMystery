@@ -1,4 +1,6 @@
 from flask import Flask
+from dotenv import load_dotenv
+import os
 from app.blueprints.index import index_bp
 from app.blueprints.user import user_bp, user_api_bp
 from app.blueprints.post import post_bp, post_api_bp
@@ -11,11 +13,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+load_dotenv()
+
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'abcde'
-    app.config['UPLOAD_FOLDER'] = 'app/static/uploads/'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/ormtest.db'
+    app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+    app.config['OPENAI_KEY'] = os.getenv('OPENAI_KEY')
 
     db.init_app(app)
 
