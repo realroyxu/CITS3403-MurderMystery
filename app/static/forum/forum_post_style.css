@@ -1,6 +1,7 @@
 .post {
     min-height: 100vh;
     height: auto;
+    margin-bottom : 30px;
 }
 
 .post-title {
@@ -79,7 +80,7 @@
 }
 
 .postimage {
-    max-width: 500px;
+    max-width: 300px;
     height: auto;
     padding: 30px;
 }

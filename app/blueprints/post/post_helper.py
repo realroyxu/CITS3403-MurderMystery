@@ -118,7 +118,8 @@ def generate_story(title, content, characters):
             Characters: {characters}
 
             Generate a murder mystery story and identify the killer with an explanation.
-            DO NOT REVEAL THE KILLER IN THE STORY
+            YOU MUST USE ONE OF THE CHARACTERS PROVIDED AS THE KILLER.
+            DO NOT REVEAL THE KILLER IN THE STORY.
             Reply in JSON with the format:
             {{
                 "story": "<story_text>",
