@@ -34,17 +34,6 @@ def edit_comment():
         return jsonify({"message": f"Error editing comment: {e}"}), 401
 
 
-@comment_bp.route('/api/deletecomment', methods=['POST'])
-# need [commentid]
-def delete_comment():
-    data = request.get_json()
-    try:
-        comment_helper.delete_comment(data)
-        return jsonify({"message": "Comment deleted successfully"}), 200
-    except DB_Error as e:
-        return jsonify({"message": f"Error deleting comment: {e}"}), 401
-
-
 @comment_bp.route('/api/getcomment/<int:id>', methods=['POST'])
 # not completed yet
 def get_comment(id):
