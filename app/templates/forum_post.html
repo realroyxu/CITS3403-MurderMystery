@@ -130,7 +130,6 @@
                         csrf_token: $('#commentForm input[name=csrf_token]').val()
                     }),
                     success: function (response) {
-                        alert(response.message);
                         $('#commentForm').find('textarea[name="commenttext"]').val('');
                         window.location.reload();
                     },
