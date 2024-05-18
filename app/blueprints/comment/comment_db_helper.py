@@ -59,14 +59,3 @@ def edit_comment(Comment, data):
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("No comment found.")
 
-
-def delete_comment(Comment, data):
-    if 'commentid' not in data:
-        raise ERROR.DB_Error("commentid not provided.")
-    with Session() as s:
-        try:
-            stmt = delete(Comment).where(Comment.commentid == data['commentid'])
-            s.execute(stmt)
-            s.commit()
-        except sqlalchemy.exc.NoResultFound:
-            raise ERROR.DB_Error("No comment found.")
