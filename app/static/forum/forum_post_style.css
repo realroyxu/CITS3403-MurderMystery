@@ -28,7 +28,7 @@
 }
 
 .comments {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
 }
 
 .solve-button {
@@ -87,4 +87,21 @@
 
 .content-container.full-width .puzzledata {
     flex: 0 0 100%;
+}
+
+.main{
+    color : white;
+}
+
+.solve{
+    color : white;
+}
+
+.solve:hover{
+    color : rgba(128, 128, 128);
+}
+
+.btn-primary{
+    background-color : #5e0f0f !important;
+    border : #5e0f0f !important
 }

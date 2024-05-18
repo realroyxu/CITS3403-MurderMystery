@@ -1,8 +1,18 @@
-.sudoku{
+.main {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    height : 60vh;
+    height: 60vh;
+    background-color: #2F2F2F;
+    background-image: url('../static/images/murder_mystery.webp');
+    background-size: cover; /* Ensure the background image covers the entire container */
+    background-position: center; /* Center the background image */
+    color: white; /* Set text color to white for readability */
+    padding: 20px; /* Optional: Add padding for spacing */
+}
 
+
+.forum-posts{
+    background-color: #2F2F2F;
 }
 
 .board{
@@ -11,11 +21,13 @@
 
 .forum{
     width : 70%;
+    background-color: #5e0f0f;
+    border-radius : 10px;
 }
 
 .post{
     padding : 30px;
-    border-bottom : 1px solid black;
+    border-bottom : 2px solid white;
 }
 
 .forum-posts{
@@ -30,12 +42,11 @@
 
 .title, .post-comments-link{
     text-decoration: none;
-    color : black;
     margin-bottom : 30px;
 }
 
 .title:hover, .post-comments-link:hover{
-    color: blue;
+    color: rgba(128, 128, 128);
 }
 
 .post-header-section{
@@ -69,8 +80,80 @@
 
 .leaderboard-username, .leaderboard-postcount, .leaderboard-solvecount{
     padding : 4px;
+    color : white;
 }
 
 th{
     padding-right : 10px;
+    color : white;
+}
+
+.forum *{
+    color : white;
+}
+
+/* Post title */
+.post-title .title {
+    font-size: 1.3em;
+    margin: 0;
+    margin-bottom : 10px;
+}
+
+/* Post content */
+.post-content p {
+    font-size: 0.9em;
+    margin: 10px 0;
+}
+
+/* Comments section */
+.post-comments-section h4 {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.post-comments {
+    font-size: 0.8em;
+}
+
+.description{
+    width : 70%;
+    color : white;
+    line-height : 30px;
+    background-color: rgba(128, 128, 128, 0.7);
+    padding : 20px;
+    border-radius : 10px;
+}
+
+.desc{
+    display : flex;
+    justify-content : center;
+    align-items : center;
+}
+
+.leaderboard-container{
+    display : flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.btn-primary{
+    background-color : #5e0f0f !important;
+    border : #5e0f0f !important
+}
+
+.button{
+    display : flex;
+    justify-content: center;
+}
+
+
+.leaderboard tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-container {
+    background-color:rgba(128, 128, 128, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
 }
