@@ -22,6 +22,45 @@ def get_post(data):
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
 
+def get_all_posts_with_comments(start_index=0, limit=10):
+    """Get all posts with their comments and additional details, with pagination"""
+    try:
+        all_posts = Post_DB.get_all_posts(Post)
+
+        paginated_posts = all_posts[start_index:start_index + limit]
+
+        full_posts = []
+
+        for post in paginated_posts:
+            # Fetch additional post details
+            postid = post['postid']
+            puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})['puzzledata']
+            comments = []
+            post_comments = comment_helper.get_comments({"postid": postid})
+
+            if post_comments is not None:
+                for item in post_comments:
+                    item['author'] = user_helper.get_username(item['userid'])
+                    item['avatarid'] = user_helper.get_avatarid(item['userid'])
+                    comments.append(item)
+
+            full_post = {
+                "postid": post['postid'],
+                "title": post['title'],
+                "content": post['content'],
+                "puzzledata": puzzledata,
+                "comments": comments,
+                "postimage": post.get('postimage')
+            }
+            full_posts.append(full_post)
+
+        return full_posts
+
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))
+
+
+
 
 def add_post(data):
     """Add new post"""

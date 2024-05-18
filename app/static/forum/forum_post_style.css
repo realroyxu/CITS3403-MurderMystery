@@ -9,9 +9,6 @@
     padding: 30px;
 }
 
-.post-text {
-    padding: 30px;
-}
 
 .sudoku-board {
     transform: scale(0.7);
@@ -57,6 +54,7 @@
 
 .puzzle-data {
     padding: 40px;
+    width : 70%;
 }
 
 .content-container {
@@ -68,6 +66,7 @@
 
 .puzzledata {
     display: flex;
+    justify-content: center;
     align-items: center;
     flex: 1;
 }
