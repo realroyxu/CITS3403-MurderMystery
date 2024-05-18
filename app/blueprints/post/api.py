@@ -40,16 +40,46 @@ def get_post():
 #     except ERROR.DB_Error as e:
 #         return jsonify({"message": f"Error adding post: {e}"}), 401
 
+def allowed_file(filename, ALLOWED_EXT=['jpg', 'jpeg', 'png', 'gif']):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
+
+
 @post_api_bp.route('/api/addpost', methods=['POST'])
 def add_post():
+    isupload = False
     data = request.form.to_dict()
     data['userid'] = session.get('userid')
     if not data['userid']:
         return jsonify({"message": "User not authorized"}), 401
-
     try:
-        post_helper.add_post(data)
-        return jsonify({"message": "Post added successfully"}), 200
+        postid = post_helper.add_post(data)
+        # image upload block
+        if 'file' in request.files:
+            try:
+                file = request.files['file']
+                if file.filename == '':
+                    return jsonify({"message": "Filename is Blank or corrupted."}), 401
+                if file and allowed_file(file.filename):
+                    # if there's one file with the same name (ignoring ext name), it will be overwritten
+                    for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
+                        existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
+                        if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
+                            os.remove(existing_file_path)
+                    # save file
+                    filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
+                    file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                    post_helper.add_image({"postid": postid, "postimage": filename})
+                    isupload = True
+                    # return jsonify({"message": "Image uploaded successfully"}), 200
+                else:
+                    return jsonify({"message": "Invalid file type"}), 401
+            except ERROR.DB_Error as e:
+                return jsonify({"message": f"Error uploading image: {e}"}), 401
+        if isupload:
+            return jsonify({"message": "Post added successfully with image", "newpostid": postid}), 200
+        else:
+            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
 
@@ -77,33 +107,27 @@ def delete_post():
         return jsonify({"message": f"Error deleting post: {e}"}), 401
 
 
-def allowed_file(filename, ALLOWED_EXT=['jpg', 'jpeg', 'png', 'gif']):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
-
-
 # using param in link is not very safe, well but it's easier to implement without introducing overhead & bugs
 @post_api_bp.route('/api/uploadimage/<int:postid>', methods=['POST'])
 def upload_image(postid):
-    if request.method == 'POST':
-        try:
-            if 'file' not in request.files:
-                return jsonify({"message": "No file part"}), 401
-            file = request.files['file']
-            if file.filename == '':
-                return jsonify({"message": "No selected file"}), 401
-            if file and allowed_file(file.filename):
-                # if there's one file with the same name (ignoring ext name), it will be overwritten
-                for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
-                    existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
-                    if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
-                        os.remove(existing_file_path)
-                # save file
-                filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
-                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-                post_helper.add_image({"postid": postid, "postimage": filename})
-                return jsonify({"message": "Image uploaded successfully"}), 200
-            else:
-                return jsonify({"message": "Invalid file type"}), 401
-        except ERROR.DB_Error as e:
-            return jsonify({"message": f"Error uploading image: {e}"}), 401
+    try:
+        if 'file' not in request.files:
+            return jsonify({"message": "No file part"}), 401
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({"message": "No selected file"}), 401
+        if file and allowed_file(file.filename):
+            # if there's one file with the same name (ignoring ext name), it will be overwritten
+            for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
+                existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
+                if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
+                    os.remove(existing_file_path)
+            # save file
+            filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
+            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            post_helper.add_image({"postid": postid, "postimage": filename})
+            return jsonify({"message": "Image uploaded successfully"}), 200
+        else:
+            return jsonify({"message": "Invalid file type"}), 401
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error uploading image: {e}"}), 401

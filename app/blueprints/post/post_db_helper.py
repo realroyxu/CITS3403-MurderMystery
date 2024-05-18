@@ -40,6 +40,9 @@ def add_post(Post, data):
             post = Post(**data)
             s.add(post)
             s.commit()
+            # get this new post's id
+            # sqlalchemy will just assign new postid directly to this post object
+            return post.postid
         # Need to test which exception will be raised in this method, for now use generic Expection
         except Exception as e:
             raise ERROR.DB_Error(f"{e}") from e
