@@ -104,3 +104,7 @@
     background-color : #5e0f0f !important;
     border : #5e0f0f !important
 }
+
+.delete-post-container{
+    margin : 20px;
+}
