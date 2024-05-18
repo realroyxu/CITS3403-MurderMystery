@@ -1,44 +1,32 @@
-{% extends 'base.html' %}
-
-{% block title %}{{ post.title }}{% endblock %}
-
-{% block content %}
+<div class="main">
     <div class="post" id="post-{{ post.postid }}">
         <div class="post-header">
-            <h2 class="post-title">{{ post.title }}</a></h2>
+            <h2 class="post-title">{{ post.title }}</h2>
         </div>
         <div class="post-content">
-            {#            <div class="sudoku-board">#}
-            <div class="puzzledata card-body code-block">
-                <div class="puzzle-data">{{ post.puzzledata }}</div>
-                <div class="puzzle-image"></div>
+            <div class="content-container {% if not post.postimage %} full-width {% endif %}">
+                <div class="puzzledata card-body code-block">
+                    <div class="puzzle-data">{{ post.puzzledata }}</div>
+                </div>
+                {% if post.postimage %}
+                <div class="postimage-container">
+                    <img class="postimage" src="{{ url_for('static', filename='uploads/') }}{{ post.postimage }}"/>
+                </div>
+                {% endif %}
             </div>
             <div class="solve-button">
                 <h3>
                     <a class="solve" href="#guesstext">Solve it yourself!</a>
                 </h3>
             </div>
-            {#            <div class="post-image"></div>#}
-            <div class="postimage-container">
-                {% if post.postimage %}
-                    <img class="postimage" src="{{ url_for('static', filename='uploads/') }}{{ post.postimage }}"/>
-                {% endif %}
-            </div>
             <div class="post-text">
                 <h4>{{ post.content }}</h4>
             </div>
             <div class="post-comments">
                 <h4>Comments</h4>
-                {% if post.comments %}
-                    {% for comment in post.comments %}
-                        <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon"
-                                                 src="
-
-
-                                                         {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
-                        </p>
-                    {% endfor %}
-                {% endif %}
+                {% for comment in post.comments %}
+                    <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon" src="{{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}</p>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -145,7 +133,7 @@
                                     alert("You are dead now :P");
                                 }
                             }
-                            $('#guessForm').find('textarea[name="guesstext"]').val('');
+                            $('#guessForm').find('textarea[name="guesstext']").val('');
                             window.location.reload();
                         },
                         error: function (xhr) {

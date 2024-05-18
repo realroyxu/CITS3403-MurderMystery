@@ -5,10 +5,6 @@
 {% block content %}
 <div class="main">
     <div class="post-container">
-        <div class="select-image">
-            <h2>Select image (coming soon)</h2>
-            <div class="select-image-placeholder"></div>
-        </div>
         <div class="form-section">
             <h2>Submit Your Post</h2>
             <form id="postForm" method="post">
@@ -69,42 +65,6 @@
                 viewPostButton.onclick = function() {
                     window.location.href = `/forum/${data.postid}`;
                 };
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while submitting the form.');
-        });
-    });
-</script>
-
-<script>
-    document.getElementById('postForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-
-        const fileInput = document.getElementById('image');
-        const file = fileInput.files[0];
-        if (file) {
-            formData.append('file', file);
-        }
-
-        fetch('/api/addpost', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === "Post added successfully with image" || data.message === "Post added successfully. No image found.") {
-                const newpostid = data.postid;
-                alert("Post added successfully!");
-                window.location.href = '/forum/' + newpostid;
             } else {
                 alert(data.message);
             }
