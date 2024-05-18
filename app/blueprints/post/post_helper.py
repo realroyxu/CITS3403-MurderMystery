@@ -3,7 +3,7 @@ import db.db_error_helper as ERROR
 from openai import OpenAI
 import json
 
-client = OpenAI(api_key="")
+client = OpenAI(api_key="sk-proj-2SlC38dyOqRMXTvEq2AJT3BlbkFJO1AUsYD7SAiCqnIUpkoC")
 from app.models.post import Post
 from datetime import datetime
 from app.blueprints.puzzle import puzzle_helper
