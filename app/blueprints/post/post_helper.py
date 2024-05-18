@@ -62,5 +62,11 @@ def get_post_full(postid):
         item['author'] = user_helper.get_username(item['userid'])
         item['avatarid'] = user_helper.get_avatarid(item['userid'])
     return {"postid": post['postid'], "title": post['title'], "content": post['content'],
-            "puzzledata": puzzledata, "comments": comment}
+            "puzzledata": puzzledata, "comments": comment, "postimage": post['postimage']}
 
+
+def add_image(data):
+    try:
+        return Post_DB.add_image(Post, data)
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))

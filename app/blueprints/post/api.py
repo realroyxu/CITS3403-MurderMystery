@@ -86,20 +86,24 @@ def allowed_file(filename, ALLOWED_EXT=['jpg', 'jpeg', 'png', 'gif']):
 @post_api_bp.route('/api/uploadimage/<int:postid>', methods=['POST'])
 def upload_image(postid):
     if request.method == 'POST':
-        if 'file' not in request.files:
-            return jsonify({"message": "No file part"}), 401
-        file = request.files['file']
-        if file.filename == '':
-            return jsonify({"message": "No selected file"}), 401
-        if file and allowed_file(file.filename):
-            # if there's one file with the same name (ignoring ext name), it will be overwritten
-            for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
-                existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
-                if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
-                    os.remove(existing_file_path)
-            # save file
-            filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            return jsonify({"message": "Image uploaded successfully"}), 200
-        else:
-            return jsonify({"message": "Invalid file type"}), 401
+        try:
+            if 'file' not in request.files:
+                return jsonify({"message": "No file part"}), 401
+            file = request.files['file']
+            if file.filename == '':
+                return jsonify({"message": "No selected file"}), 401
+            if file and allowed_file(file.filename):
+                # if there's one file with the same name (ignoring ext name), it will be overwritten
+                for existing_file in os.listdir(current_app.config['UPLOAD_FOLDER']):
+                    existing_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], existing_file)
+                    if os.path.isfile(existing_file_path) and existing_file.startswith(str(postid) + '.'):
+                        os.remove(existing_file_path)
+                # save file
+                filename = str(postid) + os.path.splitext(secure_filename(file.filename))[1]
+                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                post_helper.add_image({"postid": postid, "postimage": filename})
+                return jsonify({"message": "Image uploaded successfully"}), 200
+            else:
+                return jsonify({"message": "Invalid file type"}), 401
+        except ERROR.DB_Error as e:
+            return jsonify({"message": f"Error uploading image: {e}"}), 401
