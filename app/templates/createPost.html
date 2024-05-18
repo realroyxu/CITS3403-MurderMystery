@@ -48,8 +48,10 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.message === "Post added successfully") {
-                        window.location.href = '/index';
+                    if (data.message === "Post added successfully with image" || data.message === "Post added successfully. No image found.") {
+                        const newpostid = data.newpostid;
+                        alert("Post added successfully!");
+                        window.location.href = '/forum/' + newpostid;
                     } else {
                         alert(data.message);
                     }
