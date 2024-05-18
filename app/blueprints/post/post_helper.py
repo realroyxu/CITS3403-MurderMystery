@@ -2,13 +2,15 @@ from . import post_db_helper as Post_DB
 import db.db_error_helper as ERROR
 from openai import OpenAI
 import json
-
-client = OpenAI(api_key="sk-proj-2SlC38dyOqRMXTvEq2AJT3BlbkFJO1AUsYD7SAiCqnIUpkoC")
+import os
 from app.models.post import Post
 from datetime import datetime
 from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
 from app.blueprints.user.user_helper import UserService
+
+api_key = os.getenv('OPENAI_KEY')
+client = OpenAI(api_key=api_key)
 
 user_helper = UserService()
 
