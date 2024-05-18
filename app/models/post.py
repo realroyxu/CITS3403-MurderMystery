@@ -12,6 +12,7 @@ class Post(Base):
     posttime: Mapped[str] = mapped_column(String, nullable=False)
     posttype: Mapped[str] = mapped_column(String, nullable=False, default='(Unknown)')
     puzzleid: Mapped[int] = mapped_column(Integer, ForeignKey('puzzle.puzzleid', ondelete='CASCADE'))
+    postimage: Mapped[str] = mapped_column(String, nullable=True)
 
     def __repr__(self):
         return f"Post({self.postid!r}, {self.title!r})"

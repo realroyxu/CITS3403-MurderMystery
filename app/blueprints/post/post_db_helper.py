@@ -19,7 +19,7 @@ def get_post(Post, data):
     with Session() as s:
         try:
             stmt = select(Post.postid, Post.userid, Post.title, Post.content, Post.posttime, Post.posttype,
-                          Post.puzzleid).where(
+                          Post.puzzleid, Post.postimage).where(
                 Post.postid == data['postid'])
             res = s.execute(stmt).one()
             if res:
@@ -41,6 +41,8 @@ def add_post(Post, data):
             s.add(post)
             s.commit()
             s.refresh(post)
+            # get this new post's id
+            # sqlalchemy will just assign new postid directly to this post object
             return post.postid
         # Need to test which exception will be raised in this method, for now use generic Expection
         except Exception as e:
@@ -98,6 +100,21 @@ def delete_post(Post, data):
         try:
             stmt = delete(Post).where(Post.postid == data['postid'])
             s.execute(stmt)
+            s.commit()
+        except sqlalchemy.exc.NoResultFound:
+            raise ERROR.DB_Error("No post found.")
+
+
+def add_image(Post, data):
+    if 'postid' not in data:
+        raise ERROR.DB_Error("postid not provided.")
+    if 'postimage' not in data:
+        raise ERROR.DB_Error("postimage not provided.")
+    with Session() as s:
+        try:
+            stmt = select(Post).where(Post.postid == data['postid'])
+            origin = s.execute(stmt).scalar_one()
+            origin.postimage = data.get('postimage', origin.postimage)
             s.commit()
         except sqlalchemy.exc.NoResultFound:
             raise ERROR.DB_Error("No post found.")
