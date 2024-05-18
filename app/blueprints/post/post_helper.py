@@ -8,6 +8,7 @@ from datetime import datetime
 from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
 from app.blueprints.user.user_helper import UserService
+import app.blueprints.leaderboard.siteleaderboard_helper as Slb_Helper
 
 api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key="hi")
@@ -73,6 +74,7 @@ def add_post(data):
         'puzzleid': data.get('puzzleid', 1)
     }
     try:
+        Slb_Helper.new_post(data['userid'])
         return Post_DB.add_post(Post, new_post)
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
@@ -141,7 +143,7 @@ def generate_story(title, content, characters):
         return story_data
     except Exception as e:
         print(e)
-        return "An error occurred while generating the story."
+        return f"An error occurred while generating the story.{e}"
 def add_image(data):
     try:
         return Post_DB.add_image(Post, data)
