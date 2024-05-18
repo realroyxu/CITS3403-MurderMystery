@@ -3,31 +3,35 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="main">
-    <div class="sudoku-container">
-        <div class="createSudoku">
-            <h2>Sudoku Board (Coming Soon)</h2>
-        </div>
-        <div class="form-section">
-            <h2>Submit Your Post</h2>
-            <form id="postForm" method="post">
+    <div class="main">
+        <div class="post-container">
+            <div class="select-image">
+                <h2>Select image (coming soon)</h2>
                 <div class="form-group">
-                    <label for="title">Title: </label>
-                    <input type="text" id="title" name="title" required>
+                    <input type="file" id="image" name="image">
+                    <button type="submit">Upload</button>
                 </div>
-                <div class="form-group">
-                    <label for="content">Content: </label>
-                    <textarea id="content" name="content" required></textarea>
-                </div>
-                <button type="submit">Submit</button>
-            </form>
+            </div>
+            <div class="form-section">
+                <h2>Submit Your Post</h2>
+                <form id="postForm" method="post">
+                    <div class="form-group">
+                        <label for="title">Title: </label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content: </label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </div>
+
     </div>
 
-</div>
-
     <script>
-        document.getElementById('postForm').addEventListener('submit', function(event) {
+        document.getElementById('postForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
@@ -39,18 +43,18 @@
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === "Post added successfully") {
-                    window.location.href = '/index';
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form.');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "Post added successfully") {
+                        window.location.href = '/index';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the form.');
+                });
         });
     </script>
 {% endblock %}
