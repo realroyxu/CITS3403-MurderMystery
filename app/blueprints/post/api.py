@@ -77,9 +77,9 @@ def add_post():
             except ERROR.DB_Error as e:
                 return jsonify({"message": f"Error uploading image: {e}"}), 401
         if isupload:
-            return jsonify({"message": "Post added successfully with image"}), 200
+            return jsonify({"message": "Post added successfully with image", "newpostid": postid}), 200
         else:
-            return jsonify({"message": "Post added successfully. No image found."}), 200
+            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
 

@@ -9,7 +9,6 @@
                 <h2>Select image (coming soon)</h2>
                 <div class="form-group">
                     <input type="file" id="image" name="image">
-                    <button type="submit">Upload</button>
                 </div>
             </div>
             <div class="form-section">
@@ -35,7 +34,11 @@
             event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
-
+            const fileInput = document.getElementById('image');
+            const file = fileInput.files[0];
+            if (file) {
+                formData.append('file', file);
+            }
             fetch('/api/addpost', {
                 method: 'POST',
                 body: formData,

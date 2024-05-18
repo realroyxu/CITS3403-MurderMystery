@@ -28,13 +28,16 @@
             </div>
             <div class="post-comments">
                 <h4>Comments</h4>
-                {% for comment in post.comments %}
-                    <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon"
-                                             src="
+                {% if post.comments %}
+                    {% for comment in post.comments %}
+                        <p class="comments"><img data-userid="{{ comment.userid }}" class="comment-user-icon user-icon"
+                                                 src="
 
-                                                     {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
-                    </p>
-                {% endfor %}
+
+                                                         {{ url_for('static', filename='images/avatars/') }}{{ comment.avatarid }}.png"/>{{ comment.author }}: {{ comment.commenttext }}
+                        </p>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

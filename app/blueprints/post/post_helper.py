@@ -58,9 +58,10 @@ def get_post_full(postid):
     puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})['puzzledata']
     print(puzzledata)
     comment = comment_helper.get_comments({"postid": postid})
-    for item in comment:
-        item['author'] = user_helper.get_username(item['userid'])
-        item['avatarid'] = user_helper.get_avatarid(item['userid'])
+    if comment:
+        for item in comment:
+            item['author'] = user_helper.get_username(item['userid'])
+            item['avatarid'] = user_helper.get_avatarid(item['userid'])
     return {"postid": post['postid'], "title": post['title'], "content": post['content'],
             "puzzledata": puzzledata, "comments": comment, "postimage": post['postimage']}
 
