@@ -54,13 +54,13 @@ def delete_post(data):
 def get_post_full(postid):
     post = get_post({'postid': postid})
     print(post)
-    puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})
+    # we don't want everyone knows the puzzle answer :P
+    puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})['puzzledata']
     print(puzzledata)
     comment = comment_helper.get_comments({"postid": postid})
     for item in comment:
         item['author'] = user_helper.get_username(item['userid'])
         item['avatarid'] = user_helper.get_avatarid(item['userid'])
-        item.pop('userid')
     return {"postid": post['postid'], "title": post['title'], "content": post['content'],
             "puzzledata": puzzledata, "comments": comment}
 

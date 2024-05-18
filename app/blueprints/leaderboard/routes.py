@@ -6,4 +6,5 @@ import db.db_error_helper as ERROR
 
 @plb_bp.route('/leaderboard', methods=['GET'])
 def leaderboard():
-    return render_template('leaderboard.html')
+    css_file_path = url_for('static', filename='leaderboard_style.css')
+    return render_template('leaderboard.html', css_file_path=css_file_path)

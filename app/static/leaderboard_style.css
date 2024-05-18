@@ -1,9 +1,35 @@
-.leaderboard-container{
-    display : flex;
-    justify-content : center;
-    margin : 100px;
+.leaderboard-username, .leaderboard-postcount, .leaderboard-solvecount {
+    text-align: center;
+    vertical-align: middle;
 }
 
-.leaderboard-username, .leaderboard-score{
-    width : 150px;
+th {
+    width : 70vh;
+    text-align: center !important;
+}
+
+.big-leaderboard-container {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+
+
+.leaderboard{
+    margin-bottom : 50px;
+}
+.button {
+    display: flex;
+    justify-content: center;
+    margin-bottom : 20px;
+}
+
+.leaderboard-body{
+    height : 100vh;
 }

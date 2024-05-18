@@ -5,10 +5,10 @@
 {% block content %}
     <div class="sudoku">
         <div class="board">
+            {#            replace this with sth else plz#}
             {% include '/board/board.html' %}
         </div>
         <div class="leaderboard">
-            {% set sample_data=sample_data %}
             {% include "leaderboard_component.html" %}
         </div>
     </div>
@@ -16,6 +16,53 @@
         {% set forum_posts=forum_posts %}
         {% include "forum/forum.html" %}
     </div>
+    <script>
+        $(document).ready(function () {
+            let sortbypost = true;
+            const slbBody = $('.slb-body');
+
+            function fetchAndRenderData(url, limit) {
+                $.ajax({
+                    url: `${url}?limit=${limit}`,
+                    method: 'GET',
+                    success: function (response) {
+                        slbBody.empty();
+                        response.forEach(function (item) {
+                            slbBody.append(`
+                                <tr class="leaderboard-item">
+                                    <td class="leaderboard-username">
+                                        ${item.username}
+                                    </td>
+                                    <td class="leaderboard-postcount">
+                                        ${item.postcount}
+                                    </td>
+                                    <td class="leaderboard-solvecount">
+                                        ${item.solvecount}
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        $('#message').text(response.message);
+                        alert(response.message);
+                    }
+                });
+            }
+
+            // Initial fetch with limit 10
+            fetchAndRenderData('api/getslbbypost', 10);
+
+            // Button click event
+            $('.changesort-btn').click(function () {
+                sortbypost = !sortbypost;
+                const url = sortbypost ? 'api/getslbbypost' : 'api/getslbbysolve';
+                fetchAndRenderData(url, 10);
+            });
+        });
+    </script>
+
 {% endblock %}
 
 
