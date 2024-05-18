@@ -1,0 +1,944 @@
+{
+  "id": "60d1dc09-3c82-4ca2-bbef-a6d76e661427",
+  "version": "2.0",
+  "name": "CITS3403 Assignment",
+  "url": "http://127.0.0.1:8000",
+  "tests": [{
+    "id": "787a475e-f933-4002-a922-40c293dc70f4",
+    "name": "Create User",
+    "commands": [{
+      "id": "f65ea44c-de78-48fe-96b0-21d5ca427fbc",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8e023d0f-dd37-4801-b7cb-31eedb5656b8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "90300dd3-f733-4757-a6f4-8f0b8b42ef7b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Login",
+      "targets": [
+        ["linkText=Login", "linkText"],
+        ["css=.login > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Login')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user/login')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Login')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb55b82a-9f38-4ee4-82fb-0269fab63586",
+      "comment": "",
+      "command": "click",
+      "target": "css=.register-text",
+      "targets": [
+        ["css=.register-text", "css:finder"],
+        ["xpath=//span", "xpath:position"],
+        ["xpath=//span[contains(.,'Register here')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3431313d-c889-4f4e-b55d-2e4d6c53a1bd",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7c614043-8210-405c-aff3-caf063ec4fcc",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "New User"
+    }, {
+      "id": "254427d6-71ba-4671-8d43-2f7d8a9f0b97",
+      "comment": "",
+      "command": "type",
+      "target": "id=confirm_password",
+      "targets": [
+        ["id=confirm_password", "id"],
+        ["name=confirm_password", "name"],
+        ["css=#confirm_password", "css:finder"],
+        ["xpath=//input[@id='confirm_password']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "5YEM9zb4y5}J~6U"
+    }, {
+      "id": "5dc3d7ee-e80f-4b6f-8d5d-b91dc2c4c64b",
+      "comment": "",
+      "command": "click",
+      "target": "id=confirm_password",
+      "targets": [
+        ["id=confirm_password", "id"],
+        ["name=confirm_password", "name"],
+        ["css=#confirm_password", "css:finder"],
+        ["xpath=//input[@id='confirm_password']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c390b400-626e-449c-8286-1a039c9911fa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.register-form",
+      "targets": [
+        ["css=.register-form", "css:finder"],
+        ["xpath=//main/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2d63005d-67be-4661-9068-efec26f14e53",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["name=submit", "name"],
+        ["css=#submit", "css:finder"],
+        ["xpath=//input[@id='submit']", "xpath:attributes"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ba1f02d1-0e8f-4261-922c-571269ae31b6",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9108b9db-7db1-4753-bdec-091ebf3daca4",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Account created for New User!",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "17ada22a-7715-4f74-a7c7-4872fb3d078f",
+    "name": "Log Out",
+    "commands": [{
+      "id": "5473a2e2-52fe-43ba-9d5c-6742ea646f5d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "907acbf6-ab0d-4b79-8c06-7f2603ef3583",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0857875c-eafd-4a9d-86d8-e5e877144e7a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.login",
+      "targets": [
+        ["css=.login", "css:finder"],
+        ["xpath=//div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6c34c0bf-cae9-486c-9c84-d7a9da238996",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Profile",
+      "targets": [
+        ["linkText=Profile", "linkText"],
+        ["css=.login > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Profile')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user/home')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Profile')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cab7b4a5-8457-48f9-92b8-bcc1bc594ce2",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Logout",
+      "targets": [
+        ["linkText=Logout", "linkText"],
+        ["css=.btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user/logout')]", "xpath:href"],
+        ["xpath=//main/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "e85bfa6f-4e44-4438-ab21-68cec8de13f2",
+    "name": "Log In",
+    "commands": [{
+      "id": "4c25f83b-3c1e-4066-8f83-0a294db3c793",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "84d0435a-1355-4e9a-8c1f-8cc4779038af",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1072x950",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b11e526a-4ef0-4889-a527-10114c9976eb",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Login",
+      "targets": [
+        ["linkText=Login", "linkText"],
+        ["css=.login > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Login')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/user/login')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Login')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "efadf8c4-2abc-484c-a34f-4c96b918af95",
+      "comment": "",
+      "command": "click",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b04177ec-4fe4-4b46-8b3a-eea598326768",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "New User"
+    }, {
+      "id": "60b2a521-76dd-48ae-b14f-ffb052c47e81",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["name=submit", "name"],
+        ["css=#submit", "css:finder"],
+        ["xpath=//input[@id='submit']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "af2ff7ca-8738-43c9-9f76-37ea872a6e2f",
+    "name": "Create Post [Logged Out]",
+    "commands": [{
+      "id": "99548d54-5882-444c-be39-d43e40bb3599",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "acc47da0-e8d0-4016-98a1-0c458483c833",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d94b46ff-e204-4bc3-bbea-5d2e941a1987",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Create Post",
+      "targets": [
+        ["linkText=Create Post", "linkText"],
+        ["css=.nav-links > a:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'Create Post')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/createPost')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Create Post')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b73a3fab-c67c-4baa-ad70-df699fda9913",
+      "comment": "",
+      "command": "click",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["name=title", "name"],
+        ["css=#title", "css:finder"],
+        ["xpath=//input[@id='title']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1d3b4fe0-81df-4eb4-925f-220c113bf9d6",
+      "comment": "",
+      "command": "type",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["name=title", "name"],
+        ["css=#title", "css:finder"],
+        ["xpath=//input[@id='title']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "New Murder Mystery!"
+    }, {
+      "id": "ac896ecd-9d72-4807-90c8-7cf1888097f8",
+      "comment": "",
+      "command": "click",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "103d9113-a0f7-4544-8af2-346685f9d39d",
+      "comment": "",
+      "command": "type",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "Robert and Bob Live alone in a spooky mansion rumored to be haunted and surrounded by mystery. They host a part together one night with their friends James, John, Allen, Rebecca, and Chao. "
+    }, {
+      "id": "f86976ed-2a77-405a-baac-fc1a813f5256",
+      "comment": "",
+      "command": "click",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d3a21f20-1833-4bce-8731-7cf0f4e3a494",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "461.3999938964844,222.60000610351562"
+    }, {
+      "id": "d2ea93e6-f987-4286-8e6c-c31e9ae35997",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "461.3999938964844,222.60000610351562"
+    }, {
+      "id": "f547918e-2ed1-4bef-a580-ea9f936d5de9",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "461.3999938964844,222.60000610351562"
+    }, {
+      "id": "3c319667-5e46-475e-beab-05a2bbd0df98",
+      "comment": "",
+      "command": "click",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2db061e1-4be1-4e39-91a8-2d42ce64316b",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "1072.3999938964844,-10.399993896484375"
+    }, {
+      "id": "3ef95090-73d1-4828-8a41-215c74a288da",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "1072.3999938964844,-10.399993896484375"
+    }, {
+      "id": "6d6db20c-33b0-4a5d-80bc-5e2650c2fb75",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "1072.3999938964844,-10.399993896484375"
+    }, {
+      "id": "4b625950-19c6-41c2-a85e-7601aa6f2b37",
+      "comment": "",
+      "command": "click",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d0e8802-9e7d-43b5-8861-93f70b97f488",
+      "comment": "",
+      "command": "type",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "Robert and Bob live alone in a spooky mansion rumored to be haunted and surrounded by mystery. They host a part together one night with their friends James, John, Allen, Rebecca, and Chao. Robert was murdered that night by Allen. James and John were drinking whisky together at the time, but noone else knows what they were doing. Rebecca was talking to Bob at the time. This can be proven by some CCTV footage recorded of them talking whilst grabbing something from Rebecca's car. Chao was walking back from the kitchen after grabbing himself a cold beer. The fact that it is cold should be important to the story. Allen shot Robert at the same time some lightning struck nearby, meaning that he had several minutes to blend back in before anyone realised what had happened."
+    }, {
+      "id": "e8772ed2-c187-4f7e-b881-af7af6915150",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "id=characters",
+      "targets": [
+        ["id=characters", "id"],
+        ["name=characters", "name"],
+        ["css=#characters", "css:finder"],
+        ["xpath=//textarea[@id='characters']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[3]/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/textarea", "xpath:position"]
+      ],
+      "value": "329.3999938964844,62.100006103515625"
+    }, {
+      "id": "823222bf-319e-4385-801a-a9bd210f81ec",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "id=characters",
+      "targets": [
+        ["id=characters", "id"],
+        ["name=characters", "name"],
+        ["css=#characters", "css:finder"],
+        ["xpath=//textarea[@id='characters']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[3]/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/textarea", "xpath:position"]
+      ],
+      "value": "329.3999938964844,62.100006103515625"
+    }, {
+      "id": "97a3da31-e643-4fd9-add9-54bc5c3d56c6",
+      "comment": "",
+      "command": "click",
+      "target": "id=characters",
+      "targets": [
+        ["id=characters", "id"],
+        ["name=characters", "name"],
+        ["css=#characters", "css:finder"],
+        ["xpath=//textarea[@id='characters']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[3]/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ffbc52e-0e94-444c-a9a1-743d880e2250",
+      "comment": "",
+      "command": "type",
+      "target": "id=characters",
+      "targets": [
+        ["id=characters", "id"],
+        ["name=characters", "name"],
+        ["css=#characters", "css:finder"],
+        ["xpath=//textarea[@id='characters']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[3]/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/textarea", "xpath:position"]
+      ],
+      "value": "Robert, A gay man and founder of a large science organization known as LabTech.\\nBob, Robert's partner and cofounder of LabTech. Has some experience as a forensic scientist.\\nJames, A university drop-out who found some success as an artist.\\nJohn, A barely-functional alcoholic who has been friends with James for some time.\\nRebecca, the first female prime-minister of Australia.\\nChao, Bob's long-time friend and party-animal. "
+    }, {
+      "id": "9b957a09-29c1-4865-998e-8ccd3845737c",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "User not authorized",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "c6f84437-a01d-4cec-96f2-0da34580dd44",
+    "name": "Create Post [Logged In]",
+    "commands": [{
+      "id": "9cff03ce-c36a-4311-b49c-d001105b1967",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "46bee04d-40a6-49da-a793-7e3fe677ab70",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c1b5e506-40e4-4126-bab1-5699a8e95a4f",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Create Post",
+      "targets": [
+        ["linkText=Create Post", "linkText"],
+        ["css=.nav-links > a:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'Create Post')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/createPost')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Create Post')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "17693231-d2dc-40f6-8b39-e2d71d58bb46",
+      "comment": "",
+      "command": "click",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c04ddb89-5780-49af-b2da-118f58efc97b",
+      "comment": "",
+      "command": "type",
+      "target": "id=content",
+      "targets": [
+        ["id=content", "id"],
+        ["name=content", "name"],
+        ["css=#content", "css:finder"],
+        ["xpath=//textarea[@id='content']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[2]/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "Robert and Bob live alone in a spooky mansion rumored to be haunted and surrounded by mystery. They host a part together one night with their friends James, John, Allen, Rebecca, and Chao. Robert was murdered that night by Allen. James and John were drinking whisky together at the time, but noone else knows what they were doing. Rebecca was talking to Bob at the time. This can be proven by some CCTV footage recorded of them talking whilst grabbing something from Rebecca's car. Chao was walking back from the kitchen after grabbing himself a cold beer. The fact that it is cold should be important to the story. Allen shot Robert at the same time some lightning struck nearby, meaning that he had several minutes to blend back in before anyone realised what had happened. Unfortunately, the lightning somehow managed to knock out the power grid, including their cars! It will be at least a week before power is restored."
+    }, {
+      "id": "e60f99fe-8d1d-42db-9af9-73a6f9279b86",
+      "comment": "",
+      "command": "click",
+      "target": "id=characters",
+      "targets": [
+        ["id=characters", "id"],
+        ["name=characters", "name"],
+        ["css=#characters", "css:finder"],
+        ["xpath=//textarea[@id='characters']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[3]/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e2350537-8762-400c-9101-b6e54f1b0707",
+      "comment": "",
+      "command": "type",
+      "target": "id=characters",
+      "targets": [
+        ["id=characters", "id"],
+        ["name=characters", "name"],
+        ["css=#characters", "css:finder"],
+        ["xpath=//textarea[@id='characters']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div[3]/textarea", "xpath:idRelative"],
+        ["xpath=//div[3]/textarea", "xpath:position"]
+      ],
+      "value": "Robert, A gay man and founder of a large science organization known as LabTech.\\nBob, Robert's partner and cofounder of LabTech. Has some experience as a forensic scientist.\\nJames, A university drop-out who found some success as an artist.\\nJohn, A barely-functional alcoholic who has been friends with James for some time.\\nRebecca, the first female prime-minister of Australia.\\nChao, Bob's long-time friend and party-animal. "
+    }, {
+      "id": "09211fb4-3875-4475-acc4-ae42dd1a6274",
+      "comment": "",
+      "command": "click",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["name=title", "name"],
+        ["css=#title", "css:finder"],
+        ["xpath=//input[@id='title']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "428065a8-de28-4bf0-9c09-1c2a0a572fda",
+      "comment": "",
+      "command": "type",
+      "target": "id=title",
+      "targets": [
+        ["id=title", "id"],
+        ["name=title", "name"],
+        ["css=#title", "css:finder"],
+        ["xpath=//input[@id='title']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "Mansion Murder Mystery! No Help!"
+    }, {
+      "id": "e3e34a16-589d-4bdf-a4fd-3bd9484889d9",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7d64daae-719f-46fa-bb3b-9ede25702311",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e95e378-2fdc-4767-8bf2-adcfdd77ab93",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fc67e06a-466a-4f6a-9279-d5c989f06251",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2738a24c-8c93-4be7-9840-54d4faae0b9b",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5d3db4e5-1033-4790-a5db-10c71ae8a2d0",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "82d1931b-1804-40ae-9427-18be3909d209",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e775906f-e8ab-4361-ad99-50f517a01bc6",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "82c65c8f-681b-4ce8-99b2-7a8790296210",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "30444493-90e7-4071-a2ae-25a1a5e67f99",
+      "comment": "",
+      "command": "click",
+      "target": "css=button:nth-child(5)",
+      "targets": [
+        ["css=button:nth-child(5)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='postForm']/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "172007df-b94d-4dfb-8d42-6d0384cad78f",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "An error occurred while submitting the form.",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "80cd1153-4089-48f2-9976-3d58a1cc2d35",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "An error occurred while submitting the form.",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "df0e5328-53af-4fe4-a9f2-fe356f0e9487",
+    "name": "Leave Comment",
+    "commands": [{
+      "id": "59f38b33-9131-48fe-b8c3-08c28ffb4812",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3c3f7995-7e2f-40db-bd8d-0f2c9027dce6",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "05bf4b7e-4963-435f-8539-4103b2419cef",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Home",
+      "targets": [
+        ["linkText=Home", "linkText"],
+        ["css=.nav-links > a:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/index')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Home')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "da517731-4b0c-4e7a-8196-dad997dfa6c2",
+      "comment": "",
+      "command": "click",
+      "target": "css=#post-2 .post-comments-link",
+      "targets": [
+        ["css=#post-2 .post-comments-link", "css:finder"],
+        ["xpath=(//a[contains(text(),'View more comments')])[2]", "xpath:link"],
+        ["xpath=//div[@id='post-2']/div[2]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/forum/2')])[2]", "xpath:href"],
+        ["xpath=//div[2]/div[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "056e7e1a-8412-4a4d-9ffa-ce32629897cb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.post-comments > h4",
+      "targets": [
+        ["css=.post-comments > h4", "css:finder"],
+        ["xpath=//div[@id='post-2']/div[2]/div[4]/h4", "xpath:idRelative"],
+        ["xpath=//div[4]/h4", "xpath:position"],
+        ["xpath=//h4[contains(.,'Comments')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8e0c7898-aafd-4b47-865c-e9eb0efe66ce",
+      "comment": "",
+      "command": "click",
+      "target": "css=#commentForm > .form-group",
+      "targets": [
+        ["css=#commentForm > .form-group", "css:finder"],
+        ["xpath=//form[@id='commentForm']/div", "xpath:idRelative"],
+        ["xpath=//form/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a8b47a9d-9881-403b-8720-58032ece7731",
+      "comment": "",
+      "command": "click",
+      "target": "id=commenttext",
+      "targets": [
+        ["id=commenttext", "id"],
+        ["name=commenttext", "name"],
+        ["css=#commenttext", "css:finder"],
+        ["xpath=//textarea[@id='commenttext']", "xpath:attributes"],
+        ["xpath=//form[@id='commentForm']/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e7d371a6-e0cc-4fd4-be9c-21fe4de59754",
+      "comment": "",
+      "command": "type",
+      "target": "id=commenttext",
+      "targets": [
+        ["id=commenttext", "id"],
+        ["name=commenttext", "name"],
+        ["css=#commenttext", "css:finder"],
+        ["xpath=//textarea[@id='commenttext']", "xpath:attributes"],
+        ["xpath=//form[@id='commentForm']/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "This is such poor writing OMG!!!!!!!"
+    }, {
+      "id": "60f3926c-9856-4441-be0a-53b928d6ccb7",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["name=submit", "name"],
+        ["css=.button:nth-child(3) > #submit", "css:finder"],
+        ["xpath=//input[@id='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='commentForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6078d5f9-aa16-46f6-b01e-3c6e7f8a51cb",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Comment added successfully",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "c7b2236f-b156-427c-a46d-c587cea776cb",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://127.0.0.1:8000/"],
+  "plugins": []
+}
