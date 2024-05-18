@@ -37,12 +37,12 @@ def add_post():
         return jsonify({"message": "User not authorized"}), 401
 
     try:
-        generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'])
+        generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'], data['answer'])
         puzzle_data = {
             'userid': data['userid'],
-            'puzzledata': generated_story['story'],
-            'category': generated_story['explanation'],
-            'puzzleanswer': generated_story['killer']
+            'puzzledata': generated_story,
+            'category': '',
+            'puzzleanswer': data['answer']
         }
         puzzle_id = puzzle_helper.add_puzzle(puzzle_data)
         data['puzzleid'] = puzzle_id
@@ -67,11 +67,13 @@ def add_post():
 
         if isupload:
             return jsonify({"message": "Post added successfully with image", "newpostid": postid,
-                            "story": generated_story['story'], "postid": postid}), 200
+                            "story": generated_story, "postid": postid}), 200
         else:
             return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid,
-                            "story": generated_story['story'], "postid": postid}), 200
+                            "story": generated_story, "postid": postid}), 200
     except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error adding post: {e}"}), 401
+    except RuntimeError as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
 
 
