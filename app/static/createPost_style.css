@@ -45,7 +45,7 @@
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #5e0f0f;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -54,7 +54,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #7c1414;
 }
 
 .viewpost{
@@ -62,3 +62,14 @@ button:hover {
     justify-content : center;
     margin-top : 20px;
 }
+
+.form-section{
+    background-color : rgb(128, 127, 127);
+    color : white;
+}
+
+.story-section{
+    padding : 80px;
+    color : white;
+}
+

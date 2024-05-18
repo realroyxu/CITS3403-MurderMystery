@@ -32,4 +32,10 @@ th {
 
 .leaderboard-body{
     height : 100vh;
+    color : white;
+}
+
+.btn-primary{
+    background-color : #5e0f0f !important;
+    border : #5e0f0f !important
 }

@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ css_file_path }}">
-    <link rel="icon" type="image/svg+xml" href="{{url_for('static', filename='images/logo.svg')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='base_style.css')}}">
+    <link rel="icon" type="image/svg+xml" href="{{url_for('static', filename='images/knife.png')}}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {% block scripts %}{% endblock %}
 </head>
 <body>
-    <header>
-        {% include 'navigation_bar.html' %}
-    </header>
+    {% include 'navigation_bar.html' %}
 
     <main>
         {% block content %}{% endblock %}
@@ -21,5 +20,6 @@
     <footer>
         {% include 'footer.html' %}
     </footer>
+
 </body>
 </html>
