@@ -28,6 +28,8 @@
                         <input type="file" id="image" name="image">
                     </div>
                     <button type="submit">Submit</button>
+                    <div class="loading">Spamming chatGPT...</div>
+                    <div class="loading spinner"></div>
 
                 </form>
             </div>
@@ -44,6 +46,7 @@
     <script>
         document.getElementById('postForm').addEventListener('submit', function (event) {
             event.preventDefault();
+            $('.loading').show();
             const form = event.target;
             const formData = new FormData(form);
 
@@ -63,6 +66,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.message === "Post added successfully" || data.message === "Post added successfully with image" || data.message === "Post added successfully. No image found.") {
+                        $('.loading').hide();
                         document.getElementById('storySection').style.display = 'block';
                         document.getElementById('storyContent').innerText = data.story;
                         const viewPostButton = document.getElementById('viewPostButton');
@@ -72,10 +76,12 @@
                             window.location.href = `/forum/${data.postid}`;
                         };
                     } else {
+                        $('.loading').hide();
                         alert(data.message);
                     }
                 })
                 .catch(error => {
+                    $('.loading').hide();
                     console.error('Error:', error);
                     alert('An error occurred while submitting the form.');
                 });
