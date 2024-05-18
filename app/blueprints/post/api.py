@@ -63,9 +63,9 @@ def add_post():
                 return jsonify({"message": "Invalid file type"}), 401
 
         if isupload:
-            return jsonify({"message": "Post added successfully with image", "newpostid": postid, "story": generated_story['story']}), 200
+            return jsonify({"message": "Post added successfully with image", "newpostid": postid, "story": generated_story['story'], "postid": postid}), 200
         else:
-            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid, "story": generated_story['story']}), 200
+            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid, "story": generated_story['story'], "postid": postid}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
 
