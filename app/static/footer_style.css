@@ -4,6 +4,8 @@
 footer{
     background-color: #5e0f0f;
     border : none;
+    position: relative;
+    bottom: 0;
 }
 
 .github-icons{

@@ -1,5 +1,6 @@
-.main{
-    height : 100vh;
+.main {
+    height: 100vh;
+    margin-bottom: 20vh;
 }
 
 .post-container {
@@ -57,19 +58,19 @@ button:hover {
     background-color: #7c1414;
 }
 
-.viewpost{
-    display : flex;
-    justify-content : center;
-    margin-top : 20px;
+.viewpost {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.form-section{
-    background-color : rgb(128, 127, 127);
-    color : white;
+.form-section {
+    background-color: rgb(128, 127, 127);
+    color: white;
 }
 
-.story-section{
-    padding : 80px;
-    color : white;
+.story-section {
+    padding: 80px;
+    color: white;
 }
 
