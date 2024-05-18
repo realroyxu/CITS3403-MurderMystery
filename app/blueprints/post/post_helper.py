@@ -1,5 +1,9 @@
 from . import post_db_helper as Post_DB
 import db.db_error_helper as ERROR
+from openai import OpenAI
+import json
+
+client = OpenAI(api_key="sk-proj-2SlC38dyOqRMXTvEq2AJT3BlbkFJO1AUsYD7SAiCqnIUpkoC")
 from app.models.post import Post
 from datetime import datetime
 from app.blueprints.puzzle import puzzle_helper
@@ -24,14 +28,14 @@ def add_post(data):
         'title': data.get('title', '(NO TITLE)'),
         'content': data.get('content', '(NO CONTENT)'),
         'posttime': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'posttype': data.get('posttype', '(Unknown)'),
+        'posttype': data.get('posttype', 'Murder Mystery'),
         'puzzleid': data.get('puzzleid', 1)
     }
-
     try:
         return Post_DB.add_post(Post, new_post)
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
+
 
 
 def edit_post(data):
@@ -53,19 +57,49 @@ def delete_post(data):
 
 def get_post_full(postid):
     post = get_post({'postid': postid})
-    print(post)
-    # we don't want everyone knows the puzzle answer :P
+    # we don't want everyone to know the puzzle answer :P
     puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})['puzzledata']
-    print(puzzledata)
-    comment = comment_helper.get_comments({"postid": postid})
-    if comment:
-        for item in comment:
+    comment = []
+    comments = comment_helper.get_comments({"postid": postid})
+    if comments is not None:
+        for item in comments:
             item['author'] = user_helper.get_username(item['userid'])
             item['avatarid'] = user_helper.get_avatarid(item['userid'])
+            comment.append(item)
     return {"postid": post['postid'], "title": post['title'], "content": post['content'],
             "puzzledata": puzzledata, "comments": comment, "postimage": post['postimage']}
 
 
+def generate_story(title, content, characters):
+    prompt = f"""
+            Title: {title}
+            Content: {content}
+            Characters: {characters}
+
+            Generate a murder mystery story and identify the killer with an explanation.
+            DO NOT REVEAL THE KILLER IN THE STORY
+            Reply in JSON with the format:
+            {{
+                "story": "<story_text>",
+                "killer": "<killer_name>",
+                "explanation": "<explanation>"
+            }}
+            """
+
+    try:
+        response = client.chat.completions.create(model="gpt-3.5-turbo-0125",
+        messages=[
+            {"role": "system", "content": "You are a creative assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=300)
+
+        story = response.choices[0].message.content.strip()
+        story_data = json.loads(story)
+        return story_data
+    except Exception as e:
+        print(e)
+        return "An error occurred while generating the story."
 def add_image(data):
     try:
         return Post_DB.add_image(Post, data)

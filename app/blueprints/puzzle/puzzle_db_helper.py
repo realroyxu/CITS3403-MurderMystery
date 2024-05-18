@@ -6,7 +6,7 @@ import db.db_error_helper as ERROR
 
 
 def puzzle_fieldcheck(data):
-    valid_field = ['userid', 'puzzledata', 'updatetime', 'category']
+    valid_field = ['userid', 'puzzledata', 'updatetime', 'category', 'puzzleanswer']
     if not all(field in valid_field for field in data.keys()):
         raise ERROR.DB_Error("Error adding puzzle: invalid field provided.")
     return
@@ -39,12 +39,16 @@ def add_puzzle(Puzzle, data):
         raise ERROR.DB_Error("userid not provided.")
     if 'updatetime' not in data:
         raise ERROR.DB_Error("updatetime not provided.")
+
     puzzle_fieldcheck(data)
+
     with Session() as s:
         try:
             puzzle = Puzzle(**data)
             s.add(puzzle)
             s.commit()
+            s.refresh(puzzle)
+            return puzzle.puzzleid
         except Exception as e:
             raise ERROR.DB_Error(f"{e}") from e
 

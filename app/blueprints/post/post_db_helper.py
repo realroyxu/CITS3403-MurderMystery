@@ -40,6 +40,7 @@ def add_post(Post, data):
             post = Post(**data)
             s.add(post)
             s.commit()
+            s.refresh(post)
             # get this new post's id
             # sqlalchemy will just assign new postid directly to this post object
             return post.postid
