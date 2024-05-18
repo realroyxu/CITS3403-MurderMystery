@@ -16,7 +16,6 @@ def forum(postid):
         comment_form = CommentForm()
         guess_form = GuessForm()
         postdata = post_helper.get_post_full(postid)
-        # print(postdata)
         css_file_path = url_for('static', filename='forum/forum_post_style.css')
         return render_template('forum_post.html', css_file_path=css_file_path, post=postdata, commentform=comment_form,
                                guessform=guess_form)
@@ -26,7 +25,20 @@ def forum(postid):
         return render_template('/error/error.html', css_file_path=css_file_path, error="Post not found",
                                last_url=last_url)
 
-
-@post_bp.route('/solve/<int:id>', methods=['GET', 'POST'])
-def solve(id):
-    return "Hello world"
+@post_bp.route('/forums')
+def forums():
+    overlimit = False
+    index = request.args.get('start', default=0, type=int)
+    limit = 5
+    next_start = index + limit
+    previous_start = max(index - limit, 0)
+    try:
+        postdata = post_helper.get_all_posts_with_comments(index, limit)
+        if len(postdata) < limit:
+            overlimit = True
+        css_file_path = url_for('static', filename='forums_style.css')
+        return render_template('forums.html', css_file_path=css_file_path, postdata=postdata, next_start=next_start, previous_start=previous_start, overlimit=overlimit)
+    except ERROR.DB_Error:
+        last_url = request.referrer
+        css_file_path = url_for('static', filename='error/error_style.css')
+        return render_template('/error/error.html', css_file_path=css_file_path, error="Post not found", last_url=last_url)
