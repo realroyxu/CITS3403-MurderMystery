@@ -1,6 +1,5 @@
 {#whoever embeds this page must extends base.html or have JQ loaded#}
 <div class="leaderboard-container">
-    <h3 class="mt5"> LEADERBOARD </h3>
     <table class="leaderboard">
         <thead>
         <tr>
@@ -25,70 +24,8 @@
         {% endfor %}
         </tbody>
     </table>
-    <button class="changesort-btn btn btn-primary mt-3">Click ME?</button>
+    <div class="button">
+        <button class="changesort-btn btn btn-primary mt-3">Change sort mode</button>
+    </div>
+
 </div>
-
-<script>
-    $(document).ready(function () {
-        let sortbypost = true;
-        const slbBody = $('.slb-body');
-        $.ajax({
-            url: 'api/getslbbypost',
-            method: 'GET',
-            success: function (response) {
-                slbBody.empty();
-                response.forEach(function (item) {
-                    slbBody.append(`
-                        <tr class="leaderboard-item">
-                            <td class="leaderboard-username">
-                                ${item.username}
-                            </td>
-                            <td class="leaderboard-postcount">
-                                ${item.postcount}
-                            </td>
-                            <td class="leaderboard-solvecount">
-                                ${item.solvecount}
-                            </td>
-                        </tr>
-                    `);
-                });
-            },
-            error: function (xhr) {
-                const response = JSON.parse(xhr.responseText);
-                $('#message').text(response.message);
-                alert(response.message);
-            }
-        });
-        $('.changesort-btn').click(function () {
-            sortbypost = !sortbypost;
-            $.ajax({
-                url: sortbypost ? 'api/getslbbypost' : 'api/getslbbysolve',
-                method: 'GET',
-                success: function (response) {
-                    slbBody.empty();
-                    response.forEach(function (item) {
-                        slbBody.append(`
-                                <tr class="leaderboard-item">
-                                    <td class="leaderboard-username">
-                                        ${item.username}
-                                    </td>
-                                    <td class="leaderboard-postcount">
-                                        ${item.postcount}
-                                    </td>
-                                    <td class="leaderboard-solvecount">
-                                        ${item.solvecount}
-                                    </td>
-                                </tr>
-                            `);
-                    });
-                },
-                error: function (xhr) {
-                    const response = JSON.parse(xhr.responseText);
-                    $('#message').text(response.message);
-                    alert(response.message);
-                }
-            });
-        })
-    });
-
-</script>

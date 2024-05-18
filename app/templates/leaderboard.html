@@ -1,7 +1,61 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Leaderboard{% endblock %}
 
 {% block content %}
-    {% include "leaderboard_component.html" %}
+<div class="leaderboard-body">
+    <h1 class="title">Leaderboard</h1>
+    <div class="big-leaderboard-container">
+        {% include "leaderboard_component.html" %}
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let sortbypost = true;
+        const slbBody = $('.slb-body');
+
+        function fetchAndRenderData(url, limit) {
+            $.ajax({
+                url: `${url}?limit=${limit}`,
+                method: 'GET',
+                success: function (response) {
+                    slbBody.empty();
+                    response.forEach(function (item) {
+                        slbBody.append(`
+                            <tr class="leaderboard-item">
+                                <td class="leaderboard-username">
+                                    ${item.username}
+                                </td>
+                                <td class="leaderboard-postcount">
+                                    ${item.postcount}
+                                </td>
+                                <td class="leaderboard-solvecount">
+                                    ${item.solvecount}
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function (xhr) {
+                    const response = JSON.parse(xhr.responseText);
+                    $('#message').text(response.message);
+                    alert(response.message);
+                }
+            });
+        }
+
+        // Initial fetch with limit 30
+        fetchAndRenderData('api/getslbbypost', 30);
+
+        // Button click event
+        $('.changesort-btn').click(function () {
+            sortbypost = !sortbypost;
+            const url = sortbypost ? 'api/getslbbypost' : 'api/getslbbysolve';
+            fetchAndRenderData(url, 30);
+        });
+    });
+</script>
+
+
 {% endblock %}
