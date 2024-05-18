@@ -1,7 +1,8 @@
 .sudoku{
     display: grid;
     grid-template-columns: 2fr 1fr;
-    margin : -50px;
+    height : 60vh;
+
 }
 
 .board{
@@ -14,7 +15,7 @@
 
 .post{
     padding : 30px;
-    border-bottom : 2px solid black;
+    border-bottom : 1px solid black;
 }
 
 .forum-posts{
@@ -43,6 +44,10 @@
     flex-direction : row;;
 }
 
+.title{
+    font-weight : bold;
+}
+
 .post-title{
     align-items : center;
 }
@@ -59,4 +64,13 @@
 .user-icon{
     height : 50px;
     width : 50px;
+    margin : 10px;
+}
+
+.leaderboard-username, .leaderboard-postcount, .leaderboard-solvecount{
+    padding : 4px;
+}
+
+th{
+    padding-right : 10px;
 }
