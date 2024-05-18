@@ -100,3 +100,17 @@ def upload_image(postid):
             return jsonify({"message": "Invalid file type"}), 401
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error uploading image: {e}"}), 401
+
+@post_api_bp.route('/api/delete_post/<int:postid>', methods=['POST'])
+def delete_post(postid):
+    data = {"postid": postid}
+    post = post_helper.get_post(data)
+    userid = user_service.get_userid(session['username'])
+    if int(post['userid']) == int(userid):
+        try:
+            post_helper.delete_post(data)
+            return jsonify({"message": "Post deleted successfully"}), 200
+        except ERROR.DB_Error as e:
+            return jsonify({"message": f"Error deleting post: {e}"}), 401
+    else:
+        return jsonify({"message": f"Error deleting post: {e}"}), 401
