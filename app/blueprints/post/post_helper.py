@@ -132,18 +132,18 @@ def generate_story(title, content, characters, answer):
             Characters: {characters}
             Answer: {answer}
             
-            Create an engaging and detailed murder mystery game playable script for players to guess the killer. 
-            The story should be long enough to provide a rich, immersive experience.
-            After the story, include a series of clues that allow players to deduce one of the provided characters as the killer.
-            Think carefully of these clues, as players will need space to think, they can be somehow misleaded to make the puzzle more interesting to play,
-            but these clues still need to be coherent, sensible, and logically correct as crucial part of "playable game script".
-            DO NOT reveal the answer(killer) AT ANY FORM.
-            Ensure the killer is one of the listed characters.
+    Construct an engaging and detailed murder mystery game script. The narrative should unfold in a manner that immerses players and prompts them to guess the killer among the listed characters. Do not reveal the killer directly or indirectly at any point.
+    
+    The story should:
+    - Be crafted with a clear beginning, middle, and an intriguing end.
+    - Include distinct and memorable interactions between characters to develop suspicion and intrigue.
+    - Provide a series of subtle clues and red herrings that integrate seamlessly into the story, allowing players to formulate theories about the killer's identity.
+    - Exclude the character listed in 'answer' from being the victim.
+    - Ensure that the narrative and clues are coherent, sensible, and maintain logical integrity to support a playable game script.
+    
+    The final part of the script should allow room for deduction without explicitly solving the mystery, thus enhancing the gameplay experience.
 
-            Limit your whole output to 600 words.
-            No need to include Title in your output.
-            
-            Reply in plaintext.
+    Limit the narrative to 600 words in plaintext.
             """
 
     try:
