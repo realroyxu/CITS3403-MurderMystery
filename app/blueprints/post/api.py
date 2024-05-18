@@ -68,10 +68,10 @@ def add_post():
 
         if isupload:
             return jsonify({"message": "Post added successfully with image", "newpostid": postid,
-                            "story": generated_story, "postid": postid}), 200
+                            "story": generated_story['story'], "postid": postid}), 200
         else:
             return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid,
-                            "story": generated_story, "postid": postid}), 200
+                            "story": generated_story['story'], "postid": postid}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
     except RuntimeError as e:
@@ -100,15 +100,6 @@ def upload_image(postid):
             return jsonify({"message": "Invalid file type"}), 401
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error uploading image: {e}"}), 401
-
-@post_api_bp.route('/api/editpost', methods=['POST'])
-def edit_post():
-    data = request.get_json()
-    try:
-        post_helper.edit_post(data)
-        return jsonify({"message": "Post edited successfully"}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error editing post: {e}"}), 401
 
 
 @post_api_bp.route('/api/delete_post/<int:postid>', methods=['POST'])
