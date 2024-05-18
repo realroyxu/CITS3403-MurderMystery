@@ -4,6 +4,7 @@ form {
 
 .main{
     height : 100vh;
+    color : white;
 }
 
 
@@ -43,4 +44,10 @@ form {
 .register-text:hover{
     color : black;
 }
+
+.btn-primary{
+    background-color : #5e0f0f !important;
+    border : #5e0f0f !important
+}
+
 

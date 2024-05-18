@@ -4,6 +4,11 @@
 
 {% block content %}
 <div class="main">
+    <div class="delete-post-container">
+        <form id="deletePostForm" method="POST">
+            <button type="button" class="btn btn-danger delete-post" onclick="deletePost()">Delete Post</button>
+        </form>
+    </div>
     <div class="post" id="post-{{ post.postid }}">
         <div class="post-header">
             <h2 class="post-title">{{ post.title }}</h2>
@@ -62,6 +67,27 @@
         </div>
     </div>
     <script>
+        function deletePost() {
+            if (confirm("Are you sure you want to delete this post?")) {
+                $.ajax({
+                    url: '/api/delete_post/' + {{ post.postid }},
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        postid: {{ post.postid }},
+                        csrf_token: $('#deletePostForm input[name=csrf_token]').val()
+                    }),
+                    success: function (response) {
+                        alert(response.message);
+                        window.location.href = '/forums'; // Redirect to forums after deletion
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    }
+                });
+            }
+        }
         let sharedData = {
             postid: {{ post.postid }}
         };
