@@ -1,3 +1,4 @@
+import json
 from . import post_api_bp
 from . import post_helper
 from db import db_error_helper as ERROR
@@ -36,6 +37,19 @@ def get_post():
 #     except ERROR.DB_Error as e:
 #         return jsonify({"message": f"Error adding post: {e}"}), 401
 
+# @post_api_bp.route('/api/addpost', methods=['POST'])
+# def add_post():
+#     data = request.form.to_dict()
+#     data['userid'] = session.get('userid')
+#     if not data['userid']:
+#         return jsonify({"message": "User not authorized"}), 401
+
+#     try:
+#         post_helper.add_post(data)
+#         return jsonify({"message": "Post added successfully"}), 200
+#     except ERROR.DB_Error as e:
+#         return jsonify({"message": f"Error adding post: {e}"}), 401
+
 @post_api_bp.route('/api/addpost', methods=['POST'])
 def add_post():
     data = request.form.to_dict()
@@ -44,8 +58,17 @@ def add_post():
         return jsonify({"message": "User not authorized"}), 401
 
     try:
-        post_helper.add_post(data)
-        return jsonify({"message": "Post added successfully"}), 200
+        generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'])
+        puzzle_data = {
+            'userid': data['userid'],
+            'puzzledata': generated_story['story'],
+            'category': generated_story['explanation'],
+            'puzzleanswer': generated_story['killer']
+        }
+        id = puzzle_helper.add_puzzle(puzzle_data)
+        data['puzzleid'] = id
+        postid = post_helper.add_post(data)
+        return jsonify({"message": "Post added successfully", "story": generated_story['story'], "postid": int(postid)}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
 
@@ -71,3 +94,4 @@ def delete_post():
         return jsonify({"message": "Post deleted successfully"}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error deleting post: {e}"}), 401
+
