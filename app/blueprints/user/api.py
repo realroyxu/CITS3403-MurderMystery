@@ -44,10 +44,12 @@ def register():
 @user_api_bp.route('/api/changepassword', methods=['POST'])
 def change_password():
     data = request.get_json()
+    username = data['username']
     old_password = data['old_password']
     new_password = data['new_password']
     try:
-        user_service.change_password(session['userid'], old_password, new_password)
+        if user_service.change_password(username, old_password, new_password) is False:
+            return jsonify({"message": "Password change unsuccessful"}), 401
         return jsonify({"message": "Password changed successfully"}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error changing password: {e}"}), 401
