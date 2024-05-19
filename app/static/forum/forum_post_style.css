@@ -72,6 +72,20 @@
     flex: 1;
 }
 
+.puzzle-data{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.5;
+    font-size: 16px;
+}
+@media (max-width: 768px) {
+    .puzzle-data {
+       font-size: 14px;
+    }
+}
+
 .postimage-container {
     flex: 1;
     display: flex;

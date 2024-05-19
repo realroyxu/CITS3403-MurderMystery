@@ -69,6 +69,7 @@
                         $('.loading').hide();
                         document.getElementById('storySection').style.display = 'block';
                         document.getElementById('storyContent').innerText = data.story;
+                        console.log(data.story);
                         const viewPostButton = document.getElementById('viewPostButton');
                         alert('Post generated and added successfully!');
                         viewPostButton.style.display = 'block';

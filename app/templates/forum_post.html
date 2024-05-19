@@ -16,7 +16,7 @@
         <div class="post-content">
             <div class="content-container {% if not post.postimage %} full-width {% endif %}">
                 <div class="puzzledata card-body code-block">
-                    <div class="puzzle-data">{{ post.puzzledata }}</div>
+                    <pre class="puzzle-data">{{ post.puzzledata }}</pre>
                 </div>
                 {% if post.postimage %}
                 <div class="postimage-container">
