@@ -9,7 +9,7 @@ The purpose of this web application is to provide a platform for users to solve 
 ### Design and Use
 
 - **User Authentication**: Users can register and log in to the application to access personalized features.
-- **Sudoku Puzzle Solving**: Users can attempt various Sudoku puzzles. The application verifies solutions and tracks puzzle-solving times.
+- **Murder Mystery Puzzle Solving**: Users can attempt various Murder Mystery puzzles. The application verifies solutions and tracks puzzle-solving times.
 - **Comments**: Users can comment on puzzles and interact with other users.
 - **Leaderboards**: The application maintains site-wide and post-specific leaderboards to track user performance based on post count and solve count.
 
@@ -27,7 +27,7 @@ To launch the application, follow these steps:
 
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/realroyxu/CITS3403-Sudoku.git
+    git clone https://github.com/realroyxu/CITS3403-Murder.git
     cd into the repository
     ```
 
