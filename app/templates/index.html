@@ -54,7 +54,7 @@
                     error: function (xhr) {
                         const response = JSON.parse(xhr.responseText);
                         $('#message').text(response.message);
-                        alert(response.message);
+                        {#alert(response.message);#}
                     }
                 });
             }
