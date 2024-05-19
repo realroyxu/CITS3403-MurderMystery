@@ -2,9 +2,9 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or "sqlite:///db/ormtest.db"
     UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or 'uploads'
-    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY') or "hi"
 
 class DevelopmentConfig(Config):
     DEBUG = True
