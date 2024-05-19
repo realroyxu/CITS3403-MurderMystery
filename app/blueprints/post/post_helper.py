@@ -116,16 +116,6 @@ def get_post_full(postid):
 
 
 def generate_story(title, content, characters, answer):
-    #             Generate a murder mystery story and identify the killer with an explanation.
-    #             YOU MUST USE ONE OF THE CHARACTERS PROVIDED AS THE KILLER.
-    #             DO NOT REVEAL THE KILLER IN THE STORY.
-    #             Reply in JSON with the format:
-    #             {{
-    #                 "story": "<story_text>",
-    #                 "killer": "<killer_name>",
-    #                 "explanation": "<explanation>"
-    #             }}
-
     prompt = f"""
             Title: {title}
             Content: {content}
