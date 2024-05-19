@@ -33,3 +33,7 @@ def createPost():
     return render_template('createPost.html', css_file_path=css_file_path)
 
 
+@index_bp.route('/howto', methods=['GET'])
+def howto():
+    css_file_path = url_for('static', filename='howto_style.css')
+    return render_template('howto.html', css_file_path=css_file_path)
