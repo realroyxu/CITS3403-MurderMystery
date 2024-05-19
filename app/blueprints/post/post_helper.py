@@ -169,3 +169,13 @@ def add_image(data):
         return Post_DB.add_image(Post, data)
     except ERROR.DB_Error as e:
         raise ERROR.DB_Error(str(e))
+
+
+def is_solved(data) -> bool:
+    try:
+        if 'postid' not in data:
+            raise ERROR.DB_Error("Missing postid")
+        post = get_post(data)
+        return post['posttype'] == 'solved'
+    except ERROR.DB_Error as e:
+        raise ERROR.DB_Error(str(e))
