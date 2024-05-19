@@ -1,5 +1,6 @@
-.main{
-    height : 100vh;
+.main {
+    min-height: 100vh;
+    margin-bottom: 20vh;
 }
 
 .post-container {
@@ -57,19 +58,38 @@ button:hover {
     background-color: #7c1414;
 }
 
-.viewpost{
-    display : flex;
-    justify-content : center;
-    margin-top : 20px;
+.viewpost {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.form-section{
-    background-color : rgb(128, 127, 127);
-    color : white;
+.form-section {
+    background-color: rgb(128, 127, 127);
+    color: white;
 }
 
-.story-section{
-    padding : 80px;
-    color : white;
+.story-section {
+    padding: 80px;
+    color: white;
 }
 
+.loading{
+    display:none;
+    margin-left: 10px;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #000;
+    border-radius: 50%;
+    animation: spinner 1s linear infinite;
+    margin-left: 10px;
+}

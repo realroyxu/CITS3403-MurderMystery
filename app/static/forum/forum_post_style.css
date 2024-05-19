@@ -1,6 +1,7 @@
 .post {
     min-height: 100vh;
     height: auto;
+    margin-bottom : 30px;
 }
 
 .post-title {
@@ -71,6 +72,20 @@
     flex: 1;
 }
 
+.puzzle-data{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.5;
+    font-size: 16px;
+}
+@media (max-width: 768px) {
+    .puzzle-data {
+       font-size: 14px;
+    }
+}
+
 .postimage-container {
     flex: 1;
     display: flex;
@@ -79,7 +94,7 @@
 }
 
 .postimage {
-    max-width: 500px;
+    max-width: 300px;
     height: auto;
     padding: 30px;
 }

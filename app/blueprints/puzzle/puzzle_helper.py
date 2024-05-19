@@ -33,7 +33,7 @@ def edit_puzzle(data):
         raise ERROR.DB_Error(str(e))
 
 
-def verify_answer(data) -> bool:
+def verify_answer(data):
     """Verify answer"""
     # this probably should be inside a db_helper instead a helper, hmmmm
     if 'guesstext' not in data:
@@ -42,14 +42,24 @@ def verify_answer(data) -> bool:
         raise ERROR.DB_Error("postid not provided.")
     if "userid" not in data:
         raise ERROR.DB_Error("userid not provided.")
+    ischeater = False
     try:
         # need to do a serverside check on failure record
         if failure_helper.is_failure(data):
             return False
+        # need to prevent user from solving the solved puzzles
+        post = post_helper.get_post({"postid": data["postid"]})
+        if post["posttype"] == "solved":
+            return "alreadySolved"
+        # need to prevent poster from solving their own puzzle
+        post = post_helper.get_post({"postid": data["postid"]})
+        val_userid = get_puzzle({"puzzleid": post["puzzleid"]})["userid"]
+        if val_userid == data["userid"]:
+            ischeater = True
         puzzleid = post_helper.get_post({"postid": data["postid"]})["puzzleid"]
         data["puzzleid"] = puzzleid
         puzzle = Puzzle_DB.get_puzzle(Puzzle, data)
-        if puzzle['puzzleanswer'] == data['guesstext']:
+        if puzzle['puzzleanswer'] == data['guesstext'] and not ischeater:
             # need to set post as solved (on post table) & closed (checked by api maybe) & log record on slb
             post_helper.edit_post({"postid": data["postid"], "posttype": "solved"})
             slb_helper.new_solve(data["userid"])

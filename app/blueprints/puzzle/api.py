@@ -1,5 +1,6 @@
 from . import puzzle_bp
 from . import puzzle_helper
+from app.blueprints.post import post_helper
 from db import db_error_helper as ERROR
 from flask import request, jsonify, session, current_app
 
@@ -51,3 +52,18 @@ def verify_answer():
         return jsonify({"result": result}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error verifying answer: {e}"}), 401
+
+
+@puzzle_bp.route('/api/issolved', methods=['POST'])
+# need [postid]
+def is_solved():
+    data = request.get_json()
+    if 'csrf_token' in data:
+        del data['csrf_token']
+    try:
+        result = post_helper.is_solved(data)
+        puzzleid = post_helper.get_post(data)["puzzleid"]
+        answer = puzzle_helper.get_puzzle({"puzzleid": puzzleid})["puzzleanswer"]
+        return jsonify({"result": result, "answer": answer}), 200
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error checking if solved: {e}"}), 401

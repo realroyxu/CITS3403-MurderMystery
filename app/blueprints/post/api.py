@@ -7,9 +7,11 @@ from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
 from app.blueprints.user.user_helper import user_service
 
+
 def allowed_file(filename, ALLOWED_EXT=['jpg', 'jpeg', 'png', 'gif']):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXT
+
 
 @post_api_bp.route('/api/getpost', methods=['POST'])
 def get_post():
@@ -26,21 +28,23 @@ def get_post():
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error getting post: {e}"}), 401
 
+
 @post_api_bp.route('/api/addpost', methods=['POST'])
 def add_post():
     data = request.form.to_dict()
     data['userid'] = session.get('userid')
     if not data['userid']:
-        return jsonify({"message": "User not authorized"}), 401
+        return jsonify({"message": "Please login before creating a post"}), 401
 
     try:
-        generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'])
+        generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'], data['answer'])
         puzzle_data = {
             'userid': data['userid'],
-            'puzzledata': generated_story['story'],
-            'category': generated_story['explanation'],
-            'puzzleanswer': generated_story['killer']
+            'puzzledata': generated_story,
+            'category': '',
+            'puzzleanswer': data['answer']
         }
+        print(generated_story)
         puzzle_id = puzzle_helper.add_puzzle(puzzle_data)
         data['puzzleid'] = puzzle_id
         postid = post_helper.add_post(data)
@@ -63,11 +67,16 @@ def add_post():
                 return jsonify({"message": "Invalid file type"}), 401
 
         if isupload:
-            return jsonify({"message": "Post added successfully with image", "newpostid": postid, "story": generated_story['story'], "postid": postid}), 200
+            return jsonify({"message": "Post added successfully with image", "newpostid": postid,
+                            "story": generated_story, "postid": postid}), 200
         else:
-            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid, "story": generated_story['story'], "postid": postid}), 200
+            return jsonify({"message": "Post added successfully. No image found.", "newpostid": postid,
+                            "story": generated_story, "postid": postid}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
+    except RuntimeError as e:
+        return jsonify({"message": f"Error adding post: {e}"}), 401
+
 
 @post_api_bp.route('/api/editpost', methods=['POST'])
 def edit_post():
@@ -100,6 +109,7 @@ def upload_image(postid):
             return jsonify({"message": "Invalid file type"}), 401
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error uploading image: {e}"}), 401
+
 
 @post_api_bp.route('/api/delete_post/<int:postid>', methods=['POST'])
 def delete_post(postid):

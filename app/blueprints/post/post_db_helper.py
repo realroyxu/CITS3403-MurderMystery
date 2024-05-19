@@ -32,7 +32,7 @@ def get_all_posts(Post):
     with Session() as s:
         try:
             stmt = select(Post.postid, Post.userid, Post.title, Post.content, Post.posttime, Post.posttype,
-                          Post.puzzleid, Post.postimage).order_by(Post.posttime.desc())
+                          Post.puzzleid, Post.postimage).order_by(Post.postid.desc())
             res = s.execute(stmt).all()
             if res:
                 return [row._asdict() for row in res]

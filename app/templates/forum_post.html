@@ -16,7 +16,7 @@
         <div class="post-content">
             <div class="content-container {% if not post.postimage %} full-width {% endif %}">
                 <div class="puzzledata card-body code-block">
-                    <div class="puzzle-data">{{ post.puzzledata }}</div>
+                    <pre class="puzzle-data">{{ post.puzzledata }}</pre>
                 </div>
                 {% if post.postimage %}
                 <div class="postimage-container">
@@ -117,7 +117,28 @@
                         const response = JSON.parse(xhr.responseText);
                         alert(response.message);
                     }
-                })
+                });
+                $.ajax({
+                    url: '/api/issolved',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        postid: parseInt(sharedData.postid),
+                    }),
+                    success: function (response) {
+                        if (response.hasOwnProperty('result')) {
+                            if (response.result === true) {
+                                $('.guess-buttom-container').html(`<span>Puzzle already solved by someone else :3 Answer was: ${response.answer}</span>`);
+                                console.log("Puzzle already solved by someone else :3")
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    }
+                });
+
             });
             $('.comment-form').on('submit', function (event) {
                 event.preventDefault();
@@ -130,7 +151,6 @@
                         csrf_token: $('#commentForm input[name=csrf_token]').val()
                     }),
                     success: function (response) {
-                        alert(response.message);
                         $('#commentForm').find('textarea[name="commenttext"]').val('');
                         window.location.reload();
                     },
@@ -157,7 +177,10 @@
                         if (response.hasOwnProperty('result')) {
                             if (response.result === true) {
                                 alert("You got them XD");
-                            } else {
+                            }else if (response.result === 'alreadySolved') {
+                                alert("Puzzle Already Solved By Someone Else :3");
+                            }
+                            else {
                                 alert("You are dead now :P");
                             }
                         }

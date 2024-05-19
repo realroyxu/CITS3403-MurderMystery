@@ -1,3 +1,4 @@
+.env
 .idea/
 .vscode/
 .venv*/
@@ -9,3 +10,4 @@ htmlcov/
 .tox/
 docs/_build/
 *.db
+
