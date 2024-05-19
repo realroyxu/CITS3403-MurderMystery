@@ -4,4 +4,3 @@ from .comment import Comment
 from .post import Post
 from .puzzle import Puzzle
 from .siteleaderboard import SiteLeaderboard
-from .postleaderboard import PostLeaderboard

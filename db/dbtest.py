@@ -3,13 +3,11 @@ from app.models.post import Post
 from app.models.comment import Comment
 from app.models.puzzle import Puzzle
 from app.models.attempt import Attempt
-from app.models.postleaderboard import PostLeaderboard
 import app.blueprints.user.user_db_helper as udb
 import app.blueprints.post.post_db_helper as pdb
 import app.blueprints.puzzle.puzzle_db_helper as pzdb
 import app.blueprints.attempt.attempt_db_helper as atdb
 import app.blueprints.comment.comment_db_helper as cdb
-import app.blueprints.leaderboard.postleaderboard_db_helper as pldb
 
 
 def usertest():
@@ -68,13 +66,6 @@ def commenttest():
     print(cdb.edit_comment(Comment, {'commentid': 7, 'userid': 3, 'postid': 7, 'commenttext': 'test0',
                                      'commenttime': '07:21'}))
     # print('*********************************')
-
-
-def plbtest():
-    print(pldb.add_plbrecord(PostLeaderboard, {'userid': 3, 'postid': 7}))
-    print('*********************************')
-    print(pldb.get_plbrecord(PostLeaderboard, {'postid': 7}))
-    print('*********************************')
 
 
 try:

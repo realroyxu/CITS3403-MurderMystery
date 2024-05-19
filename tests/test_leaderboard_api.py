@@ -2,7 +2,6 @@ import unittest
 from app import create_app, db
 from app.models.user import User
 from app.models.siteleaderboard import SiteLeaderboard
-from app.models.postleaderboard import PostLeaderboard
 from datetime import datetime
 import json
 
