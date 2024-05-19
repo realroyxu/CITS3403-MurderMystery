@@ -42,3 +42,13 @@
     background-color : #5e0f0f !important;
     border : #5e0f0f !important
 }
+
+.icons {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0);
+}
+
+.icons:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
