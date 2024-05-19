@@ -12,8 +12,8 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///:memory:'
-    UPLOAD_FOLDER = 'test_uploads'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///test.db'
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or 'uploads'
     OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 class ProductionConfig(Config):
