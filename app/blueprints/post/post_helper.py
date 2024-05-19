@@ -11,7 +11,7 @@ from app.blueprints.user.user_helper import UserService
 import app.blueprints.leaderboard.siteleaderboard_helper as Slb_Helper
 
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key="hi")
 
 user_helper = UserService()
 

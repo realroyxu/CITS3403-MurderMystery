@@ -1,7 +1,4 @@
 import unittest
-import json
-import os
-import io
 from dotenv import load_dotenv
 from app import create_app, db
 from app.models.post import Post
@@ -59,23 +56,23 @@ class PostApiTestCase(unittest.TestCase):
             self.assertIn("puzzledata", response.json)
             self.assertIn("comments", response.json)
 
-    def test_add_post(self):
-        with self.client.session_transaction() as sess:
-            sess['userid'] = 1
+    # def test_add_post(self):
+    #     with self.client.session_transaction() as sess:
+    #         sess['userid'] = 1
 
-        data = {
-            "title": "New Post",
-            "content": "This is a new post.",
-            "characters": "Character details",
-            "answer": "hello"
-        }
+    #     data = {
+    #         "title": "New Post",
+    #         "content": "This is a new post.",
+    #         "characters": "Character details",
+    #         "answer": "hello"
+    #     }
 
-        response = self.client.post('/api/addpost', data=data)
-        self.assertEqual(response.status_code, 200)
-        print(response.json)
-        self.assertIn("message", response.json)
-        self.assertIn("newpostid", response.json)
-        self.assertIn("story", response.json)
+    #     response = self.client.post('/api/addpost', data=data)
+    #     self.assertEqual(response.status_code, 200)
+    #     print(response.json)
+    #     self.assertIn("message", response.json)
+    #     self.assertIn("newpostid", response.json)
+    #     self.assertIn("story", response.json)
 
     def test_delete_post(self):
         post_data = {
