@@ -50,7 +50,7 @@ def verify_answer(data):
         # need to prevent user from solving the solved puzzles
         post = post_helper.get_post({"postid": data["postid"]})
         if post["posttype"] == "solved":
-            return "solved"
+            return "alreadySolved"
         # need to prevent poster from solving their own puzzle
         post = post_helper.get_post({"postid": data["postid"]})
         val_userid = get_puzzle({"puzzleid": post["puzzleid"]})["userid"]

@@ -117,7 +117,28 @@
                         const response = JSON.parse(xhr.responseText);
                         alert(response.message);
                     }
-                })
+                });
+                $.ajax({
+                    url: '/api/issolved',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        postid: parseInt(sharedData.postid),
+                    }),
+                    success: function (response) {
+                        if (response.hasOwnProperty('result')) {
+                            if (response.result === true) {
+                                $('.guess-buttom-container').html('<span>Puzzle already solved by someone else :3</span>');
+                                console.log("Puzzle already solved by someone else :3")
+                            }
+                        }
+                    },
+                    error: function (xhr) {
+                        const response = JSON.parse(xhr.responseText);
+                        alert(response.message);
+                    }
+                });
+
             });
             $('.comment-form').on('submit', function (event) {
                 event.preventDefault();
@@ -156,7 +177,7 @@
                         if (response.hasOwnProperty('result')) {
                             if (response.result === true) {
                                 alert("You got them XD");
-                            }else if (response.result === 'solved') {
+                            }else if (response.result === 'alreadySolved') {
                                 alert("Puzzle Already Solved By Someone Else :3");
                             }
                             else {
