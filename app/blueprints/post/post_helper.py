@@ -9,8 +9,8 @@ from app.blueprints.puzzle import puzzle_helper
 from app.blueprints.comment import comment_helper
 from app.blueprints.user.user_helper import UserService
 
-api_key = os.getenv('OPENAI_KEY')
-client = OpenAI(api_key=api_key)
+api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key="hi")
 
 user_helper = UserService()
 
