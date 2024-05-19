@@ -19,7 +19,7 @@ The purpose of this web application is to provide a platform for users to solve 
 |------------|-------------------|------------------|
 | 23455873   | Aifert Yet        | Aifert           |
 | XXXXXXXX   | Ryan Allagapen    | Teylan           |
-| XXXXXXXX   | Alice Johnson     | alicejohnson     |
+| 23993019   | Hongkang "Roy" Xu | RealRoyXu        |
 | XXXXXXXX   | Alice Johnson     | alicejohnson     |
 
 ## Launching the Application
