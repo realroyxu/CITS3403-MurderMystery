@@ -4,8 +4,16 @@
 }
 
 th {
+    font-size: 30px;
+    font-family: monospace;
     width : 70vh;
     text-align: center !important;
+}
+td{
+    font-size: 20px;
+    font-family: monospace;
+    text-align: center !important;
+    color: lightgrey;
 }
 
 .big-leaderboard-container {

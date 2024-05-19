@@ -13,16 +13,16 @@
             <img src="{{ url_for('static', filename='images/knife.png') }}" width="75" height="75" alt="Site Logo">
         </div>
         <div class="nav-links">
-            <a href="/index"> Home </a>
-            <a href="/createPost"> Create Post</a>
-            <a href="/forums?start=0">View posts</a>
-            <a href="/leaderboard"> Leaderboard</a>
+            <a class="nav-btn" href="/index"> Home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>
+            <a class="nav-btn" href="/createPost"> Create Post</a>
+            <a class="nav-btn" href="/forums?start=0">View posts&nbsp;</a>
+            <a class="nav-btn" href="/leaderboard"> Leaderboard</a>
         </div>
         <div class="login">
             {% if session['username'] %}
-                    <a href="/user/home">Profile</a>
+                    <a class="nav-btn" href="/user/home">Profile</a>
             {% else %}
-                <a href="/user/login"> Login</a>
+                <a class="nav-btn" href="/user/login"> Login</a>
             {% endif %}
         </div>
     </div>

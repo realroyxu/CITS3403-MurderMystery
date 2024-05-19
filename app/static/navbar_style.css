@@ -22,13 +22,35 @@
     justify-content: space-between;
     align-items : center;
     padding : 20px;
+    margin-right: 8%;
+}
+
+.nav-btn:hover{
+    color:rgba(128, 128, 128);
+}
+
+.nav-btn {
+    font-size: larger;
+    font-family: monospace;
+
+    position: relative;
+    overflow: visible;
+    background-image: url('/static/images/bloodstain.png');
+    background-size: 0 200%;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-size 0.3s ease;
+}
+.nav-btn:hover {
+    background-size: 250% 250%;
 }
 
 
+.logo img{
+     transition: transform 0.35s ease;
+}
 
-
-
-
-
-
+.logo img:hover{
+    transform: rotateX(180deg);
+}
 
