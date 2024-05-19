@@ -34,7 +34,7 @@ def add_post():
     data = request.form.to_dict()
     data['userid'] = session.get('userid')
     if not data['userid']:
-        return jsonify({"message": "User not authorized"}), 401
+        return jsonify({"message": "Please login before creating a post"}), 401
 
     try:
         generated_story = post_helper.generate_story(data['title'], data['content'], data['characters'], data['answer'])
@@ -44,6 +44,7 @@ def add_post():
             'category': '',
             'puzzleanswer': data['answer']
         }
+        print(generated_story)
         puzzle_id = puzzle_helper.add_puzzle(puzzle_data)
         data['puzzleid'] = puzzle_id
         postid = post_helper.add_post(data)
