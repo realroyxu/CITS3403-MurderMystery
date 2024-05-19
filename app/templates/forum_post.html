@@ -128,7 +128,7 @@
                     success: function (response) {
                         if (response.hasOwnProperty('result')) {
                             if (response.result === true) {
-                                $('.guess-buttom-container').html('<span>Puzzle already solved by someone else :3</span>');
+                                $('.guess-buttom-container').html(`<span>Puzzle already solved by someone else :3 Answer was: ${response.answer}</span>`);
                                 console.log("Puzzle already solved by someone else :3")
                             }
                         }
