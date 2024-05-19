@@ -20,9 +20,10 @@ def get_post():
         post = post_helper.get_post(data)
         puzzledata = puzzle_helper.get_puzzle({"puzzleid": post['puzzleid']})
         comment = comment_helper.get_comments({"postid": data['postid']})
-        for item in comment:
-            item['author'] = user_service.get_username(item['userid'])
-            item.pop('userid')
+        if comment is not None:
+            for item in comment:
+                item['author'] = user_service.get_username(item['userid'])
+                item.pop('userid')
         return jsonify({"postid": post['postid'], "title": post['title'], "content": post['content'],
                         "puzzledata": puzzledata, "comments": comment}), 200
     except ERROR.DB_Error as e:
@@ -76,16 +77,6 @@ def add_post():
         return jsonify({"message": f"Error adding post: {e}"}), 401
     except RuntimeError as e:
         return jsonify({"message": f"Error adding post: {e}"}), 401
-
-
-@post_api_bp.route('/api/editpost', methods=['POST'])
-def edit_post():
-    data = request.get_json()
-    try:
-        post_helper.edit_post(data)
-        return jsonify({"message": "Post edited successfully"}), 200
-    except ERROR.DB_Error as e:
-        return jsonify({"message": f"Error editing post: {e}"}), 401
 
 
 @post_api_bp.route('/api/uploadimage/<int:postid>', methods=['POST'])

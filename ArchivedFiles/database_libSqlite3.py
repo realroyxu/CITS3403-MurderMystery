@@ -90,15 +90,6 @@ class Schema:
                FOREIGN KEY (puzzleId) REFERENCES puzzle ON DELETE CASCADE
            );
 
-           CREATE TABLE IF NOT EXISTS "postleaderboard"(
-               recordId INTEGER PRIMARY KEY AUTOINCREMENT ,
-               userId INTEGER,
-               postId INTEGER,
-               rank INTEGER DEFAULT 0,
-               FOREIGN KEY (userId) references user ON DELETE CASCADE,
-               FOREIGN KEY (postId) references post ON DELETE CASCADE
-           );
-
            CREATE TABLE IF NOT EXISTS "puzzle"
            (
                puzzleId   INTEGER PRIMARY KEY AUTOINCREMENT,

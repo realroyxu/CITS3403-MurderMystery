@@ -7,21 +7,26 @@ from app.blueprints.post import post_bp, post_api_bp
 from app.blueprints.puzzle import puzzle_bp
 from app.blueprints.comment import comment_bp
 from app.blueprints.attempt import attempt_bp
-from app.blueprints.leaderboard import siteleaderboard_bp, postleaderboard_bp
+from app.blueprints.leaderboard import siteleaderboard_bp
 from app.blueprints.failure import failure_bp
 from flask_sqlalchemy import SQLAlchemy
+from config import Config, DevelopmentConfig, TestingConfig, ProductionConfig
 
 db = SQLAlchemy()
 
 load_dotenv()
 
-
-def create_app():
+def create_app(config_name=''):
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'abcde'
-    app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-    app.config['OPENAI_KEY'] = os.getenv('OPENAI_KEY')
+
+    if config_name == 'development':
+        app.config.from_object(DevelopmentConfig)
+    elif config_name == 'testing':
+        app.config.from_object(TestingConfig)
+    elif config_name == 'production':
+        app.config.from_object(ProductionConfig)
+    else:
+        app.config.from_object(Config)
 
     db.init_app(app)
 
@@ -34,6 +39,5 @@ def create_app():
     app.register_blueprint(comment_bp)
     app.register_blueprint(attempt_bp)
     app.register_blueprint(siteleaderboard_bp)
-    app.register_blueprint(postleaderboard_bp)
     app.register_blueprint(failure_bp)
     return app

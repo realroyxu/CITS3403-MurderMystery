@@ -10,7 +10,7 @@ from app.blueprints.comment import comment_helper
 from app.blueprints.user.user_helper import UserService
 import app.blueprints.leaderboard.siteleaderboard_helper as Slb_Helper
 
-api_key = os.getenv('OPENAI_KEY')
+api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=api_key)
 
 user_helper = UserService()
@@ -120,16 +120,6 @@ def get_post_full(postid):
 
 
 def generate_story(title, content, characters, answer):
-    #             Generate a murder mystery story and identify the killer with an explanation.
-    #             YOU MUST USE ONE OF THE CHARACTERS PROVIDED AS THE KILLER.
-    #             DO NOT REVEAL THE KILLER IN THE STORY.
-    #             Reply in JSON with the format:
-    #             {{
-    #                 "story": "<story_text>",
-    #                 "killer": "<killer_name>",
-    #                 "explanation": "<explanation>"
-    #             }}
-
     prompt = f"""
             Title: {title}
             Content: {content}
@@ -144,7 +134,7 @@ def generate_story(title, content, characters, answer):
     - Provide a series of subtle clues and red herrings that integrate seamlessly into the story, allowing players to formulate theories about the killer's identity.
     - Exclude the character listed in 'answer' from being the victim.
     - Ensure that the narrative and clues are coherent, sensible, and maintain logical integrity to support a playable game script.
-    
+
     The final part of the script should allow room for deduction without explicitly solving the mystery, thus enhancing the gameplay experience.
 
     Limit the narrative to 600 words in plaintext.
@@ -175,7 +165,7 @@ def add_image(data):
         raise ERROR.DB_Error(str(e))
 
 
-def is_solved(data) -> bool:
+def is_solved(data):
     try:
         if 'postid' not in data:
             raise ERROR.DB_Error("Missing postid")

@@ -10,4 +10,3 @@ htmlcov/
 .tox/
 docs/_build/
 *.db
-
