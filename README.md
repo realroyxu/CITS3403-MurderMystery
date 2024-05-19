@@ -18,9 +18,9 @@ The purpose of this web application is to provide a platform for users to solve 
 | UWA ID     | Name              | GitHub Username  |
 |------------|-------------------|------------------|
 | 23455873   | Aifert Yet        | Aifert           |
-| XXXXXXXX   | Ryan Allagapen    | Teylan           |
+| 23476285   | Ryan Allagapen    | Teylan           |
 | 23993019   | Hongkang "Roy" Xu | RealRoyXu        |
-| XXXXXXXX   | Alice Johnson     | alicejohnson     |
+| 23344707   | Jack Langoulant   | jacklangoulant  |
 
 ## Launching the Application
 To launch the application, follow these steps:
