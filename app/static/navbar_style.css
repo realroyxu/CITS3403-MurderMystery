@@ -22,13 +22,25 @@
     justify-content: space-between;
     align-items : center;
     padding : 20px;
+    margin-right: 8%;
+}
+
+.nav-btn:hover{
+    color:rgba(128, 128, 128);
+}
+
+.nav-btn{
+    font-size: larger;
+    font-family: monospace;
 }
 
 
+.logo img{
+     transition: transform 0.35s ease;
+}
 
-
-
-
-
+.logo img:hover{
+    transform: rotateX(180deg);
+}
 
 
