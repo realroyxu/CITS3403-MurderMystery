@@ -62,10 +62,6 @@ def is_solved():
         del data['csrf_token']
     try:
         result = post_helper.is_solved(data)
-        puzzleid = post_helper.get_post(data)["puzzleid"]
-        answer = puzzle_helper.get_puzzle({"puzzleid": puzzleid})["puzzleanswer"]
-        print(f"result : {result}")
-        print(f"Answer : {answer}")
-        return jsonify({"result": result, "answer": answer}), 200
+        return jsonify({"result": result}), 200
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error checking if solved: {e}"}), 401
