@@ -114,4 +114,4 @@ def delete_post(postid):
         except ERROR.DB_Error as e:
             return jsonify({"message": f"Error deleting post: {e}"}), 401
     else:
-        return jsonify({"message": f"Error deleting post: {e}"}), 401
+        return jsonify({"message": "Error deleting post"}), 401
