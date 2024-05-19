@@ -27,7 +27,7 @@ To launch the application, follow these steps:
 
 1. **Clone the Repository**:
     ```bash
-    git clone https://github.com/realroyxu/CITS3403-Murder.git
+    git clone https://github.com/realroyxu/CITS3403-MurderMystery.git
     cd into the repository
     ```
 
