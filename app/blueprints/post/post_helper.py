@@ -121,9 +121,9 @@ def generate_story(title, content, characters, answer):
             Content: {content}
             Characters: {characters}
             Answer: {answer}
-
+            
     Construct an engaging and detailed murder mystery game script. The narrative should unfold in a manner that immerses players and prompts them to guess the killer among the listed characters. Do not reveal the killer directly or indirectly at any point.
-
+    
     The story should:
     - Be crafted with a clear beginning, middle, and an intriguing end.
     - Include distinct and memorable interactions between characters to develop suspicion and intrigue.

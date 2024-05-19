@@ -79,7 +79,6 @@ def add_post():
         return jsonify({"message": f"Error adding post: {e}"}), 401
 
 
-
 @post_api_bp.route('/api/uploadimage/<int:postid>', methods=['POST'])
 def upload_image(postid):
     try:
