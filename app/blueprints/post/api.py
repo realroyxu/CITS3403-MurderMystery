@@ -45,6 +45,7 @@ def add_post():
             'category': '',
             'puzzleanswer': data['answer']
         }
+        print(generated_story)
         puzzle_id = puzzle_helper.add_puzzle(puzzle_data)
         data['puzzleid'] = puzzle_id
         postid = post_helper.add_post(data)
