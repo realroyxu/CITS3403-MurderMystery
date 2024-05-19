@@ -46,7 +46,6 @@ def change_password():
     data = request.get_json()
     old_password = data['old_password']
     new_password = data['new_password']
-    print(session['userid'])
     try:
         user_service.change_password(session['userid'], old_password, new_password)
         return jsonify({"message": "Password changed successfully"}), 200

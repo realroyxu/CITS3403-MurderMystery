@@ -171,7 +171,7 @@ def add_image(data):
         raise ERROR.DB_Error(str(e))
 
 
-def is_solved(data) -> bool:
+def is_solved(data):
     try:
         if 'postid' not in data:
             raise ERROR.DB_Error("Missing postid")

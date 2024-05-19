@@ -28,6 +28,9 @@ class UserApiTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+        # user = User(username='testuser', password='testpassword')
+        # db.session.add(user)
+        # db.session.commit()
 
     def tearDown(self):
         """Clean up after each test."""
