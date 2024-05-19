@@ -33,7 +33,7 @@ def edit_puzzle(data):
         raise ERROR.DB_Error(str(e))
 
 
-def verify_answer(data) -> bool:
+def verify_answer(data):
     """Verify answer"""
     # this probably should be inside a db_helper instead a helper, hmmmm
     if 'guesstext' not in data:
@@ -47,6 +47,10 @@ def verify_answer(data) -> bool:
         # need to do a serverside check on failure record
         if failure_helper.is_failure(data):
             return False
+        # need to prevent user from solving the solved puzzles
+        post = post_helper.get_post({"postid": data["postid"]})
+        if post["posttype"] == "solved":
+            return "solved"
         # need to prevent poster from solving their own puzzle
         post = post_helper.get_post({"postid": data["postid"]})
         val_userid = get_puzzle({"puzzleid": post["puzzleid"]})["userid"]
