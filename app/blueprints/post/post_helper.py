@@ -11,7 +11,7 @@ from app.blueprints.user.user_helper import UserService
 import app.blueprints.leaderboard.siteleaderboard_helper as Slb_Helper
 
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key="hi")
+client = OpenAI(api_key=api_key)
 
 user_helper = UserService()
 
@@ -131,16 +131,16 @@ def generate_story(title, content, characters, answer):
             Content: {content}
             Characters: {characters}
             Answer: {answer}
-            
+
     Construct an engaging and detailed murder mystery game script. The narrative should unfold in a manner that immerses players and prompts them to guess the killer among the listed characters. Do not reveal the killer directly or indirectly at any point.
-    
+
     The story should:
     - Be crafted with a clear beginning, middle, and an intriguing end.
     - Include distinct and memorable interactions between characters to develop suspicion and intrigue.
     - Provide a series of subtle clues and red herrings that integrate seamlessly into the story, allowing players to formulate theories about the killer's identity.
     - Exclude the character listed in 'answer' from being the victim.
     - Ensure that the narrative and clues are coherent, sensible, and maintain logical integrity to support a playable game script.
-    
+
     The final part of the script should allow room for deduction without explicitly solving the mystery, thus enhancing the gameplay experience.
 
     Limit the narrative to 600 words in plaintext.
@@ -148,7 +148,7 @@ def generate_story(title, content, characters, answer):
 
     try:
         # response = client.chat.completions.create(model="gpt-3.5-turbo-0125",
-        response = client.chat.completions.create(model="gpt-4o-2024-05-13",
+        response = client.chat.completions.create(model="gpt-3.5-turbo-0125",
 
                                                   messages=[
                                                       {"role": "system", "content": "You are a creative assistant."},
