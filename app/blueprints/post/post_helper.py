@@ -33,9 +33,13 @@ def get_all_posts_with_comments(start_index=0, limit=10):
     try:
         all_posts = Post_DB.get_all_posts(Post)
 
+        if all_posts is None:
+            return []
+
         paginated_posts = all_posts[start_index:start_index + limit]
 
         full_posts = []
+
 
         for post in paginated_posts:
             # Fetch additional post details
