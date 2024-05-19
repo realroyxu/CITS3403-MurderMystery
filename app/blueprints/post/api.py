@@ -101,6 +101,15 @@ def upload_image(postid):
     except ERROR.DB_Error as e:
         return jsonify({"message": f"Error uploading image: {e}"}), 401
 
+@post_api_bp.route('/api/editpost', methods=['POST'])
+def edit_post():
+    data = request.get_json()
+    try:
+        post_helper.edit_post(data)
+        return jsonify({"message": "Post edited successfully"}), 200
+    except ERROR.DB_Error as e:
+        return jsonify({"message": f"Error editing post: {e}"}), 401
+
 
 @post_api_bp.route('/api/delete_post/<int:postid>', methods=['POST'])
 def delete_post(postid):
